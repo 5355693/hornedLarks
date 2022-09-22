@@ -68,3 +68,30 @@ surveyData %>%
   summarise(count = n()) %>%
   ggplot(data = ., aes(x = Sex, y = count)) + geom_col() + 
   geom_text(aes(label = count), vjust= 1.5, colour = "white")
+
+# Check to see if noise is related to lark detections:
+surveyData %>%
+  mutate(presence = ifelse(Number_Detected>0,1,0)) %>%
+  group_by(surveyEvent) %>%
+  summarise(noise = first(Max_Noise), presence = first(presence)) %>%
+  ggplot(.,aes(x = noise, y = presence, color = presence)) + geom_point() +
+  scale_y_continuous(name = "Larks present?", breaks = c(0,1), labels = c("No","Yes")) + 
+  theme(legend.position = "none", panel.grid.minor.y = element_blank()) + 
+  xlab("Ambient noise (dBA)") + coord_fixed(ratio = 40)
+
+# Check to see if temperature is related to lark detections:
+surveyData %>%
+  mutate(presence = ifelse(Number_Detected>0,1,0)) %>%
+  group_by(surveyEvent) %>%
+  summarise(temp = first(Temp), presence = first(presence)) %>%
+  ggplot(.,aes(x = temp, y = presence, color = presence)) + geom_point() +
+  scale_y_continuous(name = "Larks present?", breaks = c(0,1), labels = c("No","Yes")) + 
+  theme(legend.position = "none", panel.grid.minor.y = element_blank()) + 
+  xlab("Temperature (F)") + coord_fixed(ratio = 20)
+
+
+# Get sunrise times to look at effect of survey timing in detections
+library(suncalc)
+
+getSunlightTimes(date = surveyData$Count_Date, lat = 44.50, lon = -123.28,
+                 keep = c("sunrise"), tz="America/Los_Angeles")
