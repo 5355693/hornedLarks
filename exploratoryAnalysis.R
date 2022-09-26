@@ -2,6 +2,7 @@ library(tidyverse)
 library(readxl)
 library(lubridate)
 library(suncalc)
+library(ggpmisc)
 
 # Review and organize data, changing formats and variable names as needed.
 surveyData <- read_xlsx("~/Documents/GitHub/hornedLarks/WV_SurveyOutput.xlsx")
@@ -57,6 +58,19 @@ surveyData %>%
 # Test that we are summarizing correctly:
 unique(surveyData$surveyEvent) # = 215
 187+12+8+5+3 # = 215, from the summary table calculated lines 26-31
+
+# plot lark detection frequencies
+detectionTable <- surveyData %>%
+  group_by(surveyEvent, Site_ID) %>%
+  summarise(`Larks detected` = first(Number_Detected)) %>%
+  group_by(`Larks detected`) %>%
+  summarise(`No. of points` = n()) %>%
+  mutate(`Frequency` = sprintf("%0.2f",`No. of points`/sum(`No. of points`)))
+
+ggplot(detectionTable, aes(x = `Larks detected`, y = `No. of points`)) + geom_col() + 
+  geom_text(aes(label = `No. of points`, vjust = -0.5)) + 
+  labs(x = "No. of larks detected at point", y = "No. of points") + 
+  annotate("table", x = 4, y = 150, label = detectionTable)
 
 # Calculate the number of larks detected:
 surveyData %>%
@@ -159,8 +173,9 @@ surveyData %>%
 
 # differences among observers
 surveyData %>%
+  mutate(presence = ifelse(Number_Detected>0,1,0)) %>%
   group_by(Observer,surveyEvent) %>%
-  summarise(presence = first(present), surveys = n_distinct(surveyEvent)) %>%
+  summarise(presence = first(presence), surveys = n_distinct(surveyEvent)) %>%
   group_by(Observer) %>%
   summarise(count = sum(presence), surveys = sum(surveys),
             incidence = count/surveys) %>%
