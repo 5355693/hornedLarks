@@ -5,10 +5,13 @@ library(suncalc)
 library(ggpmisc)
 
 # Review and organize data, changing formats and variable names as needed.
-surveyData <- read_xlsx("~/Documents/GitHub/hornedLarks/WV_SurveyOutput.xlsx")
+#surveyData <- read_xlsx("~/Documents/GitHub/hornedLarks/WV_SurveyOutput.xlsx")
+surveyData <- read_csv("~/Documents/GitHub/hornedLarks/WV_SHLA_22.csv")
 names(surveyData)[1] <- 'surveyEvent'
-surveyData$Count_Date <- mdy(surveyData$Count_Date)
-surveyData$Start_Time <- hms(surveyData$Start_Time)
+#surveyData$Count_Date <- mdy(surveyData$Count_Date)
+surveyData$Count_Date <- mdy(surveyData$Survey_Date)
+#surveyData$Start_Time <- hms(surveyData$Start_Time)
+surveyData$Start_Time <- hms(surveyData$Survey_Time)
 surveyData$Sky_Code <- factor(surveyData$Sky_Code, levels = c("0","1","2","3","4"), 
                               labels = c("Clear","Partly cloudy","Mostly cloudy","Fog or smoke","Drizzle"))
 surveyData$Sex <- factor(surveyData$Sex, levels = c("M","F","U"), labels = c("Male","Female","Unknown"))
@@ -47,21 +50,36 @@ surveyData$mas <- 60*((surveyData$Start_Time@hour + surveyData$Start_Time@minute
 #clean up
 rm(sunriseTimes)
 
+# Read in survey location and habitat data
+habitatData <- read_csv("tbl_survey_locations_exported_09_26_2022_pct_suitable_2021.csv")
+
+habitatAndSurveyData <-
+habitatData %>%
+  select(Site_ID,ln_UTM1083,lt_UTM1083,ln_WGS84,lt_WGS84, pct_suitable_2021) %>%
+  right_join(.,surveyData, by = 'Site_ID', keep = F)
+
+# Which points are missing spatial data?
+  habitatAndSurveyData %>%
+  filter(is.na(ln_UTM1083)) %>%
+  select(., Site_ID)
+
 # Calculate the incidence of encounters:
 surveyData %>%
-  group_by(surveyEvent, Site_ID) %>%
+  group_by(Site_ID) %>%
   summarise(larksDetected = first(Number_Detected)) %>%
   group_by(larksDetected) %>%
   summarise(count = n()) %>%
   mutate(freq = count/sum(count))
 
 # Test that we are summarizing correctly:
-unique(surveyData$surveyEvent) # = 215
-187+12+8+5+3 # = 215, from the summary table calculated lines 26-31
+unique(surveyData$surveyEvent) # = 214
+186+12+8+5+3 # = 215, from the summary table calculated lines 26-31
 
+surveyData%>% 
+  summarise(count = n_distinct(surveyData$Site_ID))
 # plot lark detection frequencies
 detectionTable <- surveyData %>%
-  group_by(surveyEvent, Site_ID) %>%
+  group_by(Site_ID) %>%
   summarise(`Larks detected` = first(Number_Detected)) %>%
   group_by(`Larks detected`) %>%
   summarise(`No. of points` = n()) %>%
@@ -96,7 +114,22 @@ surveyData %>%
   group_by(distanceBand) %>%
   summarise(count = n()) %>%
 ggplot(data = ., aes(x = distanceBand, y = count)) + geom_col() +
-  geom_text(aes(label = count), vjust = 1.5, colour = "white")
+  geom_text(aes(label = count), vjust = 1.5, colour = "white") + 
+  labs(x = "Distance band", y = "No. larks detected")
+
+# Account for different areas searched
+# Band 1 = 1963 m2, Band 2 = 29452 m2, Band 3 = 94248 m2, Band 4 = 376991 m2
+surveyData %>%
+  filter(!is.na(distanceBand)) %>%
+  group_by(distanceBand) %>%
+  summarise(count = n()) %>%
+  mutate(adjCount = ifelse(distanceBand == 1,count/1963,
+                           ifelse(distanceBand == 2, count/29452,
+                                  ifelse(distanceBand == 3, count/94249,
+                                         ifelse(distanceBand == 4, count/376991,0))))) %>%
+ggplot(data = ., aes(x = distanceBand, y = adjCount)) + geom_col() +
+  geom_text(aes(label = count), vjust = -0.6, colour = "black") + 
+  labs(x = "Distance band",y = "Larks counted per sq. m. surveyed")
 
 # Summarize sex of individuals detected
 surveyData %>%
@@ -104,7 +137,8 @@ surveyData %>%
   group_by(Sex) %>%
   summarise(count = n()) %>%
   ggplot(data = ., aes(x = Sex, y = count)) + geom_col() + 
-  geom_text(aes(label = count), vjust= 1.5, colour = "white")
+  geom_text(aes(label = count), vjust= 1.5, colour = "white") + 
+  labs(x = "Sex", y = "No. larks counted")
 
 # Check to see if noise is related to lark detections:
 surveyData %>%
@@ -215,3 +249,25 @@ surveyData %>%
 ggplot(., aes(x = Observer, y = Temp)) + geom_boxplot() + 
   labs(y=expression("Air temperature during survey " ( degree~F)), x = "Observer")
  
+# Is the percent of suitable habitat associated with detections?
+habitatAndSurveyData %>%
+  mutate(presence = ifelse(Number_Detected>0,1,0)) %>%
+  group_by(surveyEvent) %>%
+  summarise(habitat = first(pct_suitable_2021), presence = first(presence), number = max(Number_Detected)) %>%
+  ggplot(.,aes(x = habitat, y = presence, color = number)) + geom_point(color = number, size = number) +
+  scale_y_continuous(name = "Larks present?", breaks = c(0,1), labels = c("No","Yes")) + 
+  theme(legend.position = "none", panel.grid.minor.y = element_blank()) + 
+  xlab("Predicted proportion of suitable habitat") + coord_fixed(ratio = 1) +
+  stat_smooth(method="glm", se=TRUE, method.args = list(family=binomial))
+
+habitatAndSurveyData %>%
+  mutate(presence = ifelse(Number_Detected>0,1,0)) %>%
+  group_by(surveyEvent) %>%
+  summarise(habitat = first(pct_suitable_2021), presence = first(presence), number = max(Number_Detected)) %>%
+  ggplot(.,aes(x = habitat, y = number, color = number)) + geom_point() +
+  labs(x = "Predicted proportion of suitable habitat", y = "Number of larks detected") +
+  scale_color_viridis_b(option = "C", guide = NULL)
+
+habitatAndSurveyData %>%
+  ggplot(., aes(x = pct_suitable_2021, y = dayOfYear)) +
+  geom_point()
