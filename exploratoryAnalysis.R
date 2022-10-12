@@ -3,6 +3,7 @@ library(readxl)
 library(lubridate)
 library(suncalc)
 library(ggpmisc)
+library(unmarked)
 
 # Review and organize data, changing formats and variable names as needed.
 #surveyData <- read_xlsx("~/Documents/GitHub/hornedLarks/WV_SurveyOutput.xlsx")
@@ -12,6 +13,8 @@ names(surveyData)[1] <- 'surveyEvent'
 surveyData$Count_Date <- mdy(surveyData$Survey_Date)
 #surveyData$Start_Time <- hms(surveyData$Start_Time)
 surveyData$Start_Time <- hms(surveyData$Survey_Time)
+surveyData$Site_ID <- factor(surveyData$Site_ID)
+surveyData$Observer <- factor(surveyData$Observer)
 surveyData$Sky_Code <- factor(surveyData$Sky_Code, levels = c("0","1","2","3","4"), 
                               labels = c("Clear","Partly cloudy","Mostly cloudy","Fog or smoke","Drizzle"))
 surveyData$Sex <- factor(surveyData$Sex, levels = c("M","F","U"), labels = c("Male","Female","Unknown"))
@@ -58,6 +61,8 @@ habitatData %>%
   select(Site_ID,ln_UTM1083,lt_UTM1083,ln_WGS84,lt_WGS84, pct_suitable_2021) %>%
   right_join(.,surveyData, by = 'Site_ID', keep = F)
 
+habitatAndSurveyData$Site_ID <- factor(habitatAndSurveyData$Site_ID)
+habitatAndSurveyData$Observer <- factor(habitatAndSurveyData$Observer)
 # Which points are missing spatial data?
   habitatAndSurveyData %>%
   filter(is.na(ln_UTM1083)) %>%
@@ -271,3 +276,71 @@ habitatAndSurveyData %>%
 habitatAndSurveyData %>%
   ggplot(., aes(x = pct_suitable_2021, y = dayOfYear)) +
   geom_point()
+
+## Distance sampling.
+## Create a new variable called 'distance', which translates the distance_band information into the midpoint of the distance.
+## Then remove all other variables.
+dists <-
+surveyData %>%
+  group_by(Site_ID) %>%
+  mutate(distance = ifelse(distanceBand == 1, 12.5,
+                           ifelse(distanceBand == 2, 61,
+                                  ifelse(distanceBand == 3, 150,
+                                         ifelse(distanceBand == 4, 300, NA))))) %>%
+  select(Site_ID, distance) %>%
+  filter(!is.na(distance))
+
+## Note here that we need the "as.data.frame" argument because 'dists' is a tidyverse tibble, 
+## and unmarked doesn't seem to like tibbles. This forces it into a standard R data frame.
+yDat <- formatDistData(distData = as.data.frame(dists), distCol = "distance", transectNameCol = "Site_ID", 
+                       dist.breaks = c(0,25,100,200,400))
+
+## Create a data frame of site-level covariates.
+covs <-
+  surveyData %>%
+  group_by(Site_ID) %>%
+  summarise(site = first(Site_ID),
+            observer = first(Observer),
+            temp = first(Temp),
+            avgNoise = first(Avg_Noise),
+            dayOfYear = first (dayOfYear),
+            mas = first(mas))
+
+
+umf <- unmarkedFrameDS(y = as.matrix(yDat), siteCovs = as.data.frame(covs),
+                       survey = "point", dist.breaks = c(0,25,100,200,400), unitsIn = "m")
+summary(umf)
+hist(umf, freq = TRUE, xlab = "Distance (m)", main = "Streaked Horned Lark detections 2022", cex.lab = 0.8, cex.axis = 0.8)
+
+# Fitting models.
+# Half-normal, null
+hnNull <- distsamp(~1~1, umf, keyfun = "halfnorm", output = "density", unitsOut = "kmsq")
+hnNull
+backTransform(hnNull, type = "state")
+backTransform(hnNull, type = "det")
+# calculating detection probability
+sig <- exp(coef(hnNull, type="det"))
+ea <- 2*pi * integrate(grhn, 0, 400, sigma=sig)$value # effective area
+sqrt(ea / pi) # effective radius
+# detection probability
+ea / (pi*400^2)
+
+hnMAS <- distsamp(~mas ~1, umf, keyfun = "halfnorm", output = "density", unitsOut = "kmsq")
+hnMAS
+backTransform(hnMAS, type = "state")
+
+hnDay <- distsamp(~dayOfYear ~1, data = umf, keyfun = "halfnorm", output = "density", unitsOut = "kmsq")
+hnDay
+backTransform(hnDay, type = "state")
+backTransform(linearComb(hnDay['det'], c(1, mean(covs$dayOfYear))))
+
+#Back-transformed detection probability for the average day of year
+sig <- backTransform(linearComb(hnDay['det'], c(1, mean(covs$dayOfYear))))@estimate
+ea <- 2*pi * integrate(grhn, 0, 400, sigma=sig)$value # effective area
+sqrt(ea / pi) # effective radius
+# detection probability
+ea / (pi*400^2)
+
+
+
+
