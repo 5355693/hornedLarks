@@ -4,6 +4,7 @@ library(lubridate)
 library(suncalc)
 library(ggpmisc)
 library(unmarked)
+library(AICcmodavg)
 
 # Review and organize data, changing formats and variable names as needed.
 #surveyData <- read_xlsx("~/Documents/GitHub/hornedLarks/WV_SurveyOutput.xlsx")
@@ -21,16 +22,52 @@ surveyData$Sex <- factor(surveyData$Sex, levels = c("M","F","U"), labels = c("Ma
 surveyData$Age <- factor(surveyData$Age, levels = c("A", "J"), labels = c("Adult", "Juvenile"))
 surveyData$`Distance Band` <- factor(surveyData$`Distance Band`)
 names(surveyData)[19] <- 'distanceBand'
-surveyData$Interval_1 <- factor(surveyData$Interval_1, levels = c("C","S","V","X"), labels = 
-                                  c("Calling", "Singing", "Visual","None"))
-surveyData$Interval_2 <- factor(surveyData$Interval_2, levels = c("C","S","V","X"), labels = 
-                                  c("Calling", "Singing", "Visual","None"))
-surveyData$Interval_3 <- factor(surveyData$Interval_3, levels = c("C","S","V","X"), labels = 
-                                  c("Calling", "Singing", "Visual","None"))
-surveyData$Interval_4 <- factor(surveyData$Interval_4, levels = c("C","S","V","X"), labels = 
-                                  c("Calling", "Singing", "Visual","None"))
+surveyData$Interval_1 <- ifelse(surveyData$Interval_1 == "X", NA, surveyData$Interval_1)
+surveyData$Interval_2 <- ifelse(surveyData$Interval_2 == "X", NA, surveyData$Interval_2)
+surveyData$Interval_3 <- ifelse(surveyData$Interval_3 == "X", NA, surveyData$Interval_3)
+surveyData$Interval_4 <- ifelse(surveyData$Interval_4 == "X", NA, surveyData$Interval_4)
+
+surveyData$Interval_1 <- factor(surveyData$Interval_1, levels = c("C","S","V"), labels = 
+                                  c("Calling", "Singing", "Visual"))
+surveyData$Interval_2 <- factor(surveyData$Interval_2, levels = c("C","S","V"), labels = 
+                                  c("Calling", "Singing", "Visual"))
+surveyData$Interval_3 <- factor(surveyData$Interval_3, levels = c("C","S","V"), labels = 
+                                  c("Calling", "Singing", "Visual"))
+surveyData$Interval_4 <- factor(surveyData$Interval_4, levels = c("C","S","V"), labels = 
+                                  c("Calling", "Singing", "Visual"))
 
 surveyData$dayOfYear <- yday(surveyData$Count_Date) # create a day-of-year variable for analysis
+
+## Add a "first detected by..." column to survey data:
+surveyData <-
+  surveyData %>%
+  filter(!is.na(Sex)) %>%
+  select(Sex, Lark_ID, Interval_1, Interval_2, Interval_3, Interval_4) %>%
+  pivot_longer(., cols = 3:6, names_to = "interval", values_to = "detection") %>%
+  group_by(Lark_ID, Sex) %>%
+  filter(!is.na(detection)) %>%
+  summarise(firstDet = first(detection)) %>%
+  right_join(., surveyData, by = 'Lark_ID', keep = F) %>%
+  select(!(Sex.x)) %>%
+  rename(Sex = Sex.y)
+
+## Add a "first detected interval" column
+surveyData <-
+surveyData %>%
+  filter(!is.na(Sex)) %>%
+  select(Sex, Lark_ID, Interval_1, Interval_2, Interval_3, Interval_4) %>%
+  pivot_longer(., cols = 3:6, names_to = "interval", values_to = "detection") %>%
+  group_by(Lark_ID, Sex) %>%
+  filter(!is.na(detection)) %>%
+  summarise(firstDet = first(interval)) %>%
+  mutate(firstInterval = ifelse(firstDet == "Interval_1",1,
+                                ifelse(firstDet == "Interval_2", 2,
+                                       ifelse(firstDet == "Interval_3", 3,
+                                              ifelse(firstDet == "Interval_4", 4, NA))))) %>%
+  right_join(., surveyData, by = 'Lark_ID', keep = F) %>%
+  select(!(Sex.x)) %>%
+  select(!firstDet.x) %>%
+  rename(firstDet = firstDet.y, Sex = Sex.y)
 
 # Get sunrise times to look at effect of survey timing in detections,
 # here using the Corvallis airport as the location. We could calculate
@@ -55,6 +92,7 @@ rm(sunriseTimes)
 
 # Read in survey location and habitat data
 habitatData <- read_csv("tbl_survey_locations_exported_09_26_2022_pct_suitable_2021.csv")
+habitatData$Site_ID <- factor(habitatData$Site_ID)
 
 habitatAndSurveyData <-
 habitatData %>%
@@ -63,6 +101,14 @@ habitatData %>%
 
 habitatAndSurveyData$Site_ID <- factor(habitatAndSurveyData$Site_ID)
 habitatAndSurveyData$Observer <- factor(habitatAndSurveyData$Observer)
+
+# Make encounter histories for detected birds across intervals
+surveyData$encounterHistory <- paste(if_else(surveyData$Interval_1 == "None", 0,1),
+                                     if_else(surveyData$Interval_2 == "None", 0,1),
+                                     if_else(surveyData$Interval_3 == "None", 0,1),
+                                     if_else(surveyData$Interval_4 == "None", 0,1),
+                                     sep = "")
+
 # Which points are missing spatial data?
   habitatAndSurveyData %>%
   filter(is.na(ln_UTM1083)) %>%
@@ -101,12 +147,6 @@ surveyData %>%
   summarise(first = first(Number_Detected)) %>%
   summarise(total = sum(first)) #55
 
-# Make encounter histories for detected birds across intervals
-surveyData$encounterHistory <- paste(if_else(surveyData$Interval_1 == "None", 0,1),
-                                     if_else(surveyData$Interval_2 == "None", 0,1),
-                                     if_else(surveyData$Interval_3 == "None", 0,1),
-                                     if_else(surveyData$Interval_4 == "None", 0,1),
-                                     sep = "")
 
 # Summarize encounter histories
 surveyData %>%
@@ -277,18 +317,59 @@ habitatAndSurveyData %>%
   ggplot(., aes(x = pct_suitable_2021, y = dayOfYear)) +
   geom_point()
 
+# How were individuals first detected? Did it differ by sex?
+surveyData %>%
+  filter(!is.na(Sex)) %>%
+  select(Sex, Lark_ID, Interval_1, Interval_2, Interval_3, Interval_4) %>%
+  pivot_longer(., cols = 3:6, names_to = "interval", values_to = "detection") %>%
+  group_by(Lark_ID, Sex) %>%
+  filter(!is.na(detection)) %>%
+  summarise(firstDet = first(detection)) %>%
+  group_by(Sex, firstDet) %>%
+  summarise(numDetected = n())
+
+
 ## Distance sampling.
+## Exploring data for detection covariates to include
+
+## Distances by observer
+surveyData %>%
+ filter(!is.na(distanceBand), firstDet == "Singing", Sex == "Male") %>%
+  ggplot(., aes(x = distanceBand)) + geom_bar() + 
+  facet_wrap(vars(Observer))
+
+## By temp
+surveyData %>%
+  filter(!is.na(distanceBand), firstDet == "Singing", Sex == "Male") %>%
+  ggplot(., aes(x = distanceBand, y = Temp)) + geom_point()
+
+## By Day
+surveyData %>%
+  filter(!is.na(distanceBand), firstDet == "Singing", Sex == "Male") %>%
+  ggplot(., aes(x = distanceBand, y = dayOfYear)) + geom_point()
+
+## By Mas
+surveyData %>%
+  filter(!is.na(distanceBand), firstDet == "Singing", Sex == "Male") %>%
+  ggplot(., aes(x = distanceBand, y = mas)) + geom_point()
+
+## By noise
+surveyData %>%
+  filter(!is.na(distanceBand), firstDet == "Singing", Sex == "Male") %>%
+  ggplot(., aes(x = distanceBand, y = Avg_Noise)) + geom_point()
+
 ## Create a new variable called 'distance', which translates the distance_band information into the midpoint of the distance.
 ## Then remove all other variables.
+  ## THIS EXCLUDES ALL NON-SINGING MALES ##
 dists <-
-surveyData %>%
+  surveyData %>%
   group_by(Site_ID) %>%
   mutate(distance = ifelse(distanceBand == 1, 12.5,
                            ifelse(distanceBand == 2, 61,
                                   ifelse(distanceBand == 3, 150,
                                          ifelse(distanceBand == 4, 300, NA))))) %>%
-  select(Site_ID, distance) %>%
-  filter(!is.na(distance))
+  select(Site_ID, distance, Sex, firstDet) %>%
+  filter(!is.na(distance), firstDet == "Singing", Sex == "Male")
 
 ## Note here that we need the "as.data.frame" argument because 'dists' is a tidyverse tibble, 
 ## and unmarked doesn't seem to like tibbles. This forces it into a standard R data frame.
@@ -318,6 +399,7 @@ hnNull <- distsamp(~1~1, umf, keyfun = "halfnorm", output = "density", unitsOut 
 hnNull
 backTransform(hnNull, type = "state")
 backTransform(hnNull, type = "det")
+
 # calculating detection probability
 sig <- exp(coef(hnNull, type="det"))
 ea <- 2*pi * integrate(grhn, 0, 400, sigma=sig)$value # effective area
@@ -325,14 +407,20 @@ sqrt(ea / pi) # effective radius
 # detection probability
 ea / (pi*400^2)
 
+#Half-normal, MAS
 hnMAS <- distsamp(~mas ~1, umf, keyfun = "halfnorm", output = "density", unitsOut = "kmsq")
 hnMAS
-backTransform(hnMAS, type = "state")
 
+#Back-transformed detection probability for the average MAS
+sig <- backTransform(linearComb(hnMAS['det'], c(1, mean(covs$mas))))@estimate
+ea <- 2*pi * integrate(grhn, 0, 400, sigma=sig)$value # effective area
+sqrt(ea / pi) # effective radius
+# detection probability
+ea / (pi*400^2)
+
+# Half-normal, Day of year
 hnDay <- distsamp(~dayOfYear ~1, data = umf, keyfun = "halfnorm", output = "density", unitsOut = "kmsq")
 hnDay
-backTransform(hnDay, type = "state")
-backTransform(linearComb(hnDay['det'], c(1, mean(covs$dayOfYear))))
 
 #Back-transformed detection probability for the average day of year
 sig <- backTransform(linearComb(hnDay['det'], c(1, mean(covs$dayOfYear))))@estimate
@@ -341,6 +429,121 @@ sqrt(ea / pi) # effective radius
 # detection probability
 ea / (pi*400^2)
 
+# Half-normal, noise
+hnNoise <- distsamp(~avgNoise ~1, data = umf, keyfun = "halfnorm", output = "density", unitsOut = "kmsq")
+hnNoise
+
+#Back-transformed detection probability for the average day of year
+sig <- backTransform(linearComb(hnNoise['det'], c(1, mean(covs$avgNoise))))@estimate
+ea <- 2*pi * integrate(grhn, 0, 400, sigma=sig)$value # effective area
+sqrt(ea / pi) # effective radius
+# detection probability
+ea / (pi*400^2)
+
+# Half-normal, Temp
+hnTemp <- distsamp(~temp ~1, data = umf, keyfun = "halfnorm", output = "density", unitsOut = "kmsq")
+hnTemp
+
+#Back-transformed detection probability for the average day of year
+sig <- backTransform(linearComb(hnTemp['det'], c(1, mean(covs$temp))))@estimate
+ea <- 2*pi * integrate(grhn, 0, 400, sigma=sig)$value # effective area
+sqrt(ea / pi) # effective radius
+# detection probability
+ea / (pi*400^2)
+
+# Hazard-rate models
+haNull <- distsamp(~1 ~1, data = umf, keyfun = "hazard", output = "density", unitsOut = "kmsq")
+haNoise <- distsamp(~avgNoise ~1, data = umf, keyfun = "hazard", output = "density", unitsOut = "kmsq")
+haTemp <- distsamp(~temp ~1, data = umf, keyfun = "hazard", output = "density", unitsOut = "kmsq")
+haDay <- distsamp(~dayOfYear ~1, data = umf, keyfun = "hazard", output = "density", unitsOut = "kmsq")
+haMAS <- distsamp(~mas ~1, data = umf, keyfun = "hazard", output = "density", unitsOut = "kmsq")
+
+fmList <- list("haNull" = haNull, "haDay" = haDay, "haNoise" = haNoise, "haMAS" = haMAS, "haTemp" = haTemp,
+               "hnNull" = hnNull, "hnDay" = hnDay, "hnNoise" = hnNoise, "hnMAS" = hnMAS, "hnTemp" = hnTemp)
+aictab(cand.set = fmList, second.ord = T, sort = T)
+
+# Goodness of fit
+fitstats <- function(hnDay) {
+  observed <- getY(hnDay@data)
+  expected <- fitted(hnDay)
+  resids <- residuals(hnDay)
+  sse <- sum(resids^2)
+  chisq <- sum((observed - expected)^2 / expected)
+  freeTuke <- sum((sqrt(observed) - sqrt(expected))^2)
+  out <- c(SSE=sse, Chisq=chisq, freemanTukey=freeTuke)
+  return(out)
+}
+(pb <- parboot(hnDay, fitstats, nsim=25, report=1))
+
+## Estimating p-hat with a parametric bootstrap
+getP <- function(hnNull) {
+  sig <- exp(coef(hnNull, type="det"))
+  ea <- 2*pi * integrate(grhn, 0, 400, sigma=sig)$value # effective area
+  er <- sqrt(ea / pi) # effective radius
+  p <- ea / (pi*400^2) # detection probability
+  out <- c(p = p, er = er)
+  return(out)
+}
+
+parboot(hnNull, getP, nsim = 25, report = 1)
+
+getPcovs <- function(hnDay) {
+  sig <- backTransform(linearComb(hnDay['det'], c(1, min(covs$dayOfYear))))@estimate
+  ea <- 2*pi * integrate(grhn, 0, 400, sigma=sig)$value # effective area
+  er <- sqrt(ea / pi) # effective radius
+  p <- ea / (pi*400^2) #detection probability
+  out <- c(p = p , er = er)
+  return(out)
+}
+
+parboot(hnDay, getPcovs, nsim = 25, report = 1)
+
+## Estimating density with a parametric bootstrap
+getD <- function(hnDay) {
+  d <- backTransform(hnDay, type = "state")@estimate
+  return(d)
+}
+
+parboot(hnDay, getD, nsim = 25, report = 1)
+
+## Incorporating removal models
+encounters <-
+  surveyData %>%
+  group_by(Site_ID) %>%
+  mutate(interval1 = ifelse(firstInterval == 1, 1, 0),
+         interval2 = ifelse(firstInterval == 2, 1, 0),
+         interval3 = ifelse(firstInterval == 3, 1, 0),
+         interval4 = ifelse(firstInterval == 4, 1, 0)) %>%
+  select(Site_ID, interval1, interval2, interval3, interval4) %>%
+  group_by(Site_ID) %>%
+  summarise(interval1 = sum(interval1),
+            interval2 = sum(interval2),
+            interval3 = sum(interval3),
+            interval4 = sum(interval4))
+
+yRemoval <- matrix(nrow = 214, ncol = 4)
+rownames(yRemoval) <- encounters$Site_ID
+yRemoval <- cbind(encounters[,2:5])
+yRemoval[is.na(yRemoval)] <- 0
+## Create a new variable called 'distance', which translates the distance_band information into the midpoint of the distance.
+## Then remove all other variables.
+## THIS INCLUDES ALL DETECTIONS ##
+distsRemoval <-
+  surveyData %>%
+  group_by(Site_ID) %>%
+  mutate(distance = ifelse(distanceBand == 1, 12.5,
+                           ifelse(distanceBand == 2, 61,
+                                  ifelse(distanceBand == 3, 150,
+                                         ifelse(distanceBand == 4, 300, NA))))) %>%
+  select(Site_ID, distance, Sex, firstDet)
+
+## Note here that we need the "as.data.frame" argument because 'dists' is a tidyverse tibble, 
+## and unmarked doesn't seem to like tibbles. This forces it into a standard R data frame.
+yDatDistance <- formatDistData(distData = as.data.frame(distsRemoval), distCol = "distance", transectNameCol = "Site_ID", 
+                       dist.breaks = c(0,25,100,200,400))
 
 
 
+umfDR <- unmarkedFrameGDR(yDistance = as.matrix(yDatDistance), yRemoval = as.matrix(yRemoval), numPrimary = 1,
+                          siteCovs = NULL, dist.breaks = c(0,25,100,200,400), unitsIn = "m")
+summary(umfDR)
