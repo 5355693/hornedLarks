@@ -510,16 +510,16 @@ parboot(hnDay, getD, nsim = 25, report = 1)
 encounters <-
   surveyData %>%
   group_by(Site_ID) %>%
-  mutate(interval1 = ifelse(firstInterval == 1, 1, 0),
-         interval2 = ifelse(firstInterval == 2, 1, 0),
-         interval3 = ifelse(firstInterval == 3, 1, 0),
-         interval4 = ifelse(firstInterval == 4, 1, 0)) %>%
-  select(Site_ID, interval1, interval2, interval3, interval4) %>%
+  mutate(interval1 = ifelse(firstInterval == 1 & Sex == "Male" & firstDet == "Singing", 1, 0),
+         interval2 = ifelse(firstInterval == 2 & Sex == "Male" & firstDet == "Singing", 1, 0),
+         interval3 = ifelse(firstInterval == 3 & Sex == "Male" & firstDet == "Singing", 1, 0),
+         interval4 = ifelse(firstInterval == 4 & Sex == "Male" & firstDet == "Singing", 1, 0)) %>%
+  select(Site_ID, interval1, interval2, interval3, interval4, Sex, firstDet) %>%
   group_by(Site_ID) %>%
   summarise(interval1 = sum(interval1),
             interval2 = sum(interval2),
             interval3 = sum(interval3),
-            interval4 = sum(interval4))
+            interval4 = sum(interval4)) 
 
 yRemoval <- matrix(nrow = 214, ncol = 4)
 rownames(yRemoval) <- encounters$Site_ID
@@ -527,7 +527,7 @@ yRemoval <- cbind(encounters[,2:5])
 yRemoval[is.na(yRemoval)] <- 0
 ## Create a new variable called 'distance', which translates the distance_band information into the midpoint of the distance.
 ## Then remove all other variables.
-## THIS INCLUDES ALL DETECTIONS ##
+## THIS INCLUDES SINGING MALES ##
 distsRemoval <-
   surveyData %>%
   group_by(Site_ID) %>%
@@ -535,7 +535,8 @@ distsRemoval <-
                            ifelse(distanceBand == 2, 61,
                                   ifelse(distanceBand == 3, 150,
                                          ifelse(distanceBand == 4, 300, NA))))) %>%
-  select(Site_ID, distance, Sex, firstDet)
+  select(Site_ID, distance, Sex, firstDet) %>%
+  filter(!is.na(distance), firstDet == "Singing", Sex == "Male")
 
 ## Note here that we need the "as.data.frame" argument because 'dists' is a tidyverse tibble, 
 ## and unmarked doesn't seem to like tibbles. This forces it into a standard R data frame.
@@ -545,5 +546,10 @@ yDatDistance <- formatDistData(distData = as.data.frame(distsRemoval), distCol =
 
 
 umfDR <- unmarkedFrameGDR(yDistance = as.matrix(yDatDistance), yRemoval = as.matrix(yRemoval), numPrimary = 1,
-                          siteCovs = NULL, dist.breaks = c(0,25,100,200,400), unitsIn = "m")
+                          siteCovs = covs, dist.breaks = c(0,25,100,200,400), unitsIn = "m")
 summary(umfDR)
+
+drNull <- gdistremoval(lambdaformula = ~1, phiformula = ~1, removalformula = ~1,
+                       distanceformula = ~1, data = umfDR, keyfun = "halfnorm",
+                       output = "density", unitsOut = "kmsq", mixture = "ZIP")
+summary(drNull)
