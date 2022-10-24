@@ -559,7 +559,12 @@ testFrame <- unmarkedFrameMPois(y = yRemoval, siteCovs = NULL, type = "removal")
 testM1 <- multinomPois(~1 ~1, data = testFrame)
 summary(testM1)
 
-## 
+## Function to calculate the prob. of detection,
+## where p = detection prob. from distance sampling, 
+## and d = detection prob. from removal sampling,
+## and P*D = overall detectability.
+## I think due to the uncertainity and very small estimates for each part of the equation,
+## the bootstrap function is failing. Not sure how to get to a CI around P.
 getPdistrem <- function(x) {
   d <- backTransform(x@estimates@estimates$rem)@estimate
   sig <- backTransform(x@estimates@estimates$dist)@estimate
