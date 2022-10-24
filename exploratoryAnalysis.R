@@ -516,8 +516,8 @@ encounters <-
          interval4 = ifelse(firstInterval == 4 & Sex == "Male" & firstDet == "Singing", 1, 0)) %>%
   select(Site_ID, interval1, interval2, interval3, interval4, Sex, firstDet) %>%
   group_by(Site_ID) %>%
-  summarise(interval1 = sum(interval1),
-            interval2 = sum(interval2),
+  summarise(interval1 = sum(interval1), # this model wants summed # of birds per interval
+            interval2 = sum(interval2), # and has to match the distance data
             interval3 = sum(interval3),
             interval4 = sum(interval4)) 
 
@@ -527,7 +527,7 @@ yRemoval <- cbind(encounters[,2:5])
 yRemoval[is.na(yRemoval)] <- 0
 ## Create a new variable called 'distance', which translates the distance_band information into the midpoint of the distance.
 ## Then remove all other variables.
-## THIS INCLUDES SINGING MALES ##
+## THIS INCLUDES ONLY SINGING MALES ##
 distsRemoval <-
   surveyData %>%
   group_by(Site_ID) %>%
@@ -553,3 +553,21 @@ drNull <- gdistremoval(lambdaformula = ~1, phiformula = ~1, removalformula = ~1,
                        distanceformula = ~1, data = umfDR, keyfun = "halfnorm",
                        output = "density", unitsOut = "kmsq", mixture = "ZIP")
 summary(drNull)
+
+## To show that the basic removal model produces the same estimate as the gdistremoval function
+testFrame <- unmarkedFrameMPois(y = yRemoval, siteCovs = NULL, type = "removal")
+testM1 <- multinomPois(~1 ~1, data = testFrame)
+summary(testM1)
+
+## 
+getPdistrem <- function(x) {
+  d <- backTransform(x@estimates@estimates$rem)@estimate
+  sig <- backTransform(x@estimates@estimates$dist)@estimate
+  ea <- 2*pi * integrate(grhn, 0, 400, sigma=sig)$value # effective area
+  er <- sqrt(ea / pi) # effective radius
+  p <- ea / (pi*400^2) #detection probability
+  Pd <- p*d
+  return(Pd)
+}
+getPdistrem(drNull)
+parboot(drNull, getPdistrem, nsim = 25, report = 1)
