@@ -475,6 +475,26 @@ fitstats <- function(hnDay) {
 }
 (pb <- parboot(hnDay, fitstats, nsim=25, report=1))
 
+## Prediction and plotting
+## Sigma for first day of year:
+backTransform(linearComb(hnDay['det'], c(1, min(covs$dayOfYear))))@estimate
+## = 110.326
+## Sigma for last day of year:
+backTransform(linearComb(hnDay['det'], c(1, max(covs$dayOfYear))))@estimate
+## = 46.94998
+## Sigma for the median day:
+backTransform(linearComb(hnDay['det'], c(1, median(covs$dayOfYear))))@estimate
+## = 68.06919
+
+par(mfrow=c(1, 1))
+plot(function(x) gxhn(x, sigma=110.3216), 0, 400, xlab="Distance (m)",
+     ylab="Detection probability", cex.lab=1,
+     cex.axis=0.7, las=1, col = "green")
+plot(function(x) gxhn(x, sigma=46.94988), 0, 400, add = TRUE, col = "blue")
+plot(function(x) gxhn(x, sigma=68.06919), 0, 400, add = TRUE, col = "black")
+legend('topright', c("First day of surveys", "Last day of surveys", "Median day of surveys"),
+       col=c("green", "blue", "black"), lty=1, cex=0.8)
+
 ## Estimating p-hat with a parametric bootstrap
 getP <- function(hnNull) {
   sig <- exp(coef(hnNull, type="det"))
@@ -488,7 +508,7 @@ getP <- function(hnNull) {
 parboot(hnNull, getP, nsim = 25, report = 1)
 
 getPcovs <- function(hnDay) {
-  sig <- backTransform(linearComb(hnDay['det'], c(1, min(covs$dayOfYear))))@estimate
+  sig <- backTransform(linearComb(hnDay['det'], c(1, median(covs$dayOfYear))))@estimate
   ea <- 2*pi * integrate(grhn, 0, 400, sigma=sig)$value # effective area
   er <- sqrt(ea / pi) # effective radius
   p <- ea / (pi*400^2) #detection probability

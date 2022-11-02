@@ -1,0 +1,260 @@
+---
+title: "Streaked Horned Lark Preliminary Analysis"
+author: "John D Lloyd"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r Data import and formatting, echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
+# This chunk of code reads and formats the original data files.
+library(tidyverse)
+library(readxl)
+library(lubridate)
+library(suncalc)
+library(ggpmisc)
+library(unmarked)
+library(AICcmodavg)
+
+# Review and organize data, changing formats and variable names as needed.
+#surveyData <- read_xlsx("~/Documents/GitHub/hornedLarks/WV_SurveyOutput.xlsx")
+surveyData <- read_csv("~/Documents/GitHub/hornedLarks/WV_SHLA_22.csv")
+names(surveyData)[1] <- 'surveyEvent'
+#surveyData$Count_Date <- mdy(surveyData$Count_Date)
+surveyData$Count_Date <- mdy(surveyData$Survey_Date)
+#surveyData$Start_Time <- hms(surveyData$Start_Time)
+surveyData$Start_Time <- hms(surveyData$Survey_Time)
+surveyData$Site_ID <- factor(surveyData$Site_ID)
+surveyData$Observer <- factor(surveyData$Observer)
+surveyData$Sky_Code <- factor(surveyData$Sky_Code, levels = c("0","1","2","3","4"), 
+                              labels = c("Clear","Partly cloudy","Mostly cloudy","Fog or smoke","Drizzle"))
+surveyData$Sex <- factor(surveyData$Sex, levels = c("M","F","U"), labels = c("Male","Female","Unknown"))
+surveyData$Age <- factor(surveyData$Age, levels = c("A", "J"), labels = c("Adult", "Juvenile"))
+surveyData$`Distance Band` <- factor(surveyData$`Distance Band`)
+names(surveyData)[19] <- 'distanceBand'
+surveyData$Interval_1 <- ifelse(surveyData$Interval_1 == "X", NA, surveyData$Interval_1)
+surveyData$Interval_2 <- ifelse(surveyData$Interval_2 == "X", NA, surveyData$Interval_2)
+surveyData$Interval_3 <- ifelse(surveyData$Interval_3 == "X", NA, surveyData$Interval_3)
+surveyData$Interval_4 <- ifelse(surveyData$Interval_4 == "X", NA, surveyData$Interval_4)
+
+surveyData$Interval_1 <- factor(surveyData$Interval_1, levels = c("C","S","V"), labels = 
+                                  c("Calling", "Singing", "Visual"))
+surveyData$Interval_2 <- factor(surveyData$Interval_2, levels = c("C","S","V"), labels = 
+                                  c("Calling", "Singing", "Visual"))
+surveyData$Interval_3 <- factor(surveyData$Interval_3, levels = c("C","S","V"), labels = 
+                                  c("Calling", "Singing", "Visual"))
+surveyData$Interval_4 <- factor(surveyData$Interval_4, levels = c("C","S","V"), labels = 
+                                  c("Calling", "Singing", "Visual"))
+
+surveyData$dayOfYear <- yday(surveyData$Count_Date) # create a day-of-year variable for analysis
+
+## Add a "first detected by..." column to survey data:
+surveyData <-
+  surveyData %>%
+  filter(!is.na(Sex)) %>%
+  select(Sex, Lark_ID, Interval_1, Interval_2, Interval_3, Interval_4) %>%
+  pivot_longer(., cols = 3:6, names_to = "interval", values_to = "detection") %>%
+  group_by(Lark_ID, Sex) %>%
+  filter(!is.na(detection)) %>%
+  summarise(firstDet = first(detection)) %>%
+  right_join(., surveyData, by = 'Lark_ID', keep = F) %>%
+  select(!(Sex.x)) %>%
+  rename(Sex = Sex.y)
+
+## Add a "first detected interval" column
+surveyData <-
+surveyData %>%
+  filter(!is.na(Sex)) %>%
+  select(Sex, Lark_ID, Interval_1, Interval_2, Interval_3, Interval_4) %>%
+  pivot_longer(., cols = 3:6, names_to = "interval", values_to = "detection") %>%
+  group_by(Lark_ID, Sex) %>%
+  filter(!is.na(detection)) %>%
+  summarise(firstDet = first(interval)) %>%
+  mutate(firstInterval = ifelse(firstDet == "Interval_1",1,
+                                ifelse(firstDet == "Interval_2", 2,
+                                       ifelse(firstDet == "Interval_3", 3,
+                                              ifelse(firstDet == "Interval_4", 4, NA))))) %>%
+  right_join(., surveyData, by = 'Lark_ID', keep = F) %>%
+  select(!(Sex.x)) %>%
+  select(!firstDet.x) %>%
+  rename(firstDet = firstDet.y, Sex = Sex.y)
+
+# Get sunrise times to look at effect of survey timing in detections,
+# here using the Corvallis airport as the location. We could calculate
+# sunrise based on the lat/long of each survey point, but they are 
+# all going to have roughly the same sunrise so for ease I'm simply estimating
+# sunrise at a single, central location.
+
+# calculate sunrise times at Corvallis Airport on each survey date.
+sunriseTimes <- getSunlightTimes(date = surveyData$Count_Date, lat = 44.50, lon = -123.28,
+                                 keep = c("sunrise"), tz="America/Los_Angeles")
+
+#create a new variable in surveyData that has sunrise matched to the survey point.
+#careful, here, because there is no matching function (i.e., this only works if the
+#two data frames are sorted in the same order. This should be the case unless you
+#sort one after calling this function).
+surveyData$sunrise <- sunriseTimes$sunrise
+#subtract the two times to get decimal hours after sunrise.
+surveyData$mas <- 60*((surveyData$Start_Time@hour + surveyData$Start_Time@minute/60) -
+                        (hour(surveyData$sunrise) + minute(surveyData$sunrise)/60))
+#clean up
+rm(sunriseTimes)
+
+# Read in survey location and habitat data
+habitatData <- read_csv("tbl_survey_locations_exported_09_26_2022_pct_suitable_2021.csv")
+habitatData$Site_ID <- factor(habitatData$Site_ID)
+
+habitatAndSurveyData <-
+habitatData %>%
+  select(Site_ID,ln_UTM1083,lt_UTM1083,ln_WGS84,lt_WGS84, pct_suitable_2021) %>%
+  right_join(.,surveyData, by = 'Site_ID', keep = F)
+
+habitatAndSurveyData$Site_ID <- factor(habitatAndSurveyData$Site_ID)
+habitatAndSurveyData$Observer <- factor(habitatAndSurveyData$Observer)
+
+# Make encounter histories for detected birds across intervals
+surveyData$encounterHistory <- paste(if_else(surveyData$Interval_1 == "None", 0,1),
+                                     if_else(surveyData$Interval_2 == "None", 0,1),
+                                     if_else(surveyData$Interval_3 == "None", 0,1),
+                                     if_else(surveyData$Interval_4 == "None", 0,1),
+                                     sep = "")
+
+```
+
+```{r Distance sampling frames., echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
+## Create a new variable called 'distance', which translates the distance_band information into the midpoint of the distance.
+## Then remove all other variables.
+  ## THIS EXCLUDES ALL NON-SINGING MALES ##
+dists <-
+  surveyData %>%
+  group_by(Site_ID) %>%
+  mutate(distance = ifelse(distanceBand == 1, 12.5,
+                           ifelse(distanceBand == 2, 61,
+                                  ifelse(distanceBand == 3, 150,
+                                         ifelse(distanceBand == 4, 300, NA))))) %>%
+  select(Site_ID, distance, Sex, firstDet) %>%
+  filter(!is.na(distance), firstDet == "Singing", Sex == "Male")
+
+## Note here that we need the "as.data.frame" argument because 'dists' is a tidyverse tibble, 
+## and unmarked doesn't seem to like tibbles. This forces it into a standard R data frame.
+yDat <- formatDistData(distData = as.data.frame(dists), distCol = "distance", transectNameCol = "Site_ID", 
+                       dist.breaks = c(0,25,100,200,400))
+
+## Create a data frame of site-level covariates.
+covs <-
+  surveyData %>%
+  group_by(Site_ID) %>%
+  summarise(site = first(Site_ID),
+            observer = first(Observer),
+            temp = first(Temp),
+            avgNoise = first(Avg_Noise),
+            dayOfYear = first (dayOfYear),
+            mas = first(mas))
+
+
+umf <- unmarkedFrameDS(y = as.matrix(yDat), siteCovs = as.data.frame(covs),
+                       survey = "point", dist.breaks = c(0,25,100,200,400), unitsIn = "m")
+```
+
+## Distance sampling
+As expected, most of the detections of singing, male Streaked Horned Larks occured in the middle two distance bands (26-100 m and 101-200 m, respectively).
+
+```{r Plot of detection distances., echo=FALSE, message=FALSE, warning=FALSE}
+hist(umf, freq = TRUE, xlab = "Distance (m)", main = "Streaked Horned Lark detections 2022", cex.lab = 0.8, cex.axis = 0.8)
+```
+
+Having imported the data and created the necessary data frames, we can fit a series of distance-sampling models. In this example, I've constructed all of the single-factor covariate models using both a half-normal and hazard-rate detection function.
+
+The best-supported model, based on the AICc scores, is the half-normal model that includes day-of-year as a covariate.
+```{r Fitting distance models, echo=FALSE, message=FALSE, warning=FALSE}
+# Fitting models.
+# Half-normal models. 
+# Half-normal, null
+hnNull <- distsamp(~1~1, umf, keyfun = "halfnorm", output = "density", unitsOut = "kmsq")
+
+#Half-normal, MAS
+hnMAS <- distsamp(~mas ~1, umf, keyfun = "halfnorm", output = "density", unitsOut = "kmsq")
+
+# Half-normal, Day of year
+hnDay <- distsamp(~dayOfYear ~1, data = umf, keyfun = "halfnorm", output = "density", unitsOut = "kmsq")
+
+# Half-normal, noise
+hnNoise <- distsamp(~avgNoise ~1, data = umf, keyfun = "halfnorm", output = "density", unitsOut = "kmsq")
+
+# Half-normal, Temp
+hnTemp <- distsamp(~temp ~1, data = umf, keyfun = "halfnorm", output = "density", unitsOut = "kmsq")
+
+# Hazard-rate models
+haNull <- distsamp(~1 ~1, data = umf, keyfun = "hazard", output = "density", unitsOut = "kmsq")
+haNoise <- distsamp(~avgNoise ~1, data = umf, keyfun = "hazard", output = "density", unitsOut = "kmsq")
+haTemp <- distsamp(~temp ~1, data = umf, keyfun = "hazard", output = "density", unitsOut = "kmsq")
+haDay <- distsamp(~dayOfYear ~1, data = umf, keyfun = "hazard", output = "density", unitsOut = "kmsq")
+haMAS <- distsamp(~mas ~1, data = umf, keyfun = "hazard", output = "density", unitsOut = "kmsq")
+
+fmList <- list("haNull" = haNull, "haDay" = haDay, "haNoise" = haNoise, "haMAS" = haMAS, "haTemp" = haTemp,
+               "hnNull" = hnNull, "hnDay" = hnDay, "hnNoise" = hnNoise, "hnMAS" = hnMAS, "hnTemp" = hnTemp)
+
+aictab(cand.set = fmList, second.ord = T, sort = T)
+```
+
+Using a parametric bootstrap to examine goodness-of-fit, it seems that this model fits the data adequately. Two of the three tests (Chi-square and Freeman-Tukey) indicated no deviation from expections (both bootstrap P-values > 0.385). However, the test based on the sum of squared errors (SSE) indicates that model fit may not be good. This may be a result of the rather small sample size, so I proceeded even though not all tests agreed that goodness-of-fit was adequate. In the output below, t0 are the observed values of the statistics, and tB are the bootstrapped estimates of the same statistics. In a well-fitting model, the observed and bootstrapped statistics should be similar.
+
+```{r Goodness-of-fit test for best model., echo=FALSE, message=FALSE, warning=FALSE}
+# Goodness of fit
+fitstats <- function(hnDay) {
+  observed <- getY(hnDay@data)
+  expected <- fitted(hnDay)
+  resids <- residuals(hnDay)
+  sse <- sum(resids^2)
+  chisq <- sum((observed - expected)^2 / expected)
+  freeTuke <- sum((sqrt(observed) - sqrt(expected))^2)
+  out <- c(SSE=sse, Chisq=chisq, freemanTukey=freeTuke)
+  return(out)
+}
+
+pb <- parboot(hnDay, fitstats, nsim=25, report=50)
+pb
+```
+
+Plotting detectability as a function of day-of-the year, we can see that probability of detecting a lark, given that it is present and available to be detected, declines over the course of the season. Probability of detecting birds further than 100 m from the observer is notably low.
+```{r Detectability as a function of day-of-the-year., echo=FALSE, message=FALSE, warning=FALSE}
+par(mfrow=c(1, 1))
+plot(function(x) gxhn(x, sigma=110.3216), 0, 400, xlab="Distance (m)",
+     ylab="Detection probability", cex.lab=1,
+     cex.axis=0.7, las=1, col = "green")
+plot(function(x) gxhn(x, sigma=46.94988), 0, 400, add = TRUE, col = "blue")
+plot(function(x) gxhn(x, sigma=68.06919), 0, 400, add = TRUE, col = "black")
+legend('topright', c("First day of surveys", "Last day of surveys", "Median day of surveys"),
+       col=c("green", "blue", "black"), lty=1, cex=0.8)
+```
+
+The probability (p) of detecting a lark is 0.06 on the median day of surveys, with an effective radius (ER) of 96.2 m.
+```{r Estimating detectability from the best model., echo=FALSE, message=FALSE, warning=FALSE}
+getPcovs <- function(hnDay) {
+  sig <- backTransform(linearComb(hnDay['det'], c(1, median(covs$dayOfYear))))@estimate
+  ea <- 2*pi * integrate(grhn, 0, 400, sigma=sig)$value # effective area
+  er <- sqrt(ea / pi) # effective radius
+  p <- ea / (pi*400^2) #detection probability
+  out <- c(p = p , er = er)
+  return(out)
+}
+getPcovs(hnDay)
+```
+
+The 95% confidence interval for p = (0.03 - 0.08), and for ER = (72.9 - 110.2).
+```{r Bootstrap error estimates of P and EDR, echo=FALSE, message=FALSE, warning=FALSE}
+getPcovs <- function(hnDay) {
+  sig <- backTransform(linearComb(hnDay['det'], c(1, median(covs$dayOfYear))))@estimate
+  ea <- 2*pi * integrate(grhn, 0, 400, sigma=sig)$value # effective area
+  er <- sqrt(ea / pi) # effective radius
+  p <- ea / (pi*400^2) #detection probability
+  out <- c(p = p , er = er)
+  return(out)
+}
+
+parboot(hnDay, getPcovs, nsim = 25, report = 50)
+```
+
