@@ -526,6 +526,7 @@ getD <- function(hnDay) {
 
 parboot(hnDay, getD, nsim = 25, report = 1)
 
+backTransform(hnDay, type = "state")
 ## Incorporating removal models
 encounters <-
   surveyData %>%
@@ -596,3 +597,33 @@ getPdistrem <- function(x) {
 }
 getPdistrem(drNull)
 parboot(drNull, getPdistrem, nsim = 25, report = 1)
+
+
+## Distance removal with day-of-year as covariate on distance:
+drDay <- gdistremoval(lambdaformula = ~1, phiformula = ~1, removalformula = ~1,
+                       distanceformula = ~dayOfYear, data = umfDR, keyfun = "halfnorm",
+                       output = "density", unitsOut = "kmsq", mixture = "ZIP")
+summary(drDay)
+
+# Get p
+getPdistrem <- function(x) {
+  sig <- backTransform(linearComb(drDay,c(1,171), type = "dist"))
+  ea <- 2*pi * integrate(grhn, 0, 400, sigma=sig@estimate)$value # effective area
+  er <- sqrt(ea / pi) # effective radius
+  p <- ea / (pi*400^2) #detection probability
+  return(p)
+}
+getPdistrem()
+
+
+getPD <- function(x) {
+  d <- backTransform(drDay, type = "rem")
+  sig <- backTransform(linearComb(drDay,c(1,171), type = "dist"))
+  ea <- 2*pi * integrate(grhn, 0, 400, sigma=sig@estimate)$value # effective area
+  er <- sqrt(ea / pi) # effective radius
+  p <- ea / (pi*400^2) #detection probability
+  Pd <- p*(d@estimate)
+  return(Pd)
+}
+getPD(drDay)
+parboot(drDay, getPD, nsim = 25, report = 25)

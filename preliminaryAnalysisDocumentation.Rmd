@@ -244,7 +244,7 @@ getPcovs <- function(hnDay) {
 getPcovs(hnDay)
 ```
 
-The 95% confidence interval for p = (0.03 - 0.08), and for ER = (72.9 - 110.2).
+The 95% confidence limits for p and for ER (t_B quantiles 2.5%, 97.5%):
 ```{r Bootstrap error estimates of P and EDR, echo=FALSE, message=FALSE, warning=FALSE}
 getPcovs <- function(hnDay) {
   sig <- backTransform(linearComb(hnDay['det'], c(1, median(covs$dayOfYear))))@estimate
@@ -256,5 +256,109 @@ getPcovs <- function(hnDay) {
 }
 
 parboot(hnDay, getPcovs, nsim = 25, report = 50)
+```
+
+The estimated number of larks per square km = 4.33.
+
+```{r Estimate of density from the best distance model, echo=FALSE, message=FALSE, warning=FALSE}
+backTransform(hnDay, type = "state")
+```
+
+The boostrapped 95% confidence interval around the density estimate (t_B quantiles 2.5%, 97.5%):
+
+```{r Error estimate for density from the best distance model, echo=FALSE, message=FALSE, warning=FALSE}
+getD <- function(hnDay) {
+  d <- backTransform(hnDay, type = "state")@estimate
+  return(d)
+}
+
+parboot(hnDay, getD, nsim = 25, report = 50)
+```
+
+The estimated density seems significantly higher than current estimates of Streaked Horned Lark population size would predict, probably a result of the very low estimate of detectability.
+
+```{r Joint distance/removal, echo=FALSE, message=FALSE, warning=FALSE}
+## Incorporating removal models
+encounters <-
+  surveyData %>%
+  group_by(Site_ID) %>%
+  mutate(interval1 = ifelse(firstInterval == 1 & Sex == "Male" & firstDet == "Singing", 1, 0),
+         interval2 = ifelse(firstInterval == 2 & Sex == "Male" & firstDet == "Singing", 1, 0),
+         interval3 = ifelse(firstInterval == 3 & Sex == "Male" & firstDet == "Singing", 1, 0),
+         interval4 = ifelse(firstInterval == 4 & Sex == "Male" & firstDet == "Singing", 1, 0)) %>%
+  select(Site_ID, interval1, interval2, interval3, interval4, Sex, firstDet) %>%
+  group_by(Site_ID) %>%
+  summarise(interval1 = sum(interval1), # this model wants summed # of birds per interval
+            interval2 = sum(interval2), # and has to match the distance data
+            interval3 = sum(interval3),
+            interval4 = sum(interval4)) 
+
+yRemoval <- matrix(nrow = 214, ncol = 4)
+rownames(yRemoval) <- encounters$Site_ID
+yRemoval <- cbind(encounters[,2:5])
+yRemoval[is.na(yRemoval)] <- 0
+## Create a new variable called 'distance', which translates the distance_band information into the midpoint of the distance.
+## Then remove all other variables.
+## THIS INCLUDES ONLY SINGING MALES ##
+distsRemoval <-
+  surveyData %>%
+  group_by(Site_ID) %>%
+  mutate(distance = ifelse(distanceBand == 1, 12.5,
+                           ifelse(distanceBand == 2, 61,
+                                  ifelse(distanceBand == 3, 150,
+                                         ifelse(distanceBand == 4, 300, NA))))) %>%
+  select(Site_ID, distance, Sex, firstDet) %>%
+  filter(!is.na(distance), firstDet == "Singing", Sex == "Male")
+
+## Note here that we need the "as.data.frame" argument because 'dists' is a tidyverse tibble, 
+## and unmarked doesn't seem to like tibbles. This forces it into a standard R data frame.
+yDatDistance <- formatDistData(distData = as.data.frame(distsRemoval), distCol = "distance", transectNameCol = "Site_ID", 
+                       dist.breaks = c(0,25,100,200,400))
+
+
+
+umfDR <- unmarkedFrameGDR(yDistance = as.matrix(yDatDistance), yRemoval = as.matrix(yRemoval), numPrimary = 1,
+                          siteCovs = covs, dist.breaks = c(0,25,100,200,400), unitsIn = "m")
+
+drDay <- gdistremoval(lambdaformula = ~1, phiformula = ~1, removalformula = ~1,
+                       distanceformula = ~dayOfYear, data = umfDR, keyfun = "halfnorm",
+                       output = "density", unitsOut = "kmsq", mixture = "ZIP")
+```
+
+Using combined distance and removal models, we can estimate detectability:
+```{r}
+summary(drDay)
+getPdistrem <- function(x) {
+  sig <- backTransform(linearComb(drDay,c(1,171), type = "dist"))
+  ea <- 2*pi * integrate(grhn, 0, 400, sigma=sig@estimate)$value # effective area
+  er <- sqrt(ea / pi) # effective radius
+  p <- ea / (pi*400^2) #detection probability
+  return(p)
+}
+getPdistrem(drDay)
+```
+and availability:
+
+```{r Estimating availability from best removal/distance model, echo=FALSE, message=FALSE, warning=FALSE}
+backTransform(obj = drDay, type = "rem")
+```
+
+and their product:
+```{r Estimating detectability, message=FALSE, warning=FALSE}
+getPD <- function(x) {
+  d <- backTransform(drDay, type = "rem")
+  sig <- backTransform(linearComb(drDay,c(1,171), type = "dist"))
+  ea <- 2*pi * integrate(grhn, 0, 400, sigma=sig@estimate)$value # effective area
+  er <- sqrt(ea / pi) # effective radius
+  p <- ea / (pi*400^2) #detection probability
+  Pd <- p*(d@estimate)
+  return(Pd)
+}
+getPD(drDay)
+```
+Not surprisingly, with this exceedingly low probability of detection, the estimate density of larks is quite high:
+
+```{r Density from best removal distance model, echo=FALSE, message=FALSE, warning=FALSE}
+backTransform(obj = drDay, type = "lambda")
 ```
 
