@@ -5,6 +5,7 @@ library(suncalc)
 library(ggpmisc)
 library(unmarked)
 library(AICcmodavg)
+library(ubms)
 
 # Review and organize data, changing formats and variable names as needed.
 #surveyData <- read_xlsx("~/Documents/GitHub/hornedLarks/WV_SurveyOutput.xlsx")
@@ -515,8 +516,37 @@ getPcovs <- function(hnDay) {
   out <- c(p = p , er = er)
   return(out)
 }
+getPcovs(hnDay)
 
-parboot(hnDay, getPcovs, nsim = 25, report = 1)
+## Predict seasonal changes in P-hat
+## Loop function for calculating P-hat across days of the season
+distanceCovPred <- matrix(nrow = 24, ncol = 7) #create a matrix for output
+colnames(distanceCovPred) <- c("sigma", "ea", "er", "p","lowerCI", "upperCI", "Day") #give the columns names
+for (i in 1:24) { #this loops through 24 days of the year to generate estimates of p-hat
+  distanceCovPred[[i,1]] <- backTransform(linearComb(hnDay['det'], c(1, i+157)))@estimate # this is a kludge to index days (i.e., lowest value = day 158)
+  distanceCovPred[[i,2]] <- 2*pi * integrate(grhn, 0, 400, sigma=distanceCovPred[[i,1]])$value # effective area
+  distanceCovPred[[i,3]] <- sqrt(distanceCovPred[[i,2]] / pi) # effective radius
+  distanceCovPred[[i,4]] <- distanceCovPred[[i,2]] / (pi*400^2) #detection probability
+  getPcovsL <- function(hnDay) { #this defines the function that 'parboot' will use
+    sig <- backTransform(linearComb(hnDay['det'], c(1, i+157)))@estimate
+    ea <- 2*pi * integrate(grhn, 0, 400, sigma=sig)$value # effective area
+    er <- sqrt(ea / pi) # effective radius
+    p <- ea / (pi*400^2) #detection probability
+    out <- c(p = p , er = er)
+  } #following lines are for pulling out upper and lower 95% Ci from bootstrap; parallel process didn't work, so had to set cores = 1
+  distanceCovPred[[i,5]] <- quantile(parboot(hnDay,getPcovsL, nsim = 100, report = 100, ncores = 1)@t.star[,1],probs = 0.025)
+  distanceCovPred[[i,6]] <- quantile(parboot(hnDay,getPcovsL, nsim = 100, report = 100, ncores = 1)@t.star[,1], probs = 0.975)
+  }
+
+distanceCovPred[,7]<- seq(158, 181, 1)
+
+ggplot(data = as.data.frame(distanceCovPred), aes(x = Day, y = p)) +
+  geom_ribbon(aes(ymin = lowerCI, ymax = upperCI), fill = "grey80", alpha = 0.5) + 
+  geom_line(aes(x = Day, y = p), color = "black") + 
+  xlab("Day of year") + ylab ("Probability of detection") + 
+  theme_bw()
+
+
 
 ## Estimating density with a parametric bootstrap
 getD <- function(hnDay) {
@@ -527,6 +557,14 @@ getD <- function(hnDay) {
 parboot(hnDay, getD, nsim = 25, report = 1)
 
 backTransform(hnDay, type = "state")
+
+
+
+## Distance model with STAN (won't run)
+umfDSSTAND <- unmarkedFrameDS(y = as.matrix(yDat), siteCovs = as.data.frame(covs),
+                       survey = "point", dist.breaks = c(0,0.025,0.1,0.2,0.4), unitsIn = "km")
+distanceNullSTAN <- stan_distsamp(~1 ~1, data = umf, keyfun = "halfnorm",
+                                   output = "density", unitsOut = "kmsq", chains = 3, iter = 300, cores = 3)
 ## Incorporating removal models
 encounters <-
   surveyData %>%
@@ -576,15 +614,41 @@ drNull <- gdistremoval(lambdaformula = ~1, phiformula = ~1, removalformula = ~1,
 summary(drNull)
 
 ## To show that the basic removal model produces the same estimate as the gdistremoval function
-testFrame <- unmarkedFrameMPois(y = yRemoval, siteCovs = NULL, type = "removal")
-testM1 <- multinomPois(~1 ~1, data = testFrame)
-summary(testM1)
+removalFrame <- unmarkedFrameMPois(y = yRemoval, siteCovs = covs, type = "removal")
+removalNull <- multinomPois(~1 ~1, data = removalFrame)
+removalDay <- multinomPois(~dayOfYear ~1, data = removalFrame)
+removalTemp <- multinomPois(~temp ~1, data = removalFrame)
+removalNoise <- multinomPois(~avgNoise ~1, data = removalFrame)
+removalMAS <- multinomPois (~mas ~1, data = removalFrame)
+
+fmRemovalList <- list("removalNull" = removalNull, "removalDay" = removalDay, "removalTemp" = removalTemp,
+               "removalNoise" = removalNoise, "removalMAS" = removalMAS)
+aictab(cand.set = fmRemovalList, second.ord = T, sort = T)
+
+summary(removalDay)
+backTransform(linearComb(removalDay['det'], c(1, min(covs$dayOfYear))))@estimate
+backTransform(linearComb(removalDay['det'], c(1,dayOfYear = min(covs$dayOfYear,0))))@estimate
+backTransform(removalNull, type = "state")
+
+lc <- linearComb(removalDay, c(Int = 1, dayOfYear = max(covs$dayOfYear)), type = "det")
+backTransform(lc)
+
+# STAN model of the same:
+removalDaySTAN <- stan_multinomPois(~scale(dayOfYear) ~1, removalFrame, chains=3, iter=300, cores = 3)
+removalDaySTAN
+removalDaySTANframe <- plot_effects(removalDaySTAN, "det")
+
+ggplot(data = removalDaySTANframe$data, aes(x = covariate, y = mn)) +
+  geom_ribbon(aes(ymin = lower, ymax = upper), fill = "grey80", alpha = 0.5) + 
+  geom_line(aes(x = covariate, y = mn), color = "black") + 
+  xlab("Day of year") + ylab ("Availability for detection") + 
+  theme_bw()
 
 ## Function to calculate the prob. of detection,
 ## where p = detection prob. from distance sampling, 
 ## and d = detection prob. from removal sampling,
 ## and P*D = overall detectability.
-## I think due to the uncertainity and very small estimates for each part of the equation,
+## I think due to the uncertainty and very small estimates for each part of the equation,
 ## the bootstrap function is failing. Not sure how to get to a CI around P.
 getPdistrem <- function(x) {
   d <- backTransform(x@estimates@estimates$rem)@estimate
@@ -600,7 +664,7 @@ parboot(drNull, getPdistrem, nsim = 25, report = 1)
 
 
 ## Distance removal with day-of-year as covariate on distance:
-drDay <- gdistremoval(lambdaformula = ~1, phiformula = ~1, removalformula = ~1,
+drDay <- gdistremoval(lambdaformula = ~1, phiformula = ~1, removalformula = ~dayOfYear,
                        distanceformula = ~dayOfYear, data = umfDR, keyfun = "halfnorm",
                        output = "density", unitsOut = "kmsq", mixture = "ZIP")
 summary(drDay)
@@ -617,8 +681,8 @@ getPdistrem()
 
 
 getPD <- function(x) {
-  d <- backTransform(drDay, type = "rem")
-  sig <- backTransform(linearComb(drDay,c(1,171), type = "dist"))
+  d <- backTransform(linearComb(drDay,c(1,0), type = "rem"))
+  sig <- backTransform(linearComb(drDay,c(1,0), type = "dist"))
   ea <- 2*pi * integrate(grhn, 0, 400, sigma=sig@estimate)$value # effective area
   er <- sqrt(ea / pi) # effective radius
   p <- ea / (pi*400^2) #detection probability
