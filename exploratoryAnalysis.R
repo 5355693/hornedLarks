@@ -163,6 +163,14 @@ ggplot(data = ., aes(x = distanceBand, y = count)) + geom_col() +
   geom_text(aes(label = count), vjust = 1.5, colour = "white") + 
   labs(x = "Distance band", y = "No. larks detected")
 
+surveyData %>%
+  filter(!is.na(distanceBand)) %>%
+  group_by(distanceBand, firstDet) %>%
+  summarise(count = n()) %>%
+  ggplot(data = ., aes(x = distanceBand, y = count, fill = firstDet)) + geom_col() +
+  geom_text(aes(label = count), vjust = 0.5, colour = "white") + 
+  labs(x = "Distance band", y = "No. larks detected")
+
 # Account for different areas searched
 # Band 1 = 1963 m2, Band 2 = 29452 m2, Band 3 = 94248 m2, Band 4 = 376991 m2
 surveyData %>%
@@ -461,7 +469,7 @@ haMAS <- distsamp(~mas ~1, data = umf, keyfun = "hazard", output = "density", un
 
 fmList <- list("haNull" = haNull, "haDay" = haDay, "haNoise" = haNoise, "haMAS" = haMAS, "haTemp" = haTemp,
                "hnNull" = hnNull, "hnDay" = hnDay, "hnNoise" = hnNoise, "hnMAS" = hnMAS, "hnTemp" = hnTemp)
-aictab(cand.set = fmList, second.ord = T, sort = T)
+tableDistanceAIC <- aictab(cand.set = fmList, second.ord = T, sort = T)
 
 # Goodness of fit
 fitstats <- function(hnDay) {
