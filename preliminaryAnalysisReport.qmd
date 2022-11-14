@@ -234,7 +234,7 @@ fmList <- list("haNull" = haNull, "haDay" = haDay, "haNoise" = haNoise, "haMAS" 
 
 I considered models in the distance-sampling analysis that included individual effects of four potential covariates on perceptibility: day of the year, ambient noise, temperature at the time of the survey, and time of day (quantified as the number of minutes after sunrise that the survey began). I also considered null models in which no covariates on perceptibility were included. I did not include any covariates on abundance, both because of sample size concerns and because we have yet to generate any covariates that might predict variation in abundance. I did not include models with more than one covariate due to the small sample size. I considered two suites of these individual-covariate models, one that assumed a half-normal ("hn") detection function and one that assumed a hazard-rate ("ha") detection function.
 
-The best-supported model in the distance-sampling analysis included an effect of day-of-the-year and a half-normal detection function. None of the other covariates had a strong influence on perceptibility. In general, the hazard-rate models performed no better than the half-normal models, but required estimating one additional parameter and so tended to rank beneath half-normal models by about 2 AIC values.
+The best-supported model in the distance-sampling analysis included an effect of day-of-the-year and a half-normal detection function (@tbl-distanceAIC). None of the other covariates had a strong influence on perceptibility. In general, the hazard-rate models performed no better than the half-normal models, but required estimating one additional parameter and so tended to rank beneath half-normal models by about 2 AIC values.
 
 ```{r}
 #| warning: false
@@ -242,5 +242,5 @@ The best-supported model in the distance-sampling analysis included an effect of
 #| label: tbl-distanceAIC
 #| tbl-cap: Model selection results for distance-sampling analysis of Streaked Horned Lark detections during surveys in the Willamette Valley of Oregon, 2022.
 tableDistanceAIC <- aictab(cand.set = fmList, second.ord = T, sort = T)
-kable(as.data.frame(tableDistanceAIC), digits = 2, col.names = c("Model","No.parameters", "AICc", "Delta AICc", "Model likelihood", "AICc weight", "Log-likelihood", "Cum. weight"), caption = "Model selection results for distance-sampling analysis of Streaked Horned Lark detections during surveys in the Willamette Valley of Oregon, 2022.")
+kable(as.data.frame(tableDistanceAIC), digits = 2, col.names = c("Model","No. parameters", "AICc", "Delta AICc", "Model likelihood", "AICc weight", "Log-likelihood", "Cum. weight"), caption = "Model selection results for distance-sampling analysis of Streaked Horned Lark detections during surveys in the Willamette Valley of Oregon, 2022.")
 ```
