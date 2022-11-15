@@ -525,6 +525,7 @@ getPcovs <- function(hnDay) {
   return(out)
 }
 getPcovs(hnDay)
+parboot(hnDay, getPcovs, nsim = 25, report = 25)
 
 ## Predict seasonal changes in P-hat
 ## Loop function for calculating P-hat across days of the season
@@ -621,36 +622,45 @@ drNull <- gdistremoval(lambdaformula = ~1, phiformula = ~1, removalformula = ~1,
                        output = "density", unitsOut = "kmsq", mixture = "ZIP")
 summary(drNull)
 
-## To show that the basic removal model produces the same estimate as the gdistremoval function
-removalFrame <- unmarkedFrameMPois(y = yRemoval, siteCovs = covs, type = "removal")
-removalNull <- multinomPois(~1 ~1, data = removalFrame)
-removalDay <- multinomPois(~dayOfYear ~1, data = removalFrame)
-removalTemp <- multinomPois(~temp ~1, data = removalFrame)
-removalNoise <- multinomPois(~avgNoise ~1, data = removalFrame)
-removalMAS <- multinomPois (~mas ~1, data = removalFrame)
+## Distance removal with day-of-year as covariate on distance:
+drDay <- gdistremoval(lambdaformula = ~1, phiformula = ~1, removalformula = ~1,
+                      distanceformula = ~dayOfYear, data = umfDR, keyfun = "halfnorm",
+                      output = "density", unitsOut = "kmsq", mixture = "ZIP")
+summary(drDay)
 
-fmRemovalList <- list("removalNull" = removalNull, "removalDay" = removalDay, "removalTemp" = removalTemp,
-               "removalNoise" = removalNoise, "removalMAS" = removalMAS)
-aictab(cand.set = fmRemovalList, second.ord = T, sort = T)
+drTemp <- gdistremoval(lambdaformula = ~1, phiformula = ~1, removalformula = ~temp,
+                      distanceformula = ~dayOfYear, data = umfDR, keyfun = "halfnorm",
+                      output = "density", unitsOut = "kmsq", mixture = "ZIP")
+drMAS <- gdistremoval(lambdaformula = ~1, phiformula = ~1, removalformula = ~mas,
+                       distanceformula = ~dayOfYear, data = umfDR, keyfun = "halfnorm",
+                       output = "density", unitsOut = "kmsq", mixture = "ZIP")
+drNoise <- gdistremoval(lambdaformula = ~1, phiformula = ~1, removalformula = ~avgNoise,
+                       distanceformula = ~dayOfYear, data = umfDR, keyfun = "halfnorm",
+                       output = "density", unitsOut = "kmsq", mixture = "ZIP")
 
-summary(removalDay)
-backTransform(linearComb(removalDay['det'], c(1, min(covs$dayOfYear))))@estimate
-backTransform(linearComb(removalDay['det'], c(1,dayOfYear = min(covs$dayOfYear,0))))@estimate
-backTransform(removalNull, type = "state")
+drBest <- gdistremoval(lambdaformula = ~1, phiformula = ~1, removalformula = ~dayOfYear,
+                       distanceformula = ~dayOfYear, data = umfDR, keyfun = "halfnorm",
+                       output = "density", unitsOut = "kmsq", mixture = "ZIP")
 
-lc <- linearComb(removalDay, c(Int = 1, dayOfYear = max(covs$dayOfYear)), type = "det")
-backTransform(lc)
+drDayRemOnly <- gdistremoval(lambdaformula = ~1, phiformula = ~1, removalformula = ~dayOfYear,
+                      distanceformula = ~1, data = umfDR, keyfun = "halfnorm",
+                      output = "density", unitsOut = "kmsq", mixture = "ZIP")
 
-# STAN model of the same:
-removalDaySTAN <- stan_multinomPois(~scale(dayOfYear) ~1, removalFrame, chains=3, iter=300, cores = 3)
-removalDaySTAN
-removalDaySTANframe <- plot_effects(removalDaySTAN, "det")
+drMASRemOnly <- gdistremoval(lambdaformula = ~1, phiformula = ~1, removalformula = ~mas,
+                             distanceformula = ~1, data = umfDR, keyfun = "halfnorm",
+                             output = "density", unitsOut = "kmsq", mixture = "ZIP")
+backTransform(drDay, type = "lambda")
 
-ggplot(data = removalDaySTANframe$data, aes(x = covariate, y = mn)) +
-  geom_ribbon(aes(ymin = lower, ymax = upper), fill = "grey80", alpha = 0.5) + 
-  geom_line(aes(x = covariate, y = mn), color = "black") + 
-  xlab("Day of year") + ylab ("Availability for detection") + 
-  theme_bw()
+# Get p
+getPdistrem <- function(x) {
+  sig <- backTransform(linearComb(drDay,c(1,171), type = "dist"))
+  ea <- 2*pi * integrate(grhn, 0, 400, sigma=sig@estimate)$value # effective area
+  er <- sqrt(ea / pi) # effective radius
+  p <- ea / (pi*400^2) #detection probability
+  return(p)
+}
+getPdistrem()
+
 
 ## Function to calculate the prob. of detection,
 ## where p = detection prob. from distance sampling, 
@@ -668,29 +678,12 @@ getPdistrem <- function(x) {
   return(Pd)
 }
 getPdistrem(drNull)
+
 parboot(drNull, getPdistrem, nsim = 25, report = 1)
 
-
-## Distance removal with day-of-year as covariate on distance:
-drDay <- gdistremoval(lambdaformula = ~1, phiformula = ~1, removalformula = ~dayOfYear,
-                       distanceformula = ~dayOfYear, data = umfDR, keyfun = "halfnorm",
-                       output = "density", unitsOut = "kmsq", mixture = "ZIP")
-summary(drDay)
-
-# Get p
-getPdistrem <- function(x) {
-  sig <- backTransform(linearComb(drDay,c(1,171), type = "dist"))
-  ea <- 2*pi * integrate(grhn, 0, 400, sigma=sig@estimate)$value # effective area
-  er <- sqrt(ea / pi) # effective radius
-  p <- ea / (pi*400^2) #detection probability
-  return(p)
-}
-getPdistrem()
-
-
 getPD <- function(x) {
-  d <- backTransform(linearComb(drDay,c(1,0), type = "rem"))
-  sig <- backTransform(linearComb(drDay,c(1,0), type = "dist"))
+  d <- backTransform(drDay, type = "rem")
+  sig <- backTransform(linearComb(drDay,c(1,171), type = "dist"))
   ea <- 2*pi * integrate(grhn, 0, 400, sigma=sig@estimate)$value # effective area
   er <- sqrt(ea / pi) # effective radius
   p <- ea / (pi*400^2) #detection probability
@@ -699,3 +692,114 @@ getPD <- function(x) {
 }
 getPD(drDay)
 parboot(drDay, getPD, nsim = 25, report = 25)
+
+
+
+## To show that the basic removal model produces the same estimate as the gdistremoval function
+removalFrame <- unmarkedFrameMPois(y = yRemoval, siteCovs = covs, type = "removal")
+removalNull <- multinomPois(~1 ~1, data = removalFrame)
+removalDay <- multinomPois(~scale(dayOfYear) ~1, data = removalFrame)
+removalTemp <- multinomPois(~temp ~1, data = removalFrame)
+removalNoise <- multinomPois(~avgNoise ~1, data = removalFrame)
+removalMAS <- multinomPois (~mas ~1, data = removalFrame)
+
+fmRemovalList <- list("removalNull" = removalNull, "removalDay" = removalDay, "removalTemp" = removalTemp,
+               "removalNoise" = removalNoise, "removalMAS" = removalMAS)
+aictab(cand.set = fmRemovalList, second.ord = T, sort = T)
+
+summary(removalNull)
+backTransform(linearComb(removalDay['det'], c(1, min(covs$dayOfYear))))@estimate
+backTransform(linearComb(removalDay['det'], c(1,dayOfYear = min(covs$dayOfYear,0))))@estimate
+backTransform(removalDay, type = "state")
+
+lc <- linearComb(removalDay, c(Int = 1, dayOfYear = median(scale(covs$dayOfYear))), type = "det")
+backTransform(lc)
+
+removalPredictPdata <- data.frame(dayOfYear = seq(min(covs$dayOfYear), max(covs$dayOfYear), by = 1))
+removalPredictP <- predict(removalDay, type = "det", newdata = removalPredictPdata, appendData = TRUE) 
+ggplot(data = removalPredictP, aes(x = dayOfYear, y = Predicted)) +
+  geom_ribbon(aes(ymin = lower, ymax = upper), fill = "grey80", alpha = 0.5) + 
+  geom_line(aes(x = dayOfYear, y = Predicted), color = "black") + 
+  xlab("Day of year") + ylab ("Availability for detection") + 
+  theme_bw()
+
+# STAN model of the same:
+removalDaySTAN <- stan_multinomPois(~scale(dayOfYear) ~1, removalFrame, chains=3, iter=300, cores = 3)
+removalDaySTAN
+removalDaySTANframe <- plot_effects(removalDaySTAN, "det")
+
+ggplot(data = removalDaySTANframe$data, aes(x = covariate, y = mn)) +
+  geom_ribbon(aes(ymin = lower, ymax = upper), fill = "grey80", alpha = 0.5) + 
+  geom_line(aes(x = covariate, y = mn), color = "black") + 
+  xlab("Day of year") + ylab ("Availability for detection") + 
+  theme_bw()
+
+
+## How do removal models compare to full encounter histories? Following code will treat the 
+## surveys as capture/recapture efforts, thus retaining the full encounter history. This
+## differs from the removal models, which truncate the history after the first detection.
+captHistory <-
+  encounters %>%
+  replace(is.na(.), 0) %>%
+  mutate(captureHistory = paste(interval1, interval2, interval3, interval4, sep = "")) 
+  
+captHistory$captureHistory <- factor(captHistory$captureHistory, 
+                                     levels = c("0001","0010","0100","1000",
+                                                "0011","0101","0110","1010","1001","1100",
+                                                "0111","1011","1101","1110","1111"))
+capSummary <- table(captHistory$Site_ID, captHistory$captureHistory)
+
+crPiFun <- function(p) {
+  p1 <- p[,1]
+  p2 <- p[,2]
+  p3 <- p[,3]
+  p4 <- p[,4]
+  cbind("0001" = (1-p1) * (1-p2) * (1-p3) * p4,
+        "0010" = (1-p1) * (1-p2) * p3 * (1-p4),
+        "0100" = (1-p1) * p2 * (1-p3) * (1-p4),
+        "1000" = p1 * (1-p2) * (1-p3) * (1-p4),
+        "0011" = (1-p1) * (1-p2) * p3 * p4,
+        "0101" = (1-p1) * p2 * (1-p3) * p4,
+        "0110" = (1-p1) * p2 * p3 * (1-p4),
+        "1010" = p1 * (1-p2) * p3 * (1-p4),
+        "1001" = p1 * (1-p2) * (1-p3) * p4,
+        "1100" = p1 * p2 * (1-p3) * (1-p4),
+        "0111" = (1-p1) * p2 * p3 * p4,
+        "1011" = p1 * (1-p2) * p3 * p4,
+        "1101" = p1 * p2 * (1-p3) * p4,
+        "1110" = p1 * p2 * p3 * (1-p4),
+        "1111" = p1 * p2 * p3 * p4)
+}
+
+o2y <- matrix(1, 4, 15)
+
+class(capSummary) <- "matrix"
+umf.cr1 <- unmarkedFrameMPois(y = capSummary, siteCovs = covs, piFun = "crPiFun", obsToY = o2y)
+crNull <- multinomPois(~1 ~1, umf.cr1, engine = "R")
+crDay <- multinomPois(~dayOfYear ~1, umf.cr1, engine = "R")
+crTemp <- multinomPois(~temp ~1, data = umf.cr1, engine = "R")
+crNoise <- multinomPois(~avgNoise ~1, data = umf.cr1, engine = "R")
+crMAS <- multinomPois (~mas ~1, data = umf.cr1, engine = "R")
+
+fmCRList <- list("crNull" = crNull, "crDay" = crDay, "crTemp" = crTemp,
+                      "crNoise" = crNoise, "crMAS" = crMAS)
+aictab(cand.set = fmRemovalList, second.ord = T, sort = T)
+
+crNull
+crDay
+
+backTransform(crNull, type = "det")
+lc <- linearComb(crDay, c(Int = 1, dayOfYear = median(covs$dayOfYear)), type = "det")
+backTransform(lc)
+
+
+crPredictPdata <- data.frame(dayOfYear = seq(min(covs$dayOfYear), max(covs$dayOfYear), by = 1))
+crPredictP <- predict(crDay, type = "det", newdata = crPredictPdata, appendData = TRUE) 
+ggplot(data = crPredictP, aes(x = dayOfYear, y = Predicted)) +
+  geom_ribbon(aes(ymin = lower, ymax = upper), fill = "grey80", alpha = 0.5) + 
+  geom_line(aes(x = dayOfYear, y = Predicted), color = "black") + 
+  xlab("Day of year") + ylab ("Availability for detection") + 
+  theme_bw()
+
+
+

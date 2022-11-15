@@ -3,6 +3,7 @@ title: "Streaked Horned Lark detectability and abundance: preliminary results"
 author: "John D. Lloyd"
 format: html
 editor: visual
+bibliography: references.bib
 ---
 
 ```{r}
@@ -234,7 +235,7 @@ fmList <- list("haNull" = haNull, "haDay" = haDay, "haNoise" = haNoise, "haMAS" 
 
 I considered models in the distance-sampling analysis that included individual effects of four potential covariates on perceptibility: day of the year, ambient noise, temperature at the time of the survey, and time of day (quantified as the number of minutes after sunrise that the survey began). I also considered null models in which no covariates on perceptibility were included. I did not include any covariates on abundance, both because of sample size concerns and because we have yet to generate any covariates that might predict variation in abundance. I did not include models with more than one covariate due to the small sample size. I considered two suites of these individual-covariate models, one that assumed a half-normal ("hn") detection function and one that assumed a hazard-rate ("ha") detection function.
 
-The best-supported model in the distance-sampling analysis included an effect of day-of-the-year and a half-normal detection function (@tbl-distanceAIC). None of the other covariates had a strong influence on perceptibility. In general, the hazard-rate models performed no better than the half-normal models, but required estimating one additional parameter and so tended to rank beneath half-normal models by about 2 AIC values.
+The best-supported model in the distance-sampling analysis included an effect of day-of-the-year and a half-normal detection function (@tbl-distanceAIC). Model fit was adequate (all P-values for goodness-of-fit testing \> 0.12). None of the other covariates had a strong influence on perceptibility. In general, the hazard-rate models performed no better than the half-normal models, but required estimating one additional parameter and so tended to rank beneath half-normal models by about 2 AIC values.
 
 ```{r}
 #| warning: false
@@ -244,3 +245,253 @@ The best-supported model in the distance-sampling analysis included an effect of
 tableDistanceAIC <- aictab(cand.set = fmList, second.ord = T, sort = T)
 kable(as.data.frame(tableDistanceAIC), digits = 2, col.names = c("Model","No. parameters", "AICc", "Delta AICc", "Model likelihood", "AICc weight", "Log-likelihood", "Cum. weight"), caption = "Model selection results for distance-sampling analysis of Streaked Horned Lark detections during surveys in the Willamette Valley of Oregon, 2022.")
 ```
+
+```{r}
+#| warning: false
+#| echo: false
+#| output: false
+## Predict seasonal changes in P-hat
+## Loop function for calculating P-hat across days of the season
+distanceCovPred <- matrix(nrow = 24, ncol = 7) #create a matrix for output
+colnames(distanceCovPred) <- c("sigma", "ea", "er", "p","lowerCI", "upperCI", "Day") #give the columns names
+for (i in 1:24) { #this loops through 24 days of the year to generate estimates of p-hat
+  distanceCovPred[[i,1]] <- backTransform(linearComb(hnDay['det'], c(1, i+157)))@estimate # this is a kludge to index days (i.e., lowest value = day 158)
+  distanceCovPred[[i,2]] <- 2*pi * integrate(grhn, 0, 400, sigma=distanceCovPred[[i,1]])$value # effective area
+  distanceCovPred[[i,3]] <- sqrt(distanceCovPred[[i,2]] / pi) # effective radius
+  distanceCovPred[[i,4]] <- distanceCovPred[[i,2]] / (pi*400^2) #detection probability
+  getPcovsL <- function(hnDay) { #this defines the function that 'parboot' will use
+    sig <- backTransform(linearComb(hnDay['det'], c(1, i+157)))@estimate
+    ea <- 2*pi * integrate(grhn, 0, 400, sigma=sig)$value # effective area
+    er <- sqrt(ea / pi) # effective radius
+    p <- ea / (pi*400^2) #detection probability
+    out <- c(p = p , er = er)
+  } #following lines are for pulling out upper and lower 95% Ci from bootstrap; parallel process didn't work, so had to set cores = 1
+  distanceCovPred[[i,5]] <- quantile(parboot(hnDay,getPcovsL, nsim = 100, report = 100, ncores = 1)@t.star[,1],probs = 0.025)
+  distanceCovPred[[i,6]] <- quantile(parboot(hnDay,getPcovsL, nsim = 100, report = 100, ncores = 1)@t.star[,1], probs = 0.975)
+  }
+
+distanceCovPred[,7]<- seq(158, 181, 1)
+
+
+```
+
+The effect of day-of-year on perceptibility is negative, decreasing substantially throughout the season, such that the probability of detecting a lark, given that it sings, approaches zero by late June (@fig-dayOfYearEffect). The predicted perceptibility on the median day of surveys was 0.06 (95% CI = 0.03 - 0.10).
+
+```{r}
+#| warning: false
+#| echo: false
+#| label: fig-dayOfYearEffect
+#| fig-cap: "Streaked Horned Lark percebtibility declined over the course of the breeding season during surveys in the Willamette Valley of Oregon, 2022. Solid line is the predicted value of perceptibility and gray shaded area is the 95% confidence interval."
+#| fig-cap-location: bottom
+ggplot(data = as.data.frame(distanceCovPred), aes(x = Day, y = p)) +
+  geom_ribbon(aes(ymin = lowerCI, ymax = upperCI), fill = "grey80", alpha = 0.5) + 
+  geom_line(aes(x = Day, y = p), color = "black") + 
+  xlab("Day of year") + ylab ("Probability of detection") + 
+  theme_bw()
+```
+
+With the low estimated perceptibility of larks, the resulting abundance estimate from the best distance model was also quite high: 4.3 larks per km^2^ (95% CI = 2.2 - 6.9).
+
+# Estimating availability of singing larks with removal models
+
+Availabiity is another component of detectability. Availability refers to the probability that a bird present in the count area during the survey produces a cue that can be detected by the observer. In this analysis, I estimated availability in two ways. First, by using a removal model, in which each individual detected is considered to have been removed from the population of individuals presents once it produces a cue that is detected by the observer. This approach does not retain the full encounter history generated by the time-of-detection survey method. As a supplement, therefore, I also estimated the probability of availability using the full encounter history for each detected individual (i.e., the series of zeros and ones that indicate whether an individual was observed during each of the 4 survey intervals). In both cases, I considered models with covariates for availability only; I did not consider covariates on abundance.
+
+```{r}
+#| output: false
+#| warning: false
+#| echo: false
+
+
+## Incorporating removal models
+encounters <-
+  surveyData %>%
+  group_by(Site_ID) %>%
+  mutate(interval1 = ifelse(firstInterval == 1 & Sex == "Male" & firstDet == "Singing", 1, 0),
+         interval2 = ifelse(firstInterval == 2 & Sex == "Male" & firstDet == "Singing", 1, 0),
+         interval3 = ifelse(firstInterval == 3 & Sex == "Male" & firstDet == "Singing", 1, 0),
+         interval4 = ifelse(firstInterval == 4 & Sex == "Male" & firstDet == "Singing", 1, 0)) %>%
+  select(Site_ID, interval1, interval2, interval3, interval4, Sex, firstDet) %>%
+  group_by(Site_ID) %>%
+  summarise(interval1 = sum(interval1), # this model wants summed # of birds per interval
+            interval2 = sum(interval2), # and has to match the distance data
+            interval3 = sum(interval3),
+            interval4 = sum(interval4)) 
+
+yRemoval <- matrix(nrow = 214, ncol = 4)
+rownames(yRemoval) <- encounters$Site_ID
+yRemoval <- cbind(encounters[,2:5])
+yRemoval[is.na(yRemoval)] <- 0
+## Create a new variable called 'distance', which translates the distance_band information into the midpoint of the distance.
+## Then remove all other variables.
+## THIS INCLUDES ONLY SINGING MALES ##
+distsRemoval <-
+  surveyData %>%
+  group_by(Site_ID) %>%
+  mutate(distance = ifelse(distanceBand == 1, 12.5,
+                           ifelse(distanceBand == 2, 61,
+                                  ifelse(distanceBand == 3, 150,
+                                         ifelse(distanceBand == 4, 300, NA))))) %>%
+  select(Site_ID, distance, Sex, firstDet) %>%
+  filter(!is.na(distance), firstDet == "Singing", Sex == "Male")
+
+## Note here that we need the "as.data.frame" argument because 'dists' is a tidyverse tibble, 
+## and unmarked doesn't seem to like tibbles. This forces it into a standard R data frame.
+yDatDistance <- formatDistData(distData = as.data.frame(distsRemoval), distCol = "distance", transectNameCol = "Site_ID", 
+                       dist.breaks = c(0,25,100,200,400))
+
+
+
+umfDR <- unmarkedFrameGDR(yDistance = as.matrix(yDatDistance), yRemoval = as.matrix(yRemoval), numPrimary = 1,
+                          siteCovs = covs, dist.breaks = c(0,25,100,200,400), unitsIn = "m")
+
+removalFrame <- unmarkedFrameMPois(y = yRemoval, siteCovs = covs, type = "removal")
+removalNull <- multinomPois(~1 ~1, data = removalFrame)
+removalDay <- multinomPois(~scale(dayOfYear) ~1, data = removalFrame)
+removalTemp <- multinomPois(~temp ~1, data = removalFrame)
+removalNoise <- multinomPois(~avgNoise ~1, data = removalFrame)
+removalMAS <- multinomPois (~mas ~1, data = removalFrame)
+
+fmRemovalList <- list("removalNull" = removalNull, "removalDay" = removalDay, "removalTemp" = removalTemp,
+               "removalNoise" = removalNoise, "removalMAS" = removalMAS)
+```
+
+The best-supported model of availability from the removal analysis indicated an effect of day-of-the-year on availability, although the improvement over the null model was minor (@tbl-removalAIC).
+
+```{r}
+#| warning: false
+#| echo: false
+#| label: tbl-removalAIC
+#| tbl-cap: Model selection results for removal analysis of Streaked Horned Lark detections during surveys in the Willamette Valley of Oregon, 2022.
+fmRemovalList <- list("removalNull" = removalNull, "removalDay" = removalDay, "removalTemp" = removalTemp,
+               "removalNoise" = removalNoise, "removalMAS" = removalMAS)
+tableRemovalAIC <- aictab(cand.set = fmRemovalList, second.ord = T, sort = T)
+kable(as.data.frame(tableRemovalAIC), digits = 2, col.names = c("Model","No. parameters", "AICc", "Delta AICc", "Model likelihood", "AICc weight", "Log-likelihood", "Cum. weight"), caption = "Model selection results for removal analysis of Streaked Horned Lark detections during surveys in the Willamette Valley of Oregon, 2022.")
+```
+
+Availability for detection declined over the course of the season (@fig-dayOfYearEffectRemoval). The estimated probability of availability on the median day of surveys was 0.14 (SE = 0.06). Estimated abundance from this model was substantially lower than than produced by distance sampling, in part due to the higher estimate of detectability: 0.6 birds per km^2^ (SE = 0.09).
+
+```{r}
+#| warning: false
+#| echo: false
+#| label: fig-dayOfYearEffectRemoval
+#| fig-cap: "Removal models indicated that Streaked Horned Lark availability declined over the course of the breeding season during surveys in the Willamette Valley of Oregon, 2022. Solid line is the predicted value of perceptibility and gray shaded area is the 95% confidence interval."
+#| fig-cap-location: bottom
+removalPredictPdata <- data.frame(dayOfYear = seq(min(covs$dayOfYear), max(covs$dayOfYear), by = 1))
+removalPredictP <- predict(removalDay, type = "det", newdata = removalPredictPdata, appendData = TRUE) 
+ggplot(data = removalPredictP, aes(x = dayOfYear, y = Predicted)) +
+  geom_ribbon(aes(ymin = lower, ymax = upper), fill = "grey80", alpha = 0.5) + 
+  geom_line(aes(x = dayOfYear, y = Predicted), color = "black") + 
+  xlab("Day of year") + ylab ("Availability for detection") + 
+  theme_bw()
+
+```
+
+```{r}
+#| output: false
+#| warning: false
+#| echo: false
+## How do removal models compare to full encounter histories? Following code will treat the 
+## surveys as capture/recapture efforts, thus retaining the full encounter history. This
+## differs from the removal models, which truncate the history after the first detection.
+captHistory <-
+  encounters %>%
+  replace(is.na(.), 0) %>%
+  mutate(captureHistory = paste(interval1, interval2, interval3, interval4, sep = "")) 
+  
+captHistory$captureHistory <- factor(captHistory$captureHistory, 
+                                     levels = c("0001","0010","0100","1000",
+                                                "0011","0101","0110","1010","1001","1100",
+                                                "0111","1011","1101","1110","1111"))
+capSummary <- table(captHistory$Site_ID, captHistory$captureHistory)
+
+crPiFun <- function(p) {
+  p1 <- p[,1]
+  p2 <- p[,2]
+  p3 <- p[,3]
+  p4 <- p[,4]
+  cbind("0001" = (1-p1) * (1-p2) * (1-p3) * p4,
+        "0010" = (1-p1) * (1-p2) * p3 * (1-p4),
+        "0100" = (1-p1) * p2 * (1-p3) * (1-p4),
+        "1000" = p1 * (1-p2) * (1-p3) * (1-p4),
+        "0011" = (1-p1) * (1-p2) * p3 * p4,
+        "0101" = (1-p1) * p2 * (1-p3) * p4,
+        "0110" = (1-p1) * p2 * p3 * (1-p4),
+        "1010" = p1 * (1-p2) * p3 * (1-p4),
+        "1001" = p1 * (1-p2) * (1-p3) * p4,
+        "1100" = p1 * p2 * (1-p3) * (1-p4),
+        "0111" = (1-p1) * p2 * p3 * p4,
+        "1011" = p1 * (1-p2) * p3 * p4,
+        "1101" = p1 * p2 * (1-p3) * p4,
+        "1110" = p1 * p2 * p3 * (1-p4),
+        "1111" = p1 * p2 * p3 * p4)
+}
+
+o2y <- matrix(1, 4, 15)
+
+class(capSummary) <- "matrix"
+umf.cr1 <- unmarkedFrameMPois(y = capSummary, siteCovs = covs, piFun = "crPiFun", obsToY = o2y)
+crNull <- multinomPois(~1 ~1, umf.cr1, engine = "R")
+crDay <- multinomPois(~dayOfYear ~1, umf.cr1, engine = "R")
+crTemp <- multinomPois(~temp ~1, data = umf.cr1, engine = "R")
+crNoise <- multinomPois(~avgNoise ~1, data = umf.cr1, engine = "R")
+crMAS <- multinomPois (~mas ~1, data = umf.cr1, engine = "R")
+
+fmCRList <- list("crNull" = crNull, "crDay" = crDay, "crTemp" = crTemp,
+                      "crNoise" = crNoise, "crMAS" = crMAS)
+```
+
+Analyzing the data in mark-recapture format - that is, retaining the full encounter history for each individual - yielded similar results. The best-supported model again indicated an effect of day-of-the-year on availability (@tbl-crAIC).
+
+```{r}
+#| warning: false
+#| echo: false
+#| label: tbl-crAIC
+#| tbl-cap: Model selection results for mark-recapture analysis of Streaked Horned Lark detections during surveys in the Willamette Valley of Oregon, 2022.
+tableCRAIC <- aictab(cand.set = fmCRList, second.ord = T, sort = T)
+kable(as.data.frame(tableCRAIC), digits = 2, col.names = c("Model","No. parameters", "AICc", "Delta AICc", "Model likelihood", "AICc weight", "Log-likelihood", "Cum. weight"), caption = "Model selection results for removal analysis of Streaked Horned Lark detections during surveys in the Willamette Valley of Oregon, 2022.")
+```
+
+Availability for detection declined over the course of the season (@fig-dayOfYearEffectCR). The estimated probability of availability on the median day of surveys was 0.13 (SE = 0.05). Estimated abundance was 0.35 birds per km^2^ (SE = 0.06). Thus, both removal and mark-recapture models yield similar estimates of availability and abundance, with a slight gain in precision associated with use of the full encounter history.
+
+```{r}
+#| warning: false
+#| echo: false
+#| label: fig-dayOfYearEffectCR
+#| fig-cap: "Mark-recapture analyses indicated that Streaked Horned Lark availability declined over the course of the breeding season during surveys in the Willamette Valley of Oregon, 2022. Solid line is the predicted value of perceptibility and gray shaded area is the 95% confidence interval."
+#| fig-cap-location: bottom
+crPredictPdata <- data.frame(dayOfYear = seq(min(covs$dayOfYear), max(covs$dayOfYear), by = 1))
+crPredictP <- predict(crDay, type = "det", newdata = crPredictPdata, appendData = TRUE) 
+ggplot(data = crPredictP, aes(x = dayOfYear, y = Predicted)) +
+  geom_ribbon(aes(ymin = lower, ymax = upper), fill = "grey80", alpha = 0.5) + 
+  geom_line(aes(x = dayOfYear, y = Predicted), color = "black") + 
+  xlab("Day of year") + ylab ("Availability for detection") + 
+  theme_bw()
+
+```
+
+# Inference about overall detectability from distance sampling, removal models, and mark-recapture models.
+
+Assuming independence in the probabilities of availability and perceptibility, their product provides an estimate of overall average detectability: 0.14 (probability of availability) \* 0.06 (probability a lark is detected given that it sings) = 0.01. Because of the seasonal changes in both availability and perceptibility, detectability will be higher than this earlier in the year but lower later in the year. Estimates of abundance based on this value will likely be exceedingly high given the low estimated probability of detection.
+
+# Joint distance-sampling and removal models
+
+The hierarchical model of Amundson et al. [-@amundson2014] allows for a unified approach to estimating detectability via distance sampling and time-removal models. I used a similar exploratory approach to constructing the model set, using day-of-year as a distance covariate given its strong support in the distance-sampling analysis. I then added each of the potential covariates to the time-removal portion of the model. For comparison, I also analyzed a null model and two models that included no covariates for the distance model but used time-of-day and time-of-year as covariates on the time-removal portion of the model. The best-supported model included an effect of day-of-year on the distance model and no covariates on the removal portion of the model. None of the covariates had especially strong effects on model fit, as the null model was only \~ 2 AIC points below the best-supported model.
+
+[Table 4: Model selection results for hierachical distance-sampling and time-removal models of Streaked Horned Lark detections during surveys in the Willamette Valley of Oregon, 2022. ]{style="text-align: center"}
+
+| Distance covariate | Removal covariate | AICc   | 𝞓AICc |
+|:------------------:|:-----------------:|--------|-------|
+|    Day-of-year     |        \-         | 296.45 | 0     |
+|    Day-of-year     |    Time-of-day    | 297.98 | 1.53  |
+|    Day-of-year     |    Day-of-year    | 298.04 | 1.59  |
+|    Day-of-year     |       Noise       | 298.44 | 1.99  |
+|    Day-of-year     |    Temperature    | 298.44 | 1.99  |
+|         \-         |        \-         | 298.66 | 2.21  |
+|         \-         |    Day-of-year    | 298.72 | 2.27  |
+|         \-         |    Time-of-day    | 300.09 | 3.64  |
+
+From the best model, the estimated probability of detecting a lark given that it sang was 0.06, the estimated probability of a lark being available given that it was present during the survey was 0.22, and the overall probability of detection was 0.01. This model yielded an abundance estimate of 37.7 larks per km^2^.
+
+# Discussion
+
+The obvious problem is the extremely low estimates of detectability. This is producing unreasonable abundance estimates. This is probably driven largely by the very small sample size and the relative paucity of detections. Hard to much with \~30 birds a year. Model fit is OK, though. Availability is probably the key driving factor and may be influencing also the apparent seasonal decline in perceptibility. Given the decline in both with day, can we start earlier? Also, probably need a way to increase our encounter rate.
