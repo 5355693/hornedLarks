@@ -83,15 +83,101 @@ div.csl-indent {
 <div class="cell">
 
 </div>
+<section id="encounter-rates" class="level1">
+<h1>Encounter rates</h1>
+<p>Streaked Horned Larks were detected at 13% (n = 28) of the 214 points surveyed in the Willamette Valley of Oregon in 2022 (<a href="#tbl-encounterRates">Table&nbsp;1</a>).</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="tbl-encounterRates" class="anchored">
+<table class="table table-sm table-striped">
+<caption>Table 1: Number of Streaked Horned Larks detected during surveys in the Willamette Valley of Oregon, 2022.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;">No.&nbsp;of larks detected</th>
+<th style="text-align: right;">No.&nbsp;of survey points</th>
+<th style="text-align: right;">Frequency</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">186</td>
+<td style="text-align: right;">0.87</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">0.06</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">0.04</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0.02</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.01</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p>However, encounter rates of singing males were slightly lower (<a href="#tbl-encounterRatesSingingMales">Table&nbsp;2</a>). This is significant because it determines the sample size for the distance-sampling analysis, which is generally conducted only on singing males.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="tbl-encounterRatesSingingMales" class="anchored">
+<table class="table table-sm table-striped">
+<caption>Table 2: Number of singing Streaked Horned Larks detected during surveys in the Willamette Valley of Oregon, 2022.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;">No.&nbsp;of singing larks detected</th>
+<th style="text-align: right;">No.&nbsp;of survey points</th>
+<th style="text-align: right;">Frequency</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">194</td>
+<td style="text-align: right;">0.91</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">0.06</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.01</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0.02</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
 <section id="estimating-perceptibility-of-singing-larks-with-distance-sampling" class="level1">
 <h1>Estimating perceptibility of singing larks with distance sampling</h1>
 <p>Distance sampling estimates the extent of the decline in an observer’s ability to detect a bird as a function of the distance between the observer and bird. This parameter, referred to here as perceptibility, estimates the probability of detecting a bird within the survey area given that it was present during the survey and that it made itself available for detection, for example by singing. It does not account for birds present but unavailable for detection, for example because they did not sing and remained out of view.</p>
-<p>Because distance sampling is sensitive to individual heterogeneity in the shape of the detection function, I adopted standard practice and limited this analysis to singing males. Non-singing males and females may have a different detection function (<a href="#tbl-sexAndCue">Table&nbsp;1</a>) and so including them in the analysis could introduce substantial bias. This decision reduces the sample size considerably; with a greater number of detections, models that include sex and detection type as covariates could be fit.</p>
+<p>Because distance sampling is sensitive to individual heterogeneity in the shape of the detection function, I adopted standard practice and limited this analysis to singing males. Non-singing males and females may have a different detection function (<a href="#tbl-sexAndCue">Table&nbsp;3</a>) and so including them in the analysis could introduce substantial bias. This decision reduces the sample size considerably; with a greater number of detections, models that include sex and detection type as covariates could be fit.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="tbl-sexAndCue" class="anchored">
 <table class="table table-sm table-striped">
-<caption>Table 1: Streaked Horned Lark detections by sex and cue during surveys in the Willamette Valley of Oregon, 2022.</caption>
+<caption>Table 3: Streaked Horned Lark detections by sex and cue during surveys in the Willamette Valley of Oregon, 2022.</caption>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Sex</th>
@@ -152,13 +238,13 @@ div.csl-indent {
 <div class="cell">
 
 </div>
-<p>I considered models in the distance-sampling analysis that included individual effects of four potential covariates on perceptibility: day of the year, ambient noise, temperature at the time of the survey, and time of day (quantified as the number of minutes after sunrise that the survey began). I also considered null models in which no covariates on perceptibility were included. I did not include any covariates on abundance, both because of sample size concerns and because we have yet to generate any covariates that might predict variation in abundance. I did not include models with more than one covariate due to the small sample size. I considered two suites of these individual-covariate models, one that assumed a half-normal (“hn”) detection function and one that assumed a hazard-rate (“ha”) detection function.</p>
-<p>The best-supported model in the distance-sampling analysis included an effect of day-of-the-year and a half-normal detection function (<a href="#tbl-distanceAIC">Table&nbsp;2</a>). Model fit was adequate (all P-values for goodness-of-fit testing &gt; 0.12). None of the other covariates had a strong influence on perceptibility. In general, the hazard-rate models performed no better than the half-normal models, but required estimating one additional parameter and so tended to rank beneath half-normal models by about 2 AIC values.</p>
+<p>I considered models in the distance-sampling analysis that included individual effects of four potential covariates on perceptibility: day of the year (“day”), ambient noise (“noise”), temperature at the time of the survey (“temp”), and time of day (quantified as the number of minutes after sunrise (“MAS”) that the survey began). I also considered null models in which no covariates on perceptibility were included. I did not include any covariates on abundance, both because of sample size concerns and because we have yet to generate any covariates that might predict variation in abundance. I did not include models with more than one covariate due to the small sample size. I considered two suites of these individual-covariate models, one that assumed a half-normal (“hn”) detection function and one that assumed a hazard-rate (“ha”) detection function.</p>
+<p>The best-supported model in the distance-sampling analysis included an effect of day-of-the-year and a half-normal detection function (<a href="#tbl-distanceAIC">Table&nbsp;4</a>). Model fit was adequate (all P-values for goodness-of-fit testing &gt; 0.12). None of the other covariates had a strong influence on perceptibility. In general, the hazard-rate models performed no better than the half-normal models, but required estimating one additional parameter and so tended to rank beneath half-normal models by about 2 AIC values.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="tbl-distanceAIC" class="anchored">
 <table class="table table-sm table-striped">
-<caption>Table 2: Model selection results for distance-sampling analysis of Streaked Horned Lark detections during surveys in the Willamette Valley of Oregon, 2022.</caption>
+<caption>Table 4: Model selection results for distance-sampling analysis of Streaked Horned Lark detections during surveys in the Willamette Valley of Oregon, 2022.</caption>
 <colgroup>
 <col style="width: 3%">
 <col style="width: 8%">
@@ -317,16 +403,16 @@ div.csl-indent {
 </section>
 <section id="estimating-availability-of-singing-larks-with-removal-models" class="level1">
 <h1>Estimating availability of singing larks with removal models</h1>
-<p>Availabiity is another component of detectability. Availability refers to the probability that a bird present in the count area during the survey produces a cue that can be detected by the observer. In this analysis, I estimated availability in two ways. First, by using a removal model, in which each individual detected is considered to have been removed from the population of individuals presents once it produces a cue that is detected by the observer. This approach does not retain the full encounter history generated by the time-of-detection survey method. As a supplement, therefore, I also estimated the probability of availability using the full encounter history for each detected individual (i.e., the series of zeros and ones that indicate whether an individual was observed during each of the 4 survey intervals). In both cases, I considered models with covariates for availability only; I did not consider covariates on abundance.</p>
+<p>Availabiity is another component of detectability. Availability refers to the probability that a bird present in the count area during the survey produces a cue that can be detected by the observer. In this analysis, I estimated availability in two ways. First, by using a removal model, in which each individual detected is considered to have been removed from the population of individuals present once it produces a cue that is detected by the observer. This approach does not retain the full encounter history generated by the time-of-detection survey method. As a supplement, therefore, I also estimated the probability of availability using the full encounter history for each detected individual (i.e., the series of zeros and ones that indicate whether an individual was observed during each of the 4 survey intervals). In both cases, I considered models with covariates for availability only; I did not consider covariates on abundance.</p>
 <div class="cell">
 
 </div>
-<p>The best-supported model of availability from the removal analysis indicated an effect of day-of-the-year on availability, although the improvement over the null model was minor (<a href="#tbl-removalAIC">Table&nbsp;3</a>).</p>
+<p>The best-supported model of availability from the removal analysis indicated an effect of day-of-the-year on availability (<a href="#tbl-removalAIC">Table&nbsp;5</a>).</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="tbl-removalAIC" class="anchored">
 <table class="table table-sm table-striped">
-<caption>Table 3: Model selection results for removal analysis of Streaked Horned Lark detections during surveys in the Willamette Valley of Oregon, 2022.</caption>
+<caption>Table 5: Model selection results for removal analysis of Streaked Horned Lark detections during surveys in the Willamette Valley of Oregon, 2022.</caption>
 <colgroup>
 <col style="width: 2%">
 <col style="width: 12%">
@@ -426,12 +512,12 @@ div.csl-indent {
 <div class="cell">
 
 </div>
-<p>Analyzing the data in mark-recapture format - that is, retaining the full encounter history for each individual - yielded similar results. The best-supported model again indicated an effect of day-of-the-year on availability (<a href="#tbl-crAIC">Table&nbsp;4</a>).</p>
+<p>Analyzing the data in mark-recapture format - that is, retaining the full encounter history for each individual - yielded similar results. The best-supported model again indicated an effect of day-of-the-year on availability (<a href="#tbl-crAIC">Table&nbsp;6</a>).</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="tbl-crAIC" class="anchored">
 <table class="table table-sm table-striped">
-<caption>Table 4: Model selection results for mark-recapture analysis of Streaked Horned Lark detections during surveys in the Willamette Valley of Oregon, 2022.</caption>
+<caption>Table 6: Model selection results for mark-recapture analysis of Streaked Horned Lark detections during surveys in the Willamette Valley of Oregon, 2022.</caption>
 <colgroup>
 <col style="width: 3%">
 <col style="width: 8%">
@@ -531,26 +617,79 @@ div.csl-indent {
 </section>
 <section id="inference-about-overall-detectability-from-distance-sampling-removal-models-and-mark-recapture-models." class="level1">
 <h1>Inference about overall detectability from distance sampling, removal models, and mark-recapture models.</h1>
-<p>Assuming independence in the probabilities of availability and perceptibility, their product provides an estimate of overall average detectability: 0.14 (probability of availability) * 0.06 (probability a lark is detected given that it sings) = 0.01. Because of the seasonal changes in both availability and perceptibility, detectability will be higher than this earlier in the year but lower later in the year. Estimates of abundance based on this value will likely be exceedingly high given the low estimated probability of detection.</p>
+<p>Assuming independence in the probabilities of availability and perceptibility, their product provides an ad-hoc estimate of overall average detectability on the median day of surveys: 0.14 (probability of availability) * 0.06 (probability a lark is detected given that it sings) = 0.01. Because of the seasonal changes in both availability and perceptibility, detectability will be higher than this earlier in the year but lower later in the year.</p>
 </section>
 <section id="joint-distance-sampling-and-removal-models" class="level1">
 <h1>Joint distance-sampling and removal models</h1>
-<p>The hierarchical model of Amundson et al. <span class="citation" data-cites="amundson2014">(<a href="#ref-amundson2014" role="doc-biblioref">2014</a>)</span> allows for a unified approach to estimating detectability via distance sampling and time-removal models. I evaluated the same set of univariate models considered in the previous analyses, with one exception: I also included an additional model with a day-of-year covariate for both the distance and removal processes. The null model, with no covariates on abundance or any component of detectability, was as well-supported as any of the covariate models.</p>
-<p>+---------------+---------------+--------------------+ | Fruit | Price | Advantages | +===============+===============+====================+ | Bananas | $1.34 | - built-in wrapper | | | | - bright color | +---------------+---------------+--------------------+ | Oranges | $2.10 | - cures scurvy | | | | - tasty | +---------------+---------------+--------------------+</p>
-<p>: Sample grid table.</p>
-<p>|Distance covariate|Removal covariate|AIC |Delta AIC|</p>
-<p>|__________________|_________________|______|_________|</p>
-<p>|Day-of-year |Day-of-year |298.04|0.00 |</p>
-<p>|Day-of-year | - |298.04|0.00 |</p>
-<p>| - | - |298.66|0.62 |</p>
-<p>|Temperature | - |300.05|2.01 |</p>
-<p>|Average noise | - |301.54|3.50 |</p>
-<dl>
-<dt>|Time-of-day | - |302.29|4.25 |</dt>
-<dd>
-<p>Model-selection results for hierachical distance-sampling and time-removal models of Streaked Horned Lark detectability and abundance from surveys conducted in summer 2022 in Oregon’s Willamette Valley. {#tbl-drAICTable}</p>
-</dd>
-</dl>
+<p>The hierarchical model of Amundson et al. <span class="citation" data-cites="amundson2014">(<a href="#ref-amundson2014" role="doc-biblioref">2014</a>)</span> allows for a unified approach to estimating detectability via distance sampling and time-removal models. I used a similar exploratory approach to constructing the model set, using day-of-year as a distance covariate given its strong support in the distance-sampling analysis. I then added each of the potential covariates to the time-removal portion of the model. For comparison, I also analyzed a null model and two models that included no covariates for the distance model but used time-of-day and time-of-year as covariates on the time-removal portion of the model. The best-supported model included an effect of day-of-year on the distance model and no covariates on the removal portion of the model. None of the covariates had especially strong effects on model fit, as the null model was only ~ 2 AIC points below the best-supported model.</p>
+<p><span style="text-align: center">Table 4: Model selection results for hierachical distance-sampling and time-removal models of Streaked Horned Lark detections during surveys in the Willamette Valley of Oregon, 2022.</span></p>
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Distance covariate</th>
+<th style="text-align: center;">Removal covariate</th>
+<th>AICc</th>
+<th>𝞓AICc</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Day-of-year</td>
+<td style="text-align: center;">-</td>
+<td>296.45</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Day-of-year</td>
+<td style="text-align: center;">Time-of-day</td>
+<td>297.98</td>
+<td>1.53</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Day-of-year</td>
+<td style="text-align: center;">Day-of-year</td>
+<td>298.04</td>
+<td>1.59</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Day-of-year</td>
+<td style="text-align: center;">Noise</td>
+<td>298.44</td>
+<td>1.99</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Day-of-year</td>
+<td style="text-align: center;">Temperature</td>
+<td>298.44</td>
+<td>1.99</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">-</td>
+<td>298.66</td>
+<td>2.21</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">Day-of-year</td>
+<td>298.72</td>
+<td>2.27</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">Time-of-day</td>
+<td>300.09</td>
+<td>3.64</td>
+</tr>
+</tbody>
+</table>
+<p>From the best model, the estimated probability of detecting a lark given that it sang was 0.06, the estimated probability of a lark being available given that it was present during the survey was 0.22, and the overall probability of detection was 0.01. This model yielded an abundance estimate of 37.7 larks per km<sup>2</sup>.</p>
+</section>
+<section id="discussion" class="level1">
+<h1>Discussion</h1>
+<p>Analysis of the 2022 data yielded very low estimates of detectability, which in turn leads to unreasonably high and imprecise estimates of abundance (raw counts are divided by the estimated detectability to yield an estimate of abundance; all things being equal, apparent abundance will increase as detectability declines). Model fit was adequate, however, which suggests that small sample size may be the primary driver of the apparently low detection rates. An important goal for subsequent years should be to increase the encounter rate, as only 10% of points surveyed yielded a singing male.</p>
+<p>Increasing the encounter rate could be accomplished via two approaches. First, these preliminary findings suggest that beginning and completing surveys earlier in the year may be beneficial because of the apparently steep decline in availability of larks later in the season. Surveying when singing is more frequent might increase encounter rates by avoiding false absences that arise when surveys yield no detections even though birds were present. Second, refining the definition of the sampling frame may help reduce the number of unoccupied points that are surveyed, although this assumes that points without lark detections in 2022 were unsuitable, rather than being suitable but unoccupied due to small population size.</p>
+<p>The time-removal and capture-recapture approaches to estimating availability and abundance performed equally well, with the time-removal models appearing somewhat less precise. However, the time-removal models are less demanding on field observers, and it might be worthwhile to consider whether the burden of tracking individual larks across time intervals is such that field methods should be simplified.</p>
 
 </section>
 

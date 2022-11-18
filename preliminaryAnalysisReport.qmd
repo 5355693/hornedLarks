@@ -18,7 +18,7 @@ library(ggpmisc)
 library(unmarked)
 library(AICcmodavg)
 library(ubms)
-
+library(knitr)
 # Review and organize data, changing formats and variable names as needed.
 #surveyData <- read_xlsx("~/Documents/GitHub/hornedLarks/WV_SurveyOutput.xlsx")
 surveyData <- read_csv("~/Documents/GitHub/hornedLarks/WV_SHLA_22.csv")
@@ -125,7 +125,47 @@ surveyData$encounterHistory <- paste(if_else(surveyData$Interval_1 == "None", 0,
 
 ```
 
-# Estimating perceptibility of singing larks with distance sampling
+# Encounter rates
+
+Streaked Horned Larks were detected at 13% (n = 28) of the 214 points surveyed in the Willamette Valley of Oregon in 2022 (@tbl-encounterRates).
+
+```{r}
+#| echo: false
+#| warning: false
+#| label: tbl-encounterRates
+#| tbl-cap: Number of Streaked Horned Larks detected during surveys in the Willamette Valley of Oregon, 2022.
+tableEncounterRates <-
+surveyData %>%
+  group_by(Site_ID) %>%
+  summarise(larksDetected = first(Number_Detected)) %>%
+  group_by(larksDetected) %>%
+  summarise(count = n()) %>%
+  mutate(freq = count/sum(count))
+
+kable(as.data.frame(tableEncounterRates), digits = 2, col.names = c("No. of larks detected", "No. of survey points", "Frequency"), caption = "Number of Streaked Horned Larks detected during surveys in the Willamette Valley of Oregon, 2022.")
+```
+
+However, encounter rates of singing males were slightly lower (@tbl-encounterRatesSingingMales). This is significant because it determines the sample size for the distance-sampling analysis, which is generally conducted only on singing males.
+
+```{r}
+#| echo: false
+#| warning: false
+#| label: tbl-encounterRatesSingingMales
+#| tbl-cap: Number of singing Streaked Horned Larks detected during surveys in the Willamette Valley of Oregon, 2022.
+tableEncounterRatesSingingMales <-
+surveyData %>%
+  mutate(singMale = ifelse(firstDet == "Singing", 1, 0)) %>%
+  mutate(singMale = ifelse(is.na(singMale), 0, singMale)) %>%
+group_by(Site_ID) %>%
+  summarise(larksDetected = sum(singMale)) %>%
+  group_by(larksDetected) %>%
+  summarise(count = n()) %>%
+  mutate(freq = count/sum(count))
+
+kable(as.data.frame(tableEncounterRatesSingingMales), digits = 2, col.names = c("No. of singing larks detected", "No. of survey points", "Frequency"), caption = "Number of singing Streaked Horned Larks detected during surveys in the Willamette Valley of Oregon, 2022.")
+```
+
+#  Estimating perceptibility of singing larks with distance sampling
 
 Distance sampling estimates the extent of the decline in an observer's ability to detect a bird as a function of the distance between the observer and bird. This parameter, referred to here as perceptibility, estimates the probability of detecting a bird within the survey area given that it was present during the survey and that it made itself available for detection, for example by singing. It does not account for birds present but unavailable for detection, for example because they did not sing and remained out of view.
 
@@ -136,8 +176,6 @@ Because distance sampling is sensitive to individual heterogeneity in the shape 
 #| warning: false
 #| label: tbl-sexAndCue
 #| tbl-cap: Streaked Horned Lark detections by sex and cue during surveys in the Willamette Valley of Oregon, 2022.
-
-
 tableSexAndCue <- surveyData %>%
   filter(!is.na(Sex)) %>%
   select(Sex, Lark_ID, Interval_1, Interval_2, Interval_3, Interval_4) %>%
@@ -147,7 +185,7 @@ tableSexAndCue <- surveyData %>%
   summarise(firstDet = first(detection)) %>%
   group_by(Sex, firstDet) %>%
   summarise(numDetected = n())
-library(knitr)
+
 kable(as.data.frame(tableSexAndCue), col.names = c("Sex", "Detection type", "Number"), caption = "Streaked Horned Lark detections by sex and cue during surveys in the Willamette Valley of Oregon, 2022.")
 
 ```
@@ -233,7 +271,7 @@ fmList <- list("haNull" = haNull, "haDay" = haDay, "haNoise" = haNoise, "haMAS" 
                "hnNull" = hnNull, "hnDay" = hnDay, "hnNoise" = hnNoise, "hnMAS" = hnMAS, "hnTemp" = hnTemp)
 ```
 
-I considered models in the distance-sampling analysis that included individual effects of four potential covariates on perceptibility: day of the year, ambient noise, temperature at the time of the survey, and time of day (quantified as the number of minutes after sunrise that the survey began). I also considered null models in which no covariates on perceptibility were included. I did not include any covariates on abundance, both because of sample size concerns and because we have yet to generate any covariates that might predict variation in abundance. I did not include models with more than one covariate due to the small sample size. I considered two suites of these individual-covariate models, one that assumed a half-normal ("hn") detection function and one that assumed a hazard-rate ("ha") detection function.
+I considered models in the distance-sampling analysis that included individual effects of four potential covariates on perceptibility: day of the year ("day"), ambient noise ("noise"), temperature at the time of the survey ("temp"), and time of day (quantified as the number of minutes after sunrise ("MAS") that the survey began). I also considered null models in which no covariates on perceptibility were included. I did not include any covariates on abundance, both because of sample size concerns and because we have yet to generate any covariates that might predict variation in abundance. I did not include models with more than one covariate due to the small sample size. I considered two suites of these individual-covariate models, one that assumed a half-normal ("hn") detection function and one that assumed a hazard-rate ("ha") detection function.
 
 The best-supported model in the distance-sampling analysis included an effect of day-of-the-year and a half-normal detection function (@tbl-distanceAIC). Model fit was adequate (all P-values for goodness-of-fit testing \> 0.12). None of the other covariates had a strong influence on perceptibility. In general, the hazard-rate models performed no better than the half-normal models, but required estimating one additional parameter and so tended to rank beneath half-normal models by about 2 AIC values.
 
@@ -294,7 +332,7 @@ With the low estimated perceptibility of larks, the resulting abundance estimate
 
 # Estimating availability of singing larks with removal models
 
-Availabiity is another component of detectability. Availability refers to the probability that a bird present in the count area during the survey produces a cue that can be detected by the observer. In this analysis, I estimated availability in two ways. First, by using a removal model, in which each individual detected is considered to have been removed from the population of individuals presents once it produces a cue that is detected by the observer. This approach does not retain the full encounter history generated by the time-of-detection survey method. As a supplement, therefore, I also estimated the probability of availability using the full encounter history for each detected individual (i.e., the series of zeros and ones that indicate whether an individual was observed during each of the 4 survey intervals). In both cases, I considered models with covariates for availability only; I did not consider covariates on abundance.
+Availabiity is another component of detectability. Availability refers to the probability that a bird present in the count area during the survey produces a cue that can be detected by the observer. In this analysis, I estimated availability in two ways. First, by using a removal model, in which each individual detected is considered to have been removed from the population of individuals present once it produces a cue that is detected by the observer. This approach does not retain the full encounter history generated by the time-of-detection survey method. As a supplement, therefore, I also estimated the probability of availability using the full encounter history for each detected individual (i.e., the series of zeros and ones that indicate whether an individual was observed during each of the 4 survey intervals). In both cases, I considered models with covariates for availability only; I did not consider covariates on abundance.
 
 ```{r}
 #| output: false
@@ -355,7 +393,7 @@ fmRemovalList <- list("removalNull" = removalNull, "removalDay" = removalDay, "r
                "removalNoise" = removalNoise, "removalMAS" = removalMAS)
 ```
 
-The best-supported model of availability from the removal analysis indicated an effect of day-of-the-year on availability, although the improvement over the null model was minor (@tbl-removalAIC).
+The best-supported model of availability from the removal analysis indicated an effect of day-of-the-year on availability (@tbl-removalAIC).
 
 ```{r}
 #| warning: false
@@ -471,13 +509,13 @@ ggplot(data = crPredictP, aes(x = dayOfYear, y = Predicted)) +
 
 # Inference about overall detectability from distance sampling, removal models, and mark-recapture models.
 
-Assuming independence in the probabilities of availability and perceptibility, their product provides an estimate of overall average detectability: 0.14 (probability of availability) \* 0.06 (probability a lark is detected given that it sings) = 0.01. Because of the seasonal changes in both availability and perceptibility, detectability will be higher than this earlier in the year but lower later in the year. Estimates of abundance based on this value will likely be exceedingly high given the low estimated probability of detection.
+Assuming independence in the probabilities of availability and perceptibility, their product provides an ad-hoc estimate of overall average detectability on the median day of surveys: 0.14 (probability of availability) \* 0.06 (probability a lark is detected given that it sings) = 0.01. Because of the seasonal changes in both availability and perceptibility, detectability will be higher than this earlier in the year but lower later in the year.
 
 # Joint distance-sampling and removal models
 
 The hierarchical model of Amundson et al. [-@amundson2014] allows for a unified approach to estimating detectability via distance sampling and time-removal models. I used a similar exploratory approach to constructing the model set, using day-of-year as a distance covariate given its strong support in the distance-sampling analysis. I then added each of the potential covariates to the time-removal portion of the model. For comparison, I also analyzed a null model and two models that included no covariates for the distance model but used time-of-day and time-of-year as covariates on the time-removal portion of the model. The best-supported model included an effect of day-of-year on the distance model and no covariates on the removal portion of the model. None of the covariates had especially strong effects on model fit, as the null model was only \~ 2 AIC points below the best-supported model.
 
-[Table 4: Model selection results for hierachical distance-sampling and time-removal models of Streaked Horned Lark detections during surveys in the Willamette Valley of Oregon, 2022. ]{style="text-align: center"}
+[Table 4: Model selection results for hierachical distance-sampling and time-removal models of Streaked Horned Lark detections during surveys in the Willamette Valley of Oregon, 2022.]{style="text-align: center"}
 
 | Distance covariate | Removal covariate | AICc   | 𝞓AICc |
 |:------------------:|:-----------------:|--------|-------|
@@ -494,4 +532,8 @@ From the best model, the estimated probability of detecting a lark given that it
 
 # Discussion
 
-The obvious problem is the extremely low estimates of detectability. This is producing unreasonable abundance estimates. This is probably driven largely by the very small sample size and the relative paucity of detections. Hard to much with \~30 birds a year. Model fit is OK, though. Availability is probably the key driving factor and may be influencing also the apparent seasonal decline in perceptibility. Given the decline in both with day, can we start earlier? Also, probably need a way to increase our encounter rate.
+Analysis of the 2022 data yielded very low estimates of detectability, which in turn leads to unreasonably high and imprecise estimates of abundance (raw counts are divided by the estimated detectability to yield an estimate of abundance; all things being equal, apparent abundance will increase as detectability declines). Model fit was adequate, however, which suggests that small sample size may be the primary driver of the apparently low detection rates. An important goal for subsequent years should be to increase the encounter rate, as only 10% of points surveyed yielded a singing male.
+
+Increasing the encounter rate could be accomplished via two approaches. First, these preliminary findings suggest that beginning and completing surveys earlier in the year may be beneficial because of the apparently steep decline in availability of larks later in the season. Surveying when singing is more frequent might increase encounter rates by avoiding false absences that arise when surveys yield no detections even though birds were present. Second, refining the definition of the sampling frame may help reduce the number of unoccupied points that are surveyed, although this assumes that points without lark detections in 2022 were unsuitable, rather than being suitable but unoccupied due to small population size.
+
+The time-removal and capture-recapture approaches to estimating availability and abundance performed equally well, with the time-removal models appearing somewhat less precise. However, the time-removal models are less demanding on field observers, and it might be worthwhile to consider whether the burden of tracking individual larks across time intervals is such that field methods should be simplified.

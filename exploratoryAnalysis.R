@@ -123,6 +123,16 @@ surveyData %>%
   summarise(count = n()) %>%
   mutate(freq = count/sum(count))
 
+# Singing males only:
+surveyData %>%
+  mutate(singMale = ifelse(firstDet == "Singing", 1, 0)) %>%
+  mutate(singMale = ifelse(is.na(singMale), 0, singMale)) %>%
+group_by(Site_ID) %>%
+  summarise(larksDetected = sum(singMale)) %>%
+  group_by(larksDetected) %>%
+  summarise(count = n()) %>%
+  mutate(freq = count/sum(count))
+
 # Test that we are summarizing correctly:
 unique(surveyData$surveyEvent) # = 214
 186+12+8+5+3 # = 215, from the summary table calculated lines 26-31
