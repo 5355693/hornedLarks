@@ -684,6 +684,7 @@ ggplot(data = as.data.frame(truncationComparison, aes(x = Day, y = p, group = tr
   xlab("Day of year") + ylab ("Probability of detection") + 
   scale_color_discrete(name = "Truncation distance (m)") + scale_fill_discrete(guide = "none")
 
+ggsave(filename = "~/Documents/GitHub/hornedLarks/truncationDistances.png")
 
 ## Distance model with STAN (won't run)
 umfDSSTAND <- unmarkedFrameDS(y = as.matrix(yDat), siteCovs = as.data.frame(covs),

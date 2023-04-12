@@ -1,0 +1,16 @@
+---
+title: "Effect of truncation distance on estimated perceptibility of Streaked Horned Larks"
+author: "John D. Lloyd"
+format: html
+editor: visual
+---
+
+# Estimating perceptibility of singing larks with distance sampling
+
+During the 2022 field season, observers recorded the distance to any Streaked Horned Larks that were detected. Distances were grouped into 4 bands: 0-25 m, 26-100 m, 101 - 200 m, and \> 200 m. To generate an estimate of detectability and abundance, we have to assign an outermost distance, beyond which we do not expect any detections to occur. In initial analyses, we used 400 m as the putative outer boundary as we did not expect observers to detect larks beyond this distance. The choice of an outermost distance should reflect the biology of the species, but the choice will also influence estimates of detectability and abundance. In general, estimates of detectability and abundance will decline as the outer boundary increases.
+
+Estimated detectability was surprisingly low based on initial analyses. One explanation was that our outer distance boundary was too far. To test this idea, I repeated the distance-sampling analyses with an assumed outermost detection distance of 300 m. I ran the same subset of models and used the same model-selection procedure to determine the best model. As expected, the ranking of models did not change, and the model that included a negative effect of day-of-the-year was ranked highest for both analyses.
+
+Estimated detectability was somewhat higher when I used 300 m as the outermost distance at which observers could detect a lark (Fig. 1). However, detectability was still lower than expected. On the median day of the season, the estimated probability of detecting a singing lark was 0.11 when I assumed an outer boundary of 300 m and was 0.06 when I assumed an outer boundary of 400 m. Thus, even though detectability estimates increased when we shortened the truncation distance, the best model still estimates that observers detect a small fraction of the birds available for detection during surveys.
+
+[![Fig. 1. Estimated perceptibility of Streaked Horned Larks was higher when a shorter truncation distance was used in distance-sampling models.](hornedLarks/truncationDistances.png)](#fig-truncDist)
