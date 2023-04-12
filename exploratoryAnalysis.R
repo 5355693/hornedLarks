@@ -92,7 +92,7 @@ surveyData$mas <- 60*((surveyData$Start_Time@hour + surveyData$Start_Time@minute
 rm(sunriseTimes)
 
 # Read in survey location and habitat data
-habitatData <- read_csv("tbl_survey_locations_exported_09_26_2022_pct_suitable_2021.csv")
+habitatData <- read_csv("~/Documents/GitHub/hornedLarks/tbl_survey_locations_exported_09_26_2022_pct_suitable_2021.csv")
 habitatData$Site_ID <- factor(habitatData$Site_ID)
 
 habitatAndSurveyData <-
@@ -577,6 +577,112 @@ parboot(hnDay, getD, nsim = 25, report = 1)
 
 backTransform(hnDay, type = "state")
 
+## Compare distance models if we use a different right truncation distance. In the above 
+## models, we assume that nothing is detected beyond 400m. During meetings, Beth Gardner
+## suggested that we look at a shorter truncation distance, as that might explain
+## why estimated p-hat is so low. Below, we repeat the distance analysis assuming a maximum detection
+## distance of 300 m
+
+dists300 <-
+  surveyData %>%
+  group_by(Site_ID) %>%
+  mutate(distance = ifelse(distanceBand == 1, 12.5,
+                           ifelse(distanceBand == 2, 61,
+                                  ifelse(distanceBand == 3, 150,
+                                         ifelse(distanceBand == 4, 250, NA))))) %>%
+  select(Site_ID, distance, Sex, firstDet) %>%
+  filter(!is.na(distance), firstDet == "Singing", Sex == "Male")
+
+## Note here that we need the "as.data.frame" argument because 'dists' is a tidyverse tibble, 
+## and unmarked doesn't seem to like tibbles. This forces it into a standard R data frame.
+yDat300 <- formatDistData(distData = as.data.frame(dists), distCol = "distance", transectNameCol = "Site_ID", 
+                       dist.breaks = c(0,25,100,200,300))
+
+
+umf300 <- unmarkedFrameDS(y = as.matrix(yDat300), siteCovs = as.data.frame(covs),
+                       survey = "point", dist.breaks = c(0,25,100,200,300), unitsIn = "m")
+summary(umf300)
+
+# Fitting models.
+# Half-normal
+hnNull300 <- distsamp(~1~1, umf300, keyfun = "halfnorm", output = "density", unitsOut = "kmsq")
+hnMAS300 <- distsamp(~mas ~1, umf300, keyfun = "halfnorm", output = "density", unitsOut = "kmsq")
+hnDay300 <- distsamp(~dayOfYear ~1, data = umf300, keyfun = "halfnorm", output = "density", unitsOut = "kmsq")
+hnNoise300 <- distsamp(~avgNoise ~1, data = umf300, keyfun = "halfnorm", output = "density", unitsOut = "kmsq")
+hnTemp300 <- distsamp(~temp ~1, data = umf300, keyfun = "halfnorm", output = "density", unitsOut = "kmsq")
+
+fmList300 <- list("hnNull" = hnNull300, "hnDay" = hnDay300, "hnNoise" = hnNoise300, "hnMAS" = hnMAS300, "hnTemp" = hnTemp300)
+tableDistanceAIC300 <- aictab(cand.set = fmList300, second.ord = T, sort = T)
+
+## Looking at detectability, we see a slight increase by truncating at 300 m v. 400 m.
+# calculating detection probability
+sig <- exp(coef(hnNull300, type="det"))
+ea <- 2*pi * integrate(grhn, 0, 300, sigma=sig)$value # effective area
+sqrt(ea / pi) # effective radius
+# detection probability == 0.14 (v. 0.08 w/400 m)
+ea / (pi*300^2)
+
+#Back-transformed detection probability for the average day of year
+sig <- backTransform(linearComb(hnDay300['det'], c(1, mean(covs$dayOfYear))))@estimate
+ea <- 2*pi * integrate(grhn, 0, 300, sigma=sig)$value # effective area
+sqrt(ea / pi) # effective radius
+# detection probability == 0.11 (v. 0.06 w/400 m)
+ea / (pi*300^2)
+
+# Graph the two hnDay models and compare.
+## First repeat the calculation for the hn400 model
+## Predict seasonal changes in P-hat
+## Loop function for calculating P-hat across days of the season
+distanceCovPred <- matrix(nrow = 24, ncol = 8) #create a matrix for output
+colnames(distanceCovPred) <- c("sigma", "ea", "er", "p","lowerCI", "upperCI", "Day", "truncationDist") #give the columns names
+for (i in 1:24) { #this loops through 24 days of the year to generate estimates of p-hat
+  distanceCovPred[[i,1]] <- backTransform(linearComb(hnDay['det'], c(1, i+157)))@estimate # this is a kludge to index days (i.e., lowest value = day 158)
+  distanceCovPred[[i,2]] <- 2*pi * integrate(grhn, 0, 400, sigma=distanceCovPred[[i,1]])$value # effective area
+  distanceCovPred[[i,3]] <- sqrt(distanceCovPred[[i,2]] / pi) # effective radius
+  distanceCovPred[[i,4]] <- distanceCovPred[[i,2]] / (pi*400^2) #detection probability
+  getPcovsL <- function(hnDay) { #this defines the function that 'parboot' will use
+    sig <- backTransform(linearComb(hnDay['det'], c(1, i+157)))@estimate
+    ea <- 2*pi * integrate(grhn, 0, 400, sigma=sig)$value # effective area
+    er <- sqrt(ea / pi) # effective radius
+    p <- ea / (pi*400^2) #detection probability
+    out <- c(p = p , er = er)
+  } #following lines are for pulling out upper and lower 95% Ci from bootstrap; parallel process didn't work, so had to set cores = 1
+  distanceCovPred[[i,5]] <- quantile(parboot(hnDay,getPcovsL, nsim = 100, report = 100, ncores = 1)@t.star[,1],probs = 0.025)
+  distanceCovPred[[i,6]] <- quantile(parboot(hnDay,getPcovsL, nsim = 100, report = 100, ncores = 1)@t.star[,1], probs = 0.975)
+}
+
+distanceCovPred[,7]<- seq(158, 181, 1)
+distanceCovPred[,8]<- 400
+
+#Repeat for model with a 300 m truncation distance
+distanceCovPred300 <- matrix(nrow = 24, ncol = 8) #create a matrix for output
+colnames(distanceCovPred300) <- c("sigma", "ea", "er", "p","lowerCI", "upperCI", "Day","truncationDist") #give the columns names
+for (i in 1:24) { #this loops through 24 days of the year to generate estimates of p-hat
+  distanceCovPred300[[i,1]] <- backTransform(linearComb(hnDay300['det'], c(1, i+157)))@estimate # this is a kludge to index days (i.e., lowest value = day 158)
+  distanceCovPred300[[i,2]] <- 2*pi * integrate(grhn, 0, 300, sigma=distanceCovPred300[[i,1]])$value # effective area
+  distanceCovPred300[[i,3]] <- sqrt(distanceCovPred300[[i,2]] / pi) # effective radius
+  distanceCovPred300[[i,4]] <- distanceCovPred300[[i,2]] / (pi*300^2) #detection probability
+  getPcovsL <- function(hnDay300) { #this defines the function that 'parboot' will use
+    sig <- backTransform(linearComb(hnDay300['det'], c(1, i+157)))@estimate
+    ea <- 2*pi * integrate(grhn, 0, 300, sigma=sig)$value # effective area
+    er <- sqrt(ea / pi) # effective radius
+    p <- ea / (pi*300^2) #detection probability
+    out <- c(p = p , er = er)
+  } #following lines are for pulling out upper and lower 95% Ci from bootstrap; parallel process didn't work, so had to set cores = 1
+  distanceCovPred300[[i,5]] <- quantile(parboot(hnDay300,getPcovsL, nsim = 100, report = 100, ncores = 1)@t.star[,1],probs = 0.025)
+  distanceCovPred300[[i,6]] <- quantile(parboot(hnDay300,getPcovsL, nsim = 100, report = 100, ncores = 1)@t.star[,1], probs = 0.975)
+}
+
+distanceCovPred300[,7]<- seq(158, 181, 1)
+distanceCovPred300[,8]<- 300
+
+truncationComparison <- rbind(distanceCovPred,distanceCovPred300)
+
+ggplot(data = as.data.frame(truncationComparison, aes(x = Day, y = p, group = truncationDist))) +
+  geom_ribbon(aes(y = p, x = Day, ymin = lowerCI, ymax = upperCI, fill = as.factor(truncationDist)), alpha = 0.5) + 
+  geom_line(aes(x = Day, y = p, group = truncationDist, color = as.factor(truncationDist))) + 
+  xlab("Day of year") + ylab ("Probability of detection") + 
+  scale_color_discrete(name = "Truncation distance (m)") + scale_fill_discrete(guide = "none")
 
 
 ## Distance model with STAN (won't run)

@@ -165,7 +165,7 @@ group_by(Site_ID) %>%
 kable(as.data.frame(tableEncounterRatesSingingMales), digits = 2, col.names = c("No. of singing larks detected", "No. of survey points", "Frequency"), caption = "Number of singing Streaked Horned Larks detected during surveys in the Willamette Valley of Oregon, 2022.")
 ```
 
-#  Estimating perceptibility of singing larks with distance sampling
+# Estimating perceptibility of singing larks with distance sampling
 
 Distance sampling estimates the extent of the decline in an observer's ability to detect a bird as a function of the distance between the observer and bird. This parameter, referred to here as perceptibility, estimates the probability of detecting a bird within the survey area given that it was present during the survey and that it made itself available for detection, for example by singing. It does not account for birds present but unavailable for detection, for example because they did not sing and remained out of view.
 
