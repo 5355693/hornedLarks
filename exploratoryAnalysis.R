@@ -603,6 +603,7 @@ umf300 <- unmarkedFrameDS(y = as.matrix(yDat300), siteCovs = as.data.frame(covs)
                        survey = "point", dist.breaks = c(0,25,100,200,300), unitsIn = "m")
 summary(umf300)
 
+
 # Fitting models.
 # Half-normal
 hnNull300 <- distsamp(~1~1, umf300, keyfun = "halfnorm", output = "density", unitsOut = "kmsq")
@@ -677,6 +678,13 @@ distanceCovPred300[,7]<- seq(158, 181, 1)
 distanceCovPred300[,8]<- 300
 
 truncationComparison <- rbind(distanceCovPred,distanceCovPred300)
+
+## Save some output for easier working on R-markdown documentation of this truncation analysis.
+write_csv(dists, file = "~/Documents/GitHub/hornedLarks/truncationDistanceAnalysis/dists.csv")
+write_csv(dists300, file = "~/Documents/GitHub/hornedLarks/truncationDistanceAnalysis/dists300.csv")
+write.csv(distanceCovPred, file = "~/Documents/GitHub/hornedLarks/truncationDistanceAnalysis/distanceCovPred.csv", row.names = FALSE)
+write.csv(distanceCovPred300, file = "~/Documents/GitHub/hornedLarks/truncationDistanceAnalysis/distanceCovPred300.csv", row.names = FALSE)
+write.csv(truncationComparison, file = "~/Documents/GitHub/hornedLarks/truncationDistanceAnalysis/truncationComparison.csv", row.names = FALSE)
 
 ggplot(data = as.data.frame(truncationComparison, aes(x = Day, y = p, group = truncationDist))) +
   geom_ribbon(aes(y = p, x = Day, ymin = lowerCI, ymax = upperCI, fill = as.factor(truncationDist)), alpha = 0.5) + 
@@ -919,4 +927,12 @@ ggplot(data = crPredictP, aes(x = dayOfYear, y = Predicted)) +
   theme_bw()
 
 
+truncationComparison <- 
+  read.csv(file = "/Users/johnlloyd/Documents/GitHub/hornedLarks/truncationDistanceAnalysis/truncationComparison.csv")
+truncationComparison <- truncationComparison[,-1]
 
+ggplot(data = truncationComparison, aes(x = Day, y = p, group = truncationDist)) +
+  geom_ribbon(aes(y = p, x = Day, ymin = lowerCI, ymax = upperCI, fill = as.factor(truncationDist)), alpha = 0.5) + 
+  geom_line(aes(x = Day, y = p, group = truncationDist, color = as.factor(truncationDist))) + 
+  xlab("Day of year") + ylab ("Probability of detection") + 
+  scale_color_discrete(name = "Truncation distance (m)") + scale_fill_discrete(guide = "none")
