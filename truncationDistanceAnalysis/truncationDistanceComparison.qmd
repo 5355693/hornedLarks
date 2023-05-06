@@ -39,3 +39,33 @@ Estimated detectability was somewhat higher when I used 300 m as the outermost d
 ## Reducing truncation distance without a empirical basis for doing so can bias estimates of perceptibility
 
 We do not know the actual furthest distance at which larks were detected in 2022; observers simply noted if they were more than 200 m away. As such, we have no basis for excluding any detections as we shrink the truncation distance, as in this analysis. That means that all detections in the outermost distance band are simply compressed into a narrower distance band, which in turn means that estimated pereceptibility must increase. The significance of this analysis is thus limited: it simply demonstrates that, all things being equal, reducing truncation distance without any corresponding change in detections increases estimated perceptibility. Importantly, this is not a biological phenomenon.
+
+# Lark distribution as a function of predicted habitat suitability
+```{r}
+#| label: fig-larkHabitat
+#| fig-cap: "Number of lark detections as a function of average predicted habitat quality at each point surveyed in 2022."
+#| warning: false
+#| echo: false
+#| error: false
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+
+shlaSpatial22 <- read_csv(file = "/Users/johnlloyd/Documents/GitHub/hornedLarks/tbl_all_potential_survey_sites_with_2022_results_04_06_2023.csv",
+                          col_select = c(61:77, 80:81),
+                          col_types = cols(.default = "n", 
+                                           recovery_zone = "f",
+                                           unique_ID = "f",
+                                           surveyed_2022 = "l"))
+
+shlaSpatial22 %>%
+  filter(surveyed_2022 == T) %>%
+  ggplot(., aes(x = four_year_avg_scaled, fill = as.factor(num_birds_2022))) + geom_dotplot(binwidth = 0.025) +
+  scale_y_continuous(labels=function(x)x*40) + 
+  labs(fill = "No. of larks detected",
+       x = "Scaled average habitat suitability",
+       y = "No. of points")
+```
+
+Habitat suitability at each point was predicted for 2017, 2018, 2020, and 2021. To explore the relationship between abundance of larks and predicted habitat suitablity, I plotted lark detections agasint the average maximum habitat suitability score across all yeaars at each point (@fig-larkHabitat).
