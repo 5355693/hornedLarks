@@ -9,20 +9,21 @@ library(ubms)
 
 # Review and organize data, changing formats and variable names as needed.
 #surveyData <- read_xlsx("~/Documents/GitHub/hornedLarks/WV_SurveyOutput.xlsx")
-surveyData <- read_csv("~/Documents/GitHub/hornedLarks/WV_SHLA_22.csv")
+surveyData <- read_csv("~/Documents/GitHub/hornedLarks/WV_SHLA_22_23.csv")
 names(surveyData)[1] <- 'surveyEvent'
+surveyData$surveyEvent <- factor(surveyData$surveyEvent)
 #surveyData$Count_Date <- mdy(surveyData$Count_Date)
 surveyData$Count_Date <- mdy(surveyData$Survey_Date)
 #surveyData$Start_Time <- hms(surveyData$Start_Time)
 surveyData$Start_Time <- hms(surveyData$Survey_Time)
-surveyData$Site_ID <- factor(surveyData$Site_ID)
+surveyData$Site_ID <- factor(surveyData$unique_ID)
 surveyData$Observer <- factor(surveyData$Observer)
 surveyData$Sky_Code <- factor(surveyData$Sky_Code, levels = c("0","1","2","3","4"), 
                               labels = c("Clear","Partly cloudy","Mostly cloudy","Fog or smoke","Drizzle"))
 surveyData$Sex <- factor(surveyData$Sex, levels = c("M","F","U"), labels = c("Male","Female","Unknown"))
 surveyData$Age <- factor(surveyData$Age, levels = c("A", "J"), labels = c("Adult", "Juvenile"))
 surveyData$`Distance Band` <- factor(surveyData$`Distance Band`)
-names(surveyData)[19] <- 'distanceBand'
+names(surveyData)[20] <- 'distanceBand'
 surveyData$Interval_1 <- ifelse(surveyData$Interval_1 == "X", NA, surveyData$Interval_1)
 surveyData$Interval_2 <- ifelse(surveyData$Interval_2 == "X", NA, surveyData$Interval_2)
 surveyData$Interval_3 <- ifelse(surveyData$Interval_3 == "X", NA, surveyData$Interval_3)
@@ -38,6 +39,8 @@ surveyData$Interval_4 <- factor(surveyData$Interval_4, levels = c("C","S","V"), 
                                   c("Calling", "Singing", "Visual"))
 
 surveyData$dayOfYear <- yday(surveyData$Count_Date) # create a day-of-year variable for analysis
+
+surveyData$surveyYear <- year(surveyData$Count_Date)
 
 ## Add a "first detected by..." column to survey data:
 surveyData <-
@@ -91,6 +94,9 @@ surveyData$mas <- 60*((surveyData$Start_Time@hour + surveyData$Start_Time@minute
 #clean up
 rm(sunriseTimes)
 
+##Write file to CSV for easier import to reporting markdown:
+write_csv(surveyData, file = "/Users/johnlloyd/Documents/GitHub/hornedLarks/surveyData.csv")
+
 # Read in survey location and habitat data
 habitatData <- read_csv("~/Documents/GitHub/hornedLarks/tbl_survey_locations_exported_09_26_2022_pct_suitable_2021.csv")
 habitatData$Site_ID <- factor(habitatData$Site_ID)
@@ -117,9 +123,9 @@ surveyData$encounterHistory <- paste(if_else(surveyData$Interval_1 == "None", 0,
 
 # Calculate the incidence of encounters:
 surveyData %>%
-  group_by(Site_ID) %>%
+  group_by(surveyYear, Site_ID) %>%
   summarise(larksDetected = first(Number_Detected)) %>%
-  group_by(larksDetected) %>%
+  group_by(surveyYear,larksDetected) %>%
   summarise(count = n()) %>%
   mutate(freq = count/sum(count))
 
@@ -127,9 +133,9 @@ surveyData %>%
 surveyData %>%
   mutate(singMale = ifelse(firstDet == "Singing", 1, 0)) %>%
   mutate(singMale = ifelse(is.na(singMale), 0, singMale)) %>%
-group_by(Site_ID) %>%
-  summarise(larksDetected = sum(singMale)) %>%
-  group_by(larksDetected) %>%
+  group_by(surveyYear, Site_ID) %>%
+  summarise(larksDetected = first(Number_Detected)) %>%
+  group_by(surveyYear,larksDetected) %>%
   summarise(count = n()) %>%
   mutate(freq = count/sum(count))
 
@@ -141,15 +147,17 @@ surveyData%>%
   summarise(count = n_distinct(surveyData$Site_ID))
 # plot lark detection frequencies
 detectionTable <- surveyData %>%
-  group_by(Site_ID) %>%
+  group_by(surveyYear,Site_ID) %>%
   summarise(`Larks detected` = first(Number_Detected)) %>%
-  group_by(`Larks detected`) %>%
+  group_by(surveyYear,`Larks detected`) %>%
   summarise(`No. of points` = n()) %>%
   mutate(`Frequency` = sprintf("%0.2f",`No. of points`/sum(`No. of points`)))
 
-ggplot(detectionTable, aes(x = `Larks detected`, y = `No. of points`)) + geom_col() + 
-  geom_text(aes(label = `No. of points`, vjust = -0.5)) + 
-  labs(x = "No. of larks detected at point", y = "No. of points") + 
+detectionTable$surveyYear <- factor(detectionTable$surveyYear)
+
+ggplot(detectionTable, aes(x = `Larks detected`, y = `No. of points`, fill = factor(surveyYear))) + geom_col(position = "dodge") + 
+  geom_text(aes(label = `No. of points`), vjust = -0.5, position = position_dodge(width = 1)) + 
+  labs(x = "No. of larks detected at point", y = "No. of points", fill = "Survey year") + 
   annotate("table", x = 4, y = 150, label = detectionTable)
 
 # Calculate the number of larks detected:
@@ -247,13 +255,14 @@ summary(mTimeOfDay)
 # check to see if date is related to detections
 surveyData %>%
   mutate(presence = ifelse(Number_Detected>0,1,0)) %>%
-  group_by(surveyEvent, Count_Date) %>%
-  summarise(dayOfYear = yday(Count_Date), presence = first(presence)) %>%
-  ggplot(.,aes(x = dayOfYear, y = presence, color = presence)) + geom_point() +
+  group_by(surveyEvent, Count_Date, surveyYear) %>%
+  summarise(dayOfYear = first(yday(Count_Date)), presence = first(presence)) %>%
+  ggplot(.,aes(x = dayOfYear, y = presence, color = presence)) + geom_point() + 
+  facet_grid(vars(surveyYear)) + 
   scale_y_continuous(name = "Larks present?", breaks = c(0,1), labels = c("No","Yes")) + 
   theme(legend.position = "none", panel.grid.minor.y = element_blank()) + 
   xlab("Day of the year") + coord_fixed(ratio = 20) + 
-  stat_smooth(method="glm", se=TRUE, method.args = list(family=binomial))
+  stat_smooth(method="glm", se=TRUE, method.args = list(family=binomial)) 
 
 mDayOfYear <- glm(present ~ dayOfYear, family = "binomial", data = surveyData)
 summary(mDayOfYear)
@@ -382,24 +391,24 @@ surveyData %>%
   ## THIS EXCLUDES ALL NON-SINGING MALES ##
 dists <-
   surveyData %>%
-  group_by(Site_ID) %>%
+  group_by(surveyEvent) %>%
   mutate(distance = ifelse(distanceBand == 1, 12.5,
                            ifelse(distanceBand == 2, 61,
                                   ifelse(distanceBand == 3, 150,
                                          ifelse(distanceBand == 4, 300, NA))))) %>%
-  select(Site_ID, distance, Sex, firstDet) %>%
+  select(surveyEvent, distance, Sex, firstDet) %>%
   filter(!is.na(distance), firstDet == "Singing", Sex == "Male")
 
 ## Note here that we need the "as.data.frame" argument because 'dists' is a tidyverse tibble, 
 ## and unmarked doesn't seem to like tibbles. This forces it into a standard R data frame.
-yDat <- formatDistData(distData = as.data.frame(dists), distCol = "distance", transectNameCol = "Site_ID", 
+yDat <- formatDistData(distData = as.data.frame(dists), distCol = "distance", transectNameCol = "surveyEvent", 
                        dist.breaks = c(0,25,100,200,400))
 
 ## Create a data frame of site-level covariates.
 covs <-
   surveyData %>%
-  group_by(Site_ID) %>%
-  summarise(site = first(Site_ID),
+  group_by(surveyEvent) %>%
+  summarise(site = first(surveyEvent),
             observer = first(Observer),
             temp = first(Temp),
             avgNoise = first(Avg_Noise),
@@ -410,7 +419,7 @@ covs <-
 umf <- unmarkedFrameDS(y = as.matrix(yDat), siteCovs = as.data.frame(covs),
                        survey = "point", dist.breaks = c(0,25,100,200,400), unitsIn = "m")
 summary(umf)
-hist(umf, freq = TRUE, xlab = "Distance (m)", main = "Streaked Horned Lark detections 2022", cex.lab = 0.8, cex.axis = 0.8)
+hist(umf, freq = TRUE, xlab = "Distance (m)", main = "Streaked Horned Lark detections 2022-2023", cex.lab = 0.8, cex.axis = 0.8)
 
 # Fitting models.
 # Half-normal, null
@@ -482,17 +491,17 @@ fmList <- list("haNull" = haNull, "haDay" = haDay, "haNoise" = haNoise, "haMAS" 
 tableDistanceAIC <- aictab(cand.set = fmList, second.ord = T, sort = T)
 
 # Goodness of fit
-fitstats <- function(hnDay) {
-  observed <- getY(hnDay@data)
-  expected <- fitted(hnDay)
-  resids <- residuals(hnDay)
+fitstats <- function(hnNull) {
+  observed <- getY(hnNull@data)
+  expected <- fitted(hnNull)
+  resids <- residuals(hnNull)
   sse <- sum(resids^2)
   chisq <- sum((observed - expected)^2 / expected)
   freeTuke <- sum((sqrt(observed) - sqrt(expected))^2)
   out <- c(SSE=sse, Chisq=chisq, freemanTukey=freeTuke)
   return(out)
 }
-(pb <- parboot(hnDay, fitstats, nsim=25, report=1))
+(pb <- parboot(hnNull, fitstats, nsim=25, report=1))
 
 ## Prediction and plotting
 ## Sigma for first day of year:
@@ -525,6 +534,14 @@ getP <- function(hnNull) {
 }
 
 parboot(hnNull, getP, nsim = 25, report = 1)
+
+## Estimating density with a parametric bootstrap
+getD <- function(hnNull) {
+  d <- backTransform(hnNull, type = "state")@estimate
+  return(d)
+}
+
+parboot(hnDay, getD, nsim = 25, report = 1)
 
 getPcovs <- function(hnDay) {
   sig <- backTransform(linearComb(hnDay['det'], c(1, median(covs$dayOfYear))))@estimate

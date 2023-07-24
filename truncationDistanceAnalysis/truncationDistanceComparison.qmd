@@ -3,7 +3,7 @@ title: "Effects of truncation distance on estimated perceptibility of Streaked H
 author: "John D. Lloyd"
 date: "5/1/2023"
 format:
-  html:
+  pdf:
     embed-resources: true
     toc: true
     toc-depth: 2
