@@ -1,0 +1,251 @@
+Field_ID,unique_ID,OffRoad_ID,OffRoad,Survey_Event_ID,Observer,Year,Survey_Date,Visit,Survey_Time,Wind,Temp,Sky_Code,Avg_Noise,Max_Noise,OVSP?,Site_Comments,Number_Detected,Lark_ID,Individual_ID,Sex,Age,Distance_1,Min_1,Min_2,Min_3,Min_4,Min_5,Min_6,Min_7,Min_8,Distance_2,Min_9,Min_10,Min_11,Min_12,Min_13,Min_14,Min_15,Min_16,Distance_3,Min_17,Min_18,Min_19,Min_20,Min_21,Min_22,Min_23,Min_24,PB_Distance_4,Min_25,Min_26,Min_27,PB_Distance_5,Min_28,Min_29,Min_30,Notes,UTM_X,UTM_Y
+24_0932-1,932,,0,617,LCM,2024,6/7/2024,1,7:56:00 AM,2,60,0,2,5,0,,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,484275.65,4921580
+24_1356-1,1356,,0,621,LCM,2024,6/7/2024,1,8:52:00 AM,3,64,0,3,5,0,,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,492043.46,4923810
+24_1356-2,1356,,0,644,KGG,2024,6/18/2024,2,5:31:00 AM,,44,0,,,0,,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,492043.46,4923810
+24_1376-1,1376,,0,618,LCM,2024,6/7/2024,1,6:16:00 AM,2,51,0,3,5,0,,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,484675.9,4910934
+24_1376-2,1376,,0,588,SHA,2024,6/17/2024,2,7:37:00 AM,,47,2,,,0,,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,484675.9,4910934
+24_1532,1532,,0,591,SHA,2024,6/17/2024,2,5:35:00 AM,,43,0,,,0,,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,499491.43,4901664.5
+24_1532-1,1532,,0,650,SHA,2024,5/21/2024,1,8:13:00 AM,,48,0,,,0,flock of RWBL hanging out,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,499491.43,4901664.5
+24_1816-1,1816,,0,620,LCM,2024,6/7/2024,1,6:58:00 AM,1,54,0,2,5,0,,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,484400.09,4914655
+24_1816-2,1816,,0,587,SHA,2024,6/17/2024,2,8:14:00 AM,,49,2,,,0,,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,484400.09,4914655
+24_2010,2010,,0,584,SHA,2024,6/18/2024,2,6:21:00 AM,,44,0,,,0,,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,502984.34,4913345.5
+24_2011-1,2011,,0,649,SHA,2024,5/21/2024,1,9:12:00 AM,,51,0,,,0,"large truck of chickens passed, had to move car missed 10:30-11 of count.",0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,502982.96,4913995.5
+24_2011-2,2011,,0,660,GRH,2024,6/18/2024,2,6:19:00 AM,,43,0,,,0,,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,502982.96,4913995.5
+24_2181-2,2181,,0,645,KGG,2024,6/18/2024,2,8:37:00 AM,,54,0,,,0,,1,760,1,M,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,250,X,X,S,,X,X,X,,479804.71,4981153
+24_2946,2946,,0,598,SHA,2024,6/6/2024,1,7:41:00 AM,,52,0,,,0,"xmas tree farm on both sides, E side < 1 m tall. Lots of loud cars passing limited hearing",0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,467512.25,4990869.5
+24_2946-2,2946,,0,614,KGG,2024,6/17/2024,2,6:45:00 AM,,56,2,,,0,,1,722,1,M,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,145,X,X,S,145,S,S,S,,467512.25,4990869.5
+24_3367,3367,,0,599,SHA,2024,6/6/2024,1,6:54:00 AM,,50,0,,,0,"Xmas tree farm and grass seed field, ~75 cars passed during count, very loud",5,694,1,M,A,,X,X,X,X,X,X,X,X,163,X,X,S,S,S,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,468050.65,4987719
+24_3367,3367,,0,599,SHA,2024,6/6/2024,1,6:54:00 AM,,50,0,,,0,"Xmas tree farm and grass seed field, ~75 cars passed during count, very loud",5,695,2,U,U,,X,X,X,X,X,X,X,X,145,X,X,X,X,X,C,X,X,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,468050.65,4987719
+24_3367,3367,,0,599,SHA,2024,6/6/2024,1,6:54:00 AM,,50,0,,,0,"Xmas tree farm and grass seed field, ~75 cars passed during count, very loud",5,696,3,U,U,,X,X,X,X,X,X,X,X,149,X,X,X,X,X,C,X,X,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,468050.65,4987719
+24_3367,3367,,0,599,SHA,2024,6/6/2024,1,6:54:00 AM,,50,0,,,0,"Xmas tree farm and grass seed field, ~75 cars passed during count, very loud",5,697,4,U,U,,X,X,X,X,X,X,X,X,155,X,X,X,X,X,V,X,X,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,468050.65,4987719
+24_3367,3367,,0,599,SHA,2024,6/6/2024,1,6:54:00 AM,,50,0,,,0,"Xmas tree farm and grass seed field, ~75 cars passed during count, very loud",5,698,5,U,U,,X,X,X,X,X,X,X,X,157,X,X,X,X,X,V,X,X,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,468050.65,4987719
+24_3367-2,3367,,0,613,KGG,2024,6/17/2024,2,7:36:00 AM,,48,2,,,0,,2,720,1,M,A,,X,X,X,X,X,X,X,X,148,X,S,S,S,S,X,S,X,152,X,X,X,X,X,X,X,S,152,S,S,S,,X,X,X,,468050.65,4987719
+24_3367-2,3367,,0,613,KGG,2024,6/17/2024,2,7:36:00 AM,,48,2,,,0,,2,721,2,M,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,210,X,S,X,X,X,S,S,S,170,S,S,S,,X,X,X,,468050.65,4987719
+24_3929-2,3929,,0,646,KGG,2024,6/18/2024,2,9:19:00 AM,,56,0,,,0,,4,765,1,M,A,148,V,V,V,X,S,S,S,S,249,S,X,X,X,X,X,V,X,298,X,X,X,V,V,V,X,V,313,V,V,X,304,V,V,V,,480412.09,4984778
+24_3929-2,3929,,0,646,KGG,2024,6/18/2024,2,9:19:00 AM,,56,0,,,0,,4,766,2,U,A,152,V,V,V,V,V,V,V,V,170,V,V,V,V,V,V,V,V,182,V,V,V,V,V,V,V,V,177,V,V,V,175,V,V,V,,480412.09,4984778
+24_3929-2,3929,,0,646,KGG,2024,6/18/2024,2,9:19:00 AM,,56,0,,,0,,4,767,3,U,A,225,X,X,V,X,X,X,V,V,178,X,X,V,V,V,V,V,V,182,V,V,V,V,V,V,V,V,177,V,V,V,175,V,V,V,,480412.09,4984778
+24_3929-2,3929,,0,646,KGG,2024,6/18/2024,2,9:19:00 AM,,56,0,,,0,,4,768,4,M,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,340,X,X,S,S,X,X,X,X,,X,X,X,,X,X,X,,480412.09,4984778
+24_4419,4419,,0,590,SHA,2024,6/17/2024,2,6:10:00 AM,,44,1,,,0,,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,498177.59,4903069
+24_4619,4619,,0,600,SHA,2024,6/6/2024,1,6:07:00 AM,,49,0,,,0,Xmas tree farm and filbert orchard,1,701,1,M,A,115,S,X,S,S,X,X,X,S,125,S,S,S,S,X,S,S,S,,X,X,X,X,X,X,X,X,,X,X,X,158,X,S,S,,473213.53,4982880.5
+24_4619-2,4619,,0,612,KGG,2024,6/17/2024,2,8:29:00 AM,,50,2,,,0,,1,719,1,M,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,170,S,S,S,,473213.53,4982880.5
+24_4882-1,4882,,0,625,KGG,2024,5/21/2024,1,10:02:00 AM,,53,2,,,0,,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,481293.34,4987728.5
+24_4909-1,4909,,0,651,SHA,2024,5/21/2024,1,7:20:00 AM,,45,0,,,0,"WEME in field, AMKE present min 12.",0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,499970.43,4904769
+24_5252,5252,,0,582,SHA,2024,6/18/2024,2,8:38:00 AM,,53,0,,,0,,2,667,1,M,A,,X,X,X,X,X,X,X,X,215,X,X,X,X,S,S,S,S,195,S,X,X,S,X,X,X,X,,X,X,X,,X,X,X,,477774.18,4889345
+24_5252,5252,,0,582,SHA,2024,6/18/2024,2,8:38:00 AM,,53,0,,,0,,2,668,1,M,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,280,S,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,477774.18,4889345
+24_5252-1,5252,,0,639,MLG,2024,6/6/2024,1,6:08:00 AM,,50,0,,,0,"Tall grass to s, short bunchy grass field with space between rows on n side",0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,477774.18,4889345
+24_5253,5253,,0,583,SHA,2024,6/18/2024,2,8:03:00 AM,,50,0,,,0,,1,669,1,M,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,189,X,X,S,,478423,4889367
+24_5253-1,5253,,0,638,MLG,2024,6/6/2024,1,6:44:00 AM,,51,0,,,0,"short bunchy grass field N of point, Tall grass to S",2,754,1,M,A,20,X,C,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,148,S,X,X,Birds flew over from S tall grass field - may be a dirt tract or other bare area not visible from roadside point,478423,4889367
+24_5253-1,5253,,0,638,MLG,2024,6/6/2024,1,6:44:00 AM,,51,0,,,0,"short bunchy grass field N of point, Tall grass to S",2,755,2,U,A,20,X,V,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,478423,4889367
+24_5354,5354,,0,589,SHA,2024,6/17/2024,2,6:48:00 AM,,45,1,,,0,,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,497696.53,4905385
+24_5383,5383,,0,585,SHA,2024,6/18/2024,2,5:28:00 AM,,43,0,,,0,,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,498531.25,4930203
+24_5463-2,5463,,0,661,GRH,2024,6/18/2024,2,7:37:00 AM,,48,0,,,0,,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,480577.56,4876518
+24_5576-1,5576,,0,626,KGG,2024,5/21/2024,1,8:48:00 AM,,50,1,,,0,,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,478619.43,4982348.5
+24_5576-2,5576,,0,643,KGG,2024,6/17/2024,2,10:07:00 AM,,54,2,,,0,,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,478619.43,4982348.5
+24_743-1,743,,0,640,MLG,2024,6/6/2024,1,5:23:00 AM,,48,0,,,0,Busy road next to airport. High grass in fields on both sides of point. Landowner stopped to ask what I was doing,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,483975.81,4883299.5
+24_9,9,,0,597,SHA,2024,6/6/2024,1,8:29:00 AM,,61,0,,,0,"2 m filbert on W, tall dense wheat to E, NOHA flew over in area while SHLA was singing",2,692,1,M,A,,X,X,X,X,X,X,X,X,187,X,S,S,S,S,S,S,S,232,X,X,X,X,X,S,S,S,,X,X,X,,X,X,X,,478280.12,4996115.5
+24_9,9,,0,597,SHA,2024,6/6/2024,1,8:29:00 AM,,61,0,,,0,"2 m filbert on W, tall dense wheat to E, NOHA flew over in area while SHLA was singing",2,693,2,U,U,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,39,X,X,C,,X,X,X,,478280.12,4996115.5
+24_9-2,9,,0,615,KGG,2024,6/17/2024,2,5:55:00 AM,,46,2,,,0,,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,478280.12,4996115.5
+24_932,932,,0,586,SHA,2024,6/17/2024,2,8:54:00 AM,,50,4,,,0,,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,484275.65,4921580
+24_936-2,936,,0,659,GRH,2024,6/18/2024,2,5:27:00 AM,,41,0,,,0,,4,792,1,M,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,78,X,S,S,X,X,X,X,X,51,S,V,V,35,V,V,V,,498527.75,4928601.5
+24_936-2,936,,0,659,GRH,2024,6/18/2024,2,5:27:00 AM,,41,0,,,0,,4,793,2,M,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,40,X,X,X,X,V,X,X,X,,X,X,X,,X,X,X,,498527.75,4928601.5
+24_936-2,936,,0,659,GRH,2024,6/18/2024,2,5:27:00 AM,,41,0,,,0,,4,794,3,M,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,40,X,X,X,X,V,X,X,X,,X,X,X,,X,X,X,,498527.75,4928601.5
+24_936-2,936,,0,659,GRH,2024,6/18/2024,2,5:27:00 AM,,41,0,,,0,,4,795,4,U,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,152,X,X,X,X,V,X,X,X,,X,X,X,,X,X,X,,498527.75,4928601.5
+24_958-1,958,,0,641,KGG,2024,6/18/2024,1,6:49:00 AM,,47,0,,,0,,1,756,1,M,A,48,X,X,S,S,S,S,S,X,160,S,X,X,X,S,X,X,X,210,X,X,X,X,X,S,X,X,,X,X,X,,X,X,X,,478142.43,4954433.5
+24_960-2,960,,0,642,KGG,2024,6/18/2024,2,7:26:00 AM,,50,0,,,0,noise code 2-3 during survey duration,3,757,1,M,A,110,S,S,S,S,S,X,X,S,115,S,S,X,S,S,S,X,S,170,X,X,X,X,S,S,X,X,,X,X,X,,X,X,X,,476853.34,4954326.5
+24_960-2,960,,0,642,KGG,2024,6/18/2024,2,7:26:00 AM,,50,0,,,0,noise code 2-3 during survey duration,3,758,2,M,A,98,S,S,S,S,S,S,S,S,102,S,S,S,S,S,S,S,S,105,S,S,S,S,S,S,S,X,,X,X,X,,X,X,X,,476853.34,4954326.5
+24_960-2,960,,0,642,KGG,2024,6/18/2024,2,7:26:00 AM,,50,0,,,0,noise code 2-3 during survey duration,3,759,3,M,A,160,S,S,S,S,S,S,S,X,120,S,X,S,S,S,S,S,S,130,S,S,S,S,S,S,S,S,130,S,X,S,135,S,S,S,,476853.34,4954326.5
+24_984-1,984,,0,624,KGG,2024,5/21/2024,1,7:32:00 AM,,44,1,,,0,,6,727,1,M,A,,X,X,X,X,X,X,X,X,62,X,S,S,V,V,V,V,V,37,V,V,V,V,V,V,V,V,34,V,V,V,23,V,V,V,,478237.96,4980342
+24_984-1,984,,0,624,KGG,2024,5/21/2024,1,7:32:00 AM,,44,1,,,0,,6,728,2,M,A,,X,X,X,X,X,X,X,X,55,X,X,X,X,X,X,V,V,57,V,V,X,X,V,X,X,X,,X,X,X,,X,X,X,,478237.96,4980342
+24_984-1,984,,0,624,KGG,2024,5/21/2024,1,7:32:00 AM,,44,1,,,0,,6,729,3,U,A,,X,X,X,X,X,X,X,X,65,X,X,X,X,X,X,X,C,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,478237.96,4980342
+24_984-1,984,,0,624,KGG,2024,5/21/2024,1,7:32:00 AM,,44,1,,,0,,6,730,4,U,A,,X,X,X,X,X,X,X,X,65,X,X,X,X,X,X,X,C,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,478237.96,4980342
+24_984-1,984,,0,624,KGG,2024,5/21/2024,1,7:32:00 AM,,44,1,,,0,,6,731,5,M,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,57,X,X,X,X,V,S,C,X,,X,X,X,,X,X,X,,478237.96,4980342
+24_984-1,984,,0,624,KGG,2024,5/21/2024,1,7:32:00 AM,,44,1,,,0,,6,732,6,F,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,17,X,C,V,16,V,V,V,,478237.96,4980342
+24_984-2,984,,0,630,KGG,2024,6/17/2024,2,9:24:00 AM,,53,2,,,0,,6,743,1,M,A,35,S,S,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,478237.96,4980342
+24_984-2,984,,0,630,KGG,2024,6/17/2024,2,9:24:00 AM,,53,2,,,0,,6,744,2,F,A,43,X,V,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,478237.96,4980342
+24_984-2,984,,0,630,KGG,2024,6/17/2024,2,9:24:00 AM,,53,2,,,0,,6,745,3,M,A,31,X,X,V,X,X,X,X,X,28,V,V,X,X,S,S,V,V,47,X,X,X,V,V,V,V,V,23,V,V,V,22,V,V,V,,478237.96,4980342
+24_984-2,984,,0,630,KGG,2024,6/17/2024,2,9:24:00 AM,,53,2,,,0,,6,746,4,F,A,31,X,X,V,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,478237.96,4980342
+24_984-2,984,,0,630,KGG,2024,6/17/2024,2,9:24:00 AM,,53,2,,,0,,6,747,5,M,A,76,X,X,X,X,S,S,S,S,22,S,S,X,S,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,478237.96,4980342
+24_984-2,984,,0,630,KGG,2024,6/17/2024,2,9:24:00 AM,,53,2,,,0,,6,748,6,U,A,,X,X,X,X,X,X,X,X,18,X,X,X,C,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,478237.96,4980342
+24_BS07-1,,BS07,1,627,KGG,2024,5/22/2024,1,9:48:00 AM,,49,4,,,0,wind code 4-2 during survey duration,1,733,1,M,A,76,S,V,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,4980083.05,479551.26
+24_BS07-2,,BS07,1,622,LCM,2024,6/6/2024,2,7:12:00 AM,1,54,0,1,2,0,Agricultural field,4,803,1,M,A,45,V,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,4980083.05,479551.26
+24_BS07-2,,BS07,1,622,LCM,2024,6/6/2024,2,7:12:00 AM,1,54,0,1,2,0,Agricultural field,4,804,2,M,A,62,C,S,V,S,S,S,X,C,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,4980083.05,479551.26
+24_BS07-2,,BS07,1,622,LCM,2024,6/6/2024,2,7:12:00 AM,1,54,0,1,2,0,Agricultural field,4,805,3,M,A,90,X,X,X,X,S,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,4980083.05,479551.26
+24_BS07-2,,BS07,1,622,LCM,2024,6/6/2024,2,7:12:00 AM,1,54,0,1,2,0,Agricultural field,4,806,4,M,A,,X,X,X,X,X,X,X,X,300,X,X,X,X,S,X,X,X,,X,X,X,X,X,X,X,X,300,S,X,X,,X,X,X,,4980083.05,479551.26
+24_BS08-1,,BS08,1,623,KGG,2024,5/22/2024,1,9:00:00 AM,,51,4,,,0,,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,4980083.05,479851.26
+24_BS08-2,,BS08,1,666,LCM,2024,6/6/2024,2,7:57:00 AM,1,58,0,2,,0,Agricultural field,1,808,1,M,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,220,X,X,X,X,X,X,S,X,,X,X,X,,X,X,X,,4980083.05,479851.26
+24_BS09-1,,BS09,1,667,LCM,2024,6/6/2024,1,6:14:00 AM,1,49,3,2,,0,Agricultural field,3,809,1,M,A,53,S,S,S,X,X,X,X,S,60,S,S,S,X,X,X,X,X,60,X,X,S,S,X,X,X,X,40,S,C,S,40,S,S,S,,4980383.05,479251.26
+24_BS09-1,,BS09,1,667,LCM,2024,6/6/2024,1,6:14:00 AM,1,49,3,2,,0,Agricultural field,3,810,2,M,A,94,S,S,S,S,S,X,X,X,122,X,S,S,S,S,X,X,X,122,X,X,X,X,X,S,S,S,60,X,C,X,50,X,V,X,,4980383.05,479251.26
+24_BS09-1,,BS09,1,667,LCM,2024,6/6/2024,1,6:14:00 AM,1,49,3,2,,0,Agricultural field,3,811,3,U,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,50,X,V,X,,4980383.05,479251.26
+24_BS10-1,,BS10,1,629,KGG,2024,5/22/2024,1,7:04:00 AM,,49,1,,,0,wind code 4-5 during survey duration,5,738,1,M,A,111,X,X,C,C,C,V,V,X,66,X,X,X,V,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,4981283.05,479401.26
+24_BS10-1,,BS10,1,629,KGG,2024,5/22/2024,1,7:04:00 AM,,49,1,,,0,wind code 4-5 during survey duration,5,739,2,F,A,64,X,X,X,X,V,C,X,X,74,X,X,X,X,V,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,4981283.05,479401.26
+24_BS10-1,,BS10,1,629,KGG,2024,5/22/2024,1,7:04:00 AM,,49,1,,,0,wind code 4-5 during survey duration,5,740,3,M,A,71,X,X,X,X,X,V,X,X,,X,X,X,X,X,X,X,X,155,X,X,X,V,X,X,V,V,78,V,V,V,55,V,V,V,,4981283.05,479401.26
+24_BS10-1,,BS10,1,629,KGG,2024,5/22/2024,1,7:04:00 AM,,49,1,,,0,wind code 4-5 during survey duration,5,741,4,U,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,155,X,X,X,V,X,X,X,X,,X,X,X,,X,X,X,,4981283.05,479401.26
+24_BS10-1,,BS10,1,629,KGG,2024,5/22/2024,1,7:04:00 AM,,49,1,,,0,wind code 4-5 during survey duration,5,742,5,U,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,155,X,X,X,V,X,X,X,X,,X,X,X,,X,X,X,,4981283.05,479401.26
+24_BS10-2,,BS10,1,668,LCM,2024,6/6/2024,2,9:27:00 AM,2,62,0,2,,0,"Agricultural field. Surveyed for 24 minutes, unable to load either playback due to service. Finished survey with no playback.",0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,4981283.05,479401.26
+24_BS11-1,,BS11,1,628,KGG,2024,5/22/2024,1,7:45:00 AM,,51,1,,,0,,4,734,1,M,A,79,C,C,C,S,V,X,C,C,87,C,S,S,V,S,S,S,S,72,X,X,C,X,X,X,X,X,,X,X,X,97,S,S,X,,4981283.05,479701.26
+24_BS11-1,,BS11,1,628,KGG,2024,5/22/2024,1,7:45:00 AM,,51,1,,,0,,4,735,2,U,A,79,C,C,C,C,V,X,C,C,87,C,X,X,X,X,V,X,X,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,4981283.05,479701.26
+24_BS11-1,,BS11,1,628,KGG,2024,5/22/2024,1,7:45:00 AM,,51,1,,,0,,4,736,3,U,A,21,V,V,C,C,C,X,X,X,32,X,X,X,X,X,V,X,X,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,4981283.05,479701.26
+24_BS11-1,,BS11,1,628,KGG,2024,5/22/2024,1,7:45:00 AM,,51,1,,,0,,4,737,4,M,A,57,X,X,C,C,C,V,V,X,57,S,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,41,V,S,V,22,V,V,V,,4981283.05,479701.26
+24_CA01,,CA01,1,594,SHA,2024,6/7/2024,2,7:00:00 AM,,54,0,,,0,,4,680,1,M,A,87,X,S,S,S,S,S,S,S,126,S,S,S,S,S,S,S,X,68,X,X,S,S,S,S,S,S,47,S,S,S,42,V,S,S,,4926383.05,476851.26
+24_CA01,,CA01,1,594,SHA,2024,6/7/2024,2,7:00:00 AM,,54,0,,,0,,4,681,2,M,A,104,X,S,S,S,S,S,S,X,153,X,X,X,X,S,S,X,X,,X,X,X,X,X,X,X,X,,X,X,X,130,S,S,S,,4926383.05,476851.26
+24_CA01,,CA01,1,594,SHA,2024,6/7/2024,2,7:00:00 AM,,54,0,,,0,,4,682,3,M,A,,X,X,X,X,X,X,X,X,250,X,X,S,S,X,X,X,X,200,X,X,X,X,X,S,X,X,200,X,S,S,230,X,S,S,,4926383.05,476851.26
+24_CA01,,CA01,1,594,SHA,2024,6/7/2024,2,7:00:00 AM,,54,0,,,0,,4,683,4,M,A,,X,X,X,X,X,X,X,X,220,X,X,X,X,X,X,X,S,220,X,S,X,X,X,X,X,X,,X,X,X,,X,X,X,,4926383.05,476851.26
+24_CA02,,CA02,1,595,SHA,2024,6/7/2024,2,6:16:00 AM,,52,0,,,0,,4,684,1,M,A,62,S,X,V,S,S,V,V,V,71,V,S,V,S,V,S,S,S,88,S,V,S,V,S,V,V,S,68,V,X,X,,X,X,X,,4926683.05,477151.26
+24_CA02,,CA02,1,595,SHA,2024,6/7/2024,2,6:16:00 AM,,52,0,,,0,,4,685,2,M,A,300,S,S,S,X,S,X,S,X,280,X,S,S,X,S,S,S,X,280,X,S,X,X,X,X,S,S,290,X,X,S,,X,X,X,,4926683.05,477151.26
+24_CA02,,CA02,1,595,SHA,2024,6/7/2024,2,6:16:00 AM,,52,0,,,0,,4,686,3,F,A,18,X,V,X,X,X,X,V,V,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,4926683.05,477151.26
+24_CA02,,CA02,1,595,SHA,2024,6/7/2024,2,6:16:00 AM,,52,0,,,0,,4,687,4,M,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,92,X,X,S,S,S,S,S,S,98,S,X,S,98,S,X,S,,4926683.05,477151.26
+24_CA03,,CA03,1,593,SHA,2024,6/7/2024,2,7:42:00 AM,,59,0,,,0,,5,675,1,M,A,182,S,S,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,4926833.05,476701.26
+24_CA03,,CA03,1,593,SHA,2024,6/7/2024,2,7:42:00 AM,,59,0,,,0,,5,676,2,U,A,40,X,X,C,X,X,X,C,X,52,X,X,X,C,X,X,X,X,,X,X,X,X,X,X,X,X,60,C,X,X,,X,X,X,,4926833.05,476701.26
+24_CA03,,CA03,1,593,SHA,2024,6/7/2024,2,7:42:00 AM,,59,0,,,0,,5,677,3,M,A,68,X,X,X,X,S,V,V,V,68,V,V,V,V,V,X,X,X,129,X,X,X,X,X,X,S,S,129,S,S,C,140,X,S,X,,4926833.05,476701.26
+24_CA03,,CA03,1,593,SHA,2024,6/7/2024,2,7:42:00 AM,,59,0,,,0,,5,678,4,M,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,163,X,S,S,X,X,X,X,X,,X,X,X,189,X,X,S,,4926833.05,476701.26
+24_CA03,,CA03,1,593,SHA,2024,6/7/2024,2,7:42:00 AM,,59,0,,,0,,5,679,5,M,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,230,S,S,S,,4926833.05,476701.26
+24_CA04,,CA04,1,596,SHA,2024,6/7/2024,2,5:35:00 AM,,52,0,,,0,pair of NOHA ~300m away at min 7 of count,3,689,1,M,A,51,S,S,S,S,S,S,X,X,73,C,S,X,S,X,S,S,X,84,X,X,S,S,S,S,S,S,84,S,S,C,87,S,S,S,,4926983.05,477601.26
+24_CA04,,CA04,1,596,SHA,2024,6/7/2024,2,5:35:00 AM,,52,0,,,0,pair of NOHA ~300m away at min 7 of count,3,690,2,M,A,117,X,S,S,S,S,S,X,X,101,S,X,X,X,X,X,X,X,93,X,S,S,X,S,X,X,X,,X,X,X,,X,X,X,,4926983.05,477601.26
+24_CA04,,CA04,1,596,SHA,2024,6/7/2024,2,5:35:00 AM,,52,0,,,0,pair of NOHA ~300m away at min 7 of count,3,691,3,M,A,,X,X,X,X,X,X,X,X,182,X,X,X,S,S,S,S,S,262,S,S,S,S,V,V,S,V,262,V,V,X,115,X,X,C,,4926983.05,477601.26
+24_CA07,,CA07,1,592,SHA,2024,6/7/2024,2,8:37:00 AM,,64,0,,,0,,5,670,1,M,A,195,X,X,X,X,X,S,S,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,4927733.05,476701.26
+24_CA07,,CA07,1,592,SHA,2024,6/7/2024,2,8:37:00 AM,,64,0,,,0,,5,671,2,M,A,,X,X,X,X,X,X,X,X,71,S,S,X,X,X,X,X,X,148,X,X,V,V,S,S,X,X,147,S,S,V,147,S,S,S,,4927733.05,476701.26
+24_CA07,,CA07,1,592,SHA,2024,6/7/2024,2,8:37:00 AM,,64,0,,,0,,5,672,3,M,A,,X,X,X,X,X,X,X,X,60,X,X,X,S,S,S,X,S,84,X,S,X,X,X,X,C,X,45,X,X,V,27,V,S,S,,4927733.05,476701.26
+24_CA07,,CA07,1,592,SHA,2024,6/7/2024,2,8:37:00 AM,,64,0,,,0,,5,673,4,F,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,41,X,X,X,X,V,V,V,X,48,V,V,V,38,X,V,V,,4927733.05,476701.26
+24_CA07,,CA07,1,592,SHA,2024,6/7/2024,2,8:37:00 AM,,64,0,,,0,,5,674,5,M,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,63,X,X,X,X,X,X,C,V,53,X,X,V,29,C,V,V,,4927733.05,476701.26
+24_CC01-2,,CC01,1,662,GRH,2024,6/18/2024,2,8:12:00 AM,,50,0,,,0,,1,796,1,M,A,,X,X,X,X,X,X,X,X,163,X,S,S,S,S,X,X,S,180,S,X,S,X,X,X,X,X,,X,X,X,,X,X,X,,4876733.05,480751.26
+24_CC02-1,,CC02,1,648,SHA,2024,5/22/2024,1,7:13:00 AM,,51,2,,,0,"not exactly at point, water on both sides (15m off)",1,770,1,M,A,,X,X,X,X,X,X,X,X,177,X,X,X,X,X,X,X,S,148,S,S,X,X,S,X,X,X,127,V,X,X,,X,X,X,,4876883.05,480451.26
+24_CC03-2,,CC03,1,663,GRH,2024,6/18/2024,2,8:50:00 AM,,52,1,,,0,,2,797,1,M,A,124,X,X,X,C,V,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,208,X,S,X,,X,X,X,,4876883.05,481051.26
+24_CC03-2,,CC03,1,663,GRH,2024,6/18/2024,2,8:50:00 AM,,52,1,,,0,,2,798,2,M,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,64,C,S,S,83,S,S,S,,4876883.05,481051.26
+24_CC04-1,,CC04,1,647,SHA,2024,5/22/2024,1,7:51:00 AM,,52,1,,,0,Sun poked out at min 20; this is the same bird as detected at CC02.,1,769,1,M,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,159,X,X,X,X,S,S,S,X,,X,X,X,187,X,S,S,,4877033.05,480751.26
+24_CC04-2,,CC04,1,664,GRH,2024,6/18/2024,2,9:27:00 AM,,55,1,,,0,AMKE hunting,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,4877033.05,480751.26
+24_EW01-1,,EW01,1,637,MLG,2024,6/6/2024,1,8:25:00 AM,,57,0,,,0,survey point is on the dike of a full pond with tall grass on all sides + trees to south,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,4904333.05,498301.26
+24_EW01-2,,EW01,1,655,GRH,2024,6/17/2024,2,7:32:00 AM,,47,1,,,0,2 NOHA patrolling nearby throughout entire survey; no suitable habitat within range of detection; possible SHLA calls but indistinguishable in distance,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,4904333.05,498301.26
+24_EW02-1,,EW02,1,636,MLG,2024,6/6/2024,1,9:14:00 AM,,57,0,,,0,Bare tract below a circular pond. Tall grass to S and N,1,753,1,M,A,97,X,X,X,X,V,V,V,X,,X,X,X,X,X,X,X,X,105,X,S,S,X,X,X,X,X,100,C,X,X,,X,X,X,,4904333.05,498601.26
+24_EW02-2,,EW02,1,656,GRH,2024,6/17/2024,2,8:07:00 AM,,50,1,,,0,,4,786,1,M,A,194,S,S,S,S,S,S,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,152,S,X,S,85,S,S,X,,4904333.05,498601.26
+24_EW02-2,,EW02,1,656,GRH,2024,6/17/2024,2,8:07:00 AM,,50,1,,,0,,4,787,2,M,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,182,X,X,X,X,C,X,X,X,180,S,X,X,,X,X,X,,4904333.05,498601.26
+24_EW02-2,,EW02,1,656,GRH,2024,6/17/2024,2,8:07:00 AM,,50,1,,,0,,4,788,3,U,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,182,X,X,X,X,V,X,X,X,180,C,X,X,,X,X,X,,4904333.05,498601.26
+24_EW02-2,,EW02,1,656,GRH,2024,6/17/2024,2,8:07:00 AM,,50,1,,,0,,4,789,4,M,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,143,X,S,S,,X,X,X,,4904333.05,498601.26
+24_EW03-1,,EW03,1,635,MLG,2024,6/6/2024,1,9:50:00 AM,,59,0,,,0,Bare area. Heat shimmer is very strong,2,751,1,F,A,50,C,V,V,V,V,V,V,V,79,V,V,V,V,V,V,V,V,79,V,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,4904333.05,498901.26
+24_EW03-1,,EW03,1,635,MLG,2024,6/6/2024,1,9:50:00 AM,,59,0,,,0,Bare area. Heat shimmer is very strong,2,752,1,U,A,211,X,X,X,X,X,C,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,192,X,C,X,,4904333.05,498901.26
+24_EW03-2,,EW03,1,657,GRH,2024,6/17/2024,2,8:42:00 AM,,50,1,,,0,Flushed up 5 SHLA on walk between EW02 and EW03 that were not detectable in either survey; Male NOHA perching and calling 131m away,2,790,1,M,A,62,S,S,S,S,S,X,X,X,138,X,X,X,S,S,S,S,X,123,S,S,S,X,X,X,X,X,,X,X,X,,X,X,X,,4904333.05,498901.26
+24_EW03-2,,EW03,1,657,GRH,2024,6/17/2024,2,8:42:00 AM,,50,1,,,0,Flushed up 5 SHLA on walk between EW02 and EW03 that were not detectable in either survey; Male NOHA perching and calling 131m away,2,791,2,M,A,162,S,S,S,S,S,S,X,X,152,X,X,S,S,X,X,X,S,174,S,S,X,X,X,X,X,X,,X,X,X,,X,X,X,,4904333.05,498901.26
+24_EW04-1,,EW04,1,631,MLG,2024,6/7/2024,1,5:49:00 AM,,50,0,,,0,"Point is in 3 ft tall grass. Bare field to S, not visible from point",0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,4904483.05,499201.26
+24_EW04-2,,EW04,1,658,GRH,2024,6/17/2024,2,9:17:00 AM,,52,1,,,0,"No SHLA habitat visible from observation location; approached by landowner at minute 4, left at minute 8, truck drove within 110 meters of observation point.",0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,4904483.05,499201.26
+24_EW05-1,,EW05,1,634,MLG,2024,6/7/2024,1,7:57:00 AM,,60,0,,,0,,1,750,1,M,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,124,X,X,X,X,C,S,S,C,122,V,V,X,134,V,V,V,,4904633.05,498301.26
+24_EW05-2,,EW05,1,654,GRH,2024,6/17/2024,2,6:51:00 AM,,45,0,,,0,Bird 1 skylarking since EW07,6,780,1,M,A,279,S,S,S,X,X,X,X,X,,X,X,X,X,X,X,X,X,305,X,X,X,X,S,X,X,X,,X,X,X,,X,X,X,,4904633.05,498301.26
+24_EW05-2,,EW05,1,654,GRH,2024,6/17/2024,2,6:51:00 AM,,45,0,,,0,Bird 1 skylarking since EW07,6,781,2,M,A,143,X,S,S,S,X,X,X,X,204,X,X,S,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,4904633.05,498301.26
+24_EW05-2,,EW05,1,654,GRH,2024,6/17/2024,2,6:51:00 AM,,45,0,,,0,Bird 1 skylarking since EW07,6,782,3,M,A,71,X,X,X,X,X,V,S,S,70,C,S,S,V,X,X,X,S,64,V,S,V,V,S,V,V,S,7,V,S,X,,X,X,X,,4904633.05,498301.26
+24_EW05-2,,EW05,1,654,GRH,2024,6/17/2024,2,6:51:00 AM,,45,0,,,0,Bird 1 skylarking since EW07,6,783,4,U,A,64,X,X,X,X,X,V,X,V,75,V,C,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,5,V,X,X,,X,X,X,,4904633.05,498301.26
+24_EW05-2,,EW05,1,654,GRH,2024,6/17/2024,2,6:51:00 AM,,45,0,,,0,Bird 1 skylarking since EW07,6,784,5,M,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,11,V,X,X,,4904633.05,498301.26
+24_EW05-2,,EW05,1,654,GRH,2024,6/17/2024,2,6:51:00 AM,,45,0,,,0,Bird 1 skylarking since EW07,6,785,6,U,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,93,C,C,X,,4904633.05,498301.26
+24_EW06-1,,EW06,1,633,MLG,2024,6/7/2024,1,7:10:00 AM,,57,0,,,0,2 male larks in tilled path S of point after survey,1,749,1,M,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,75,X,V,X,,X,X,X,,4904633.05,498601.26
+24_EW06-2,,EW06,1,653,GRH,2024,6/17/2024,2,6:13:00 AM,,45,1,,,0,,7,773,1,M,A,40,S,S,S,S,S,X,X,X,55,X,X,S,S,S,X,S,S,100,X,X,X,X,S,X,X,S,68,S,S,S,73,S,X,X,,4904633.05,498601.26
+24_EW06-2,,EW06,1,653,GRH,2024,6/17/2024,2,6:13:00 AM,,45,1,,,0,,7,774,2,U,U,101,C,C,C,X,C,X,X,C,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,4904633.05,498601.26
+24_EW06-2,,EW06,1,653,GRH,2024,6/17/2024,2,6:13:00 AM,,45,1,,,0,,7,775,3,M,A,105,C,S,C,X,X,X,X,C,103,X,X,S,X,S,S,X,X,101,X,X,X,X,X,S,X,X,,X,X,X,,X,X,X,,4904633.05,498601.26
+24_EW06-2,,EW06,1,653,GRH,2024,6/17/2024,2,6:13:00 AM,,45,1,,,0,,7,776,4,M,A,,X,X,X,X,X,X,X,X,120,X,X,X,X,S,X,S,X,,X,X,X,X,X,X,X,X,,X,X,X,108,S,X,X,,4904633.05,498601.26
+24_EW06-2,,EW06,1,653,GRH,2024,6/17/2024,2,6:13:00 AM,,45,1,,,0,,7,777,5,M,A,,X,X,X,X,X,X,X,X,99,X,X,X,X,S,S,X,X,71,X,X,X,X,X,X,V,X,48,V,V,S,53,V,V,V,,4904633.05,498601.26
+24_EW06-2,,EW06,1,653,GRH,2024,6/17/2024,2,6:13:00 AM,,45,1,,,0,,7,778,6,U,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,71,X,X,X,X,X,X,V,X,,X,X,X,48,V,X,X,,4904633.05,498601.26
+24_EW06-2,,EW06,1,653,GRH,2024,6/17/2024,2,6:13:00 AM,,45,1,,,0,,7,779,7,U,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,47,V,X,X,,4904633.05,498601.26
+24_EW07-1,,EW07,1,632,MLG,2024,6/7/2024,1,6:30:00 AM,,53,0,,,0,,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,4904633.05,498901.26
+24_EW07-2,,EW07,1,652,GRH,2024,6/17/2024,2,5:35:00 AM,,44,1,,,0,NOHA within 300m,1,772,1,M,A,100,X,X,X,S,X,X,X,X,94,X,X,X,X,X,X,S,S,168,S,X,X,X,X,X,X,X,,X,X,X,87,X,X,S,,4904633.05,498901.26
+24_3929-1,3929,,0,669,GRH,2024,5/21/2024,1,9:41:00 AM,,58.8,2,,,0,,4,832,1,M,A,138,S,X,X,X,X,X,X,V,363,V,V,S,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,480412.09,4984778
+24_3929-1,3929,,0,669,GRH,2024,5/21/2024,1,9:41:00 AM,,58.8,2,,,0,,4,833,2,U,A,96,V,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,216,X,X,C,,X,X,X,,480412.09,4984778
+24_3929-1,3929,,0,669,GRH,2024,5/21/2024,1,9:41:00 AM,,58.8,2,,,0,,4,834,3,M,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,260,V,V,V,V,V,V,V,V,298,V,X,X,284,S,X,X,,480412.09,4984778
+24_3929-1,3929,,0,669,GRH,2024,5/21/2024,1,9:41:00 AM,,58.8,2,,,0,,4,835,4,F,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,240,V,V,V,V,V,X,X,X,,X,X,X,195,V,V,V,,480412.09,4984778
+24_2181-1,2181,,0,670,GRH,2024,5/21/2024,1,8:45:00 AM,,56.9,2,,,0,"AMCR foraging in plot, and 5 EUST",4,836,1,M,A,220,S,S,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,103,X,X,X,C,V,V,V,V,103,V,V,V,103,V,V,V,flight display at distance 1,479804.71,4981153
+24_2181-1,2181,,0,670,GRH,2024,5/21/2024,1,8:45:00 AM,,56.9,2,,,0,"AMCR foraging in plot, and 5 EUST",4,837,2,U,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,190,C,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,479804.71,4981153
+24_2181-1,2181,,0,670,GRH,2024,5/21/2024,1,8:45:00 AM,,56.9,2,,,0,"AMCR foraging in plot, and 5 EUST",4,838,3,M,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,162,S,S,X,flight display,479804.71,4981153
+24_2181-1,2181,,0,670,GRH,2024,5/21/2024,1,8:45:00 AM,,56.9,2,,,0,"AMCR foraging in plot, and 5 EUST",4,839,4,U,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,115,X,V,X,,479804.71,4981153
+24_3719-1,3719,,0,671,GRH,2024,5/21/2024,1,8:01:00 AM,,55.1,2,,,0,"PLOT ACTIVELY BEING TILLED beginning at minute 7; survey abandoned at 12 mins as tractor approached and birds were not detectable. Upon leaving, larks heard singing from the S side of the busy road.",1,840,1,M,A,158,X,S,X,X,X,V,X,X,148,S,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,479172.68,4977249
+24_3720-1,3720,,0,672,GRH,2024,5/21/2024,1,7:12:00 AM,,53.9,1,,,0,,4,841,1,M,A,47,S,S,S,X,X,X,X,X,78,X,X,X,V,S,V,S,V,76,V,V,V,X,X,X,X,X,,X,X,X,,X,X,X,,479676.78,4976838.5
+24_3720-1,3720,,0,672,GRH,2024,5/21/2024,1,7:12:00 AM,,53.9,1,,,0,,4,842,2,M,A,79,V,V,V,V,V,V,V,V,71,V,V,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,479676.78,4976838.5
+24_3720-1,3720,,0,672,GRH,2024,5/21/2024,1,7:12:00 AM,,53.9,1,,,0,,4,843,3,M,A,79,V,V,V,V,V,V,V,V,71,V,V,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,125,S,X,X,,479676.78,4976838.5
+24_3720-1,3720,,0,672,GRH,2024,5/21/2024,1,7:12:00 AM,,53.9,1,,,0,,4,844,4,F,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,66,V,V,V,X,X,X,X,X,,X,X,X,,X,X,X,,479676.78,4976838.5
+24_BS01-1,,BS01,1,673,GRH,2024,5/22/2024,1,6:59:00 AM,,49.7,1,,,0,,5,827,1,M,A,87,V,V,S,S,S,S,V,S,96,S,S,S,V,V,V,V,V,73,X,X,X,X,X,X,V,V,,X,X,X,144,S,X,X,,4976783.05,479851.26
+24_BS01-1,,BS01,1,673,GRH,2024,5/22/2024,1,6:59:00 AM,,49.7,1,,,0,,5,828,2,F,A,88,V,V,X,X,X,X,X,X,74,X,X,X,X,X,V,V,V,72,X,X,X,V,X,X,X,V,120,X,V,V,,X,X,X,,4976783.05,479851.26
+24_BS01-1,,BS01,1,673,GRH,2024,5/22/2024,1,6:59:00 AM,,49.7,1,,,0,,5,829,3,M,A,,X,X,X,X,X,X,X,X,192,X,X,X,C,V,X,X,X,167,X,X,V,X,X,X,V,X,,X,X,X,,X,X,X,,4976783.05,479851.26
+24_BS01-1,,BS01,1,673,GRH,2024,5/22/2024,1,6:59:00 AM,,49.7,1,,,0,,5,830,4,U,A,,X,X,X,X,X,X,X,X,192,X,X,X,X,V,X,X,X,169,X,X,C,X,X,X,V,X,,X,X,X,,X,X,X,,4976783.05,479851.26
+24_BS01-1,,BS01,1,673,GRH,2024,5/22/2024,1,6:59:00 AM,,49.7,1,,,0,,5,831,5,U,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,172,X,X,V,V,X,X,X,X,,X,X,X,167,X,X,V,,4976783.05,479851.26
+24_BS04-1,,BS04,1,674,GRH,2024,5/22/2024,1,9:55:00 AM,,52,2,,,0,Just rained.,1,826,1,M,A,104,X,X,X,X,X,X,S,X,91,S,S,S,S,S,S,S,S,97,S,V,X,X,X,X,X,X,128,S,S,X,,X,X,X,,4977383.05,479101.26
+24_BS03-1,,BS03,1,675,GRH,2024,5/22/2024,1,9:09:00 AM,,51,4,,,0,,1,825,1,M,A,106,X,X,X,S,S,S,S,S,92,X,X,X,X,X,S,S,X,30,X,X,X,S,S,S,V,X,,X,X,X,,X,X,X,,4977233.05,479401.26
+24_BS05-1,,BS05,1,676,GRH,2024,5/22/2024,1,8:24:00 AM,,54,1,,,0,,6,819,1,M,A,73,S,S,S,C,X,S,S,X,58,X,X,S,X,X,V,S,V,53,V,V,V,V,V,V,V,V,85,V,V,V,91,V,V,V,,4977383.05,479701.26
+24_BS05-1,,BS05,1,676,GRH,2024,5/22/2024,1,8:24:00 AM,,54,1,,,0,,6,820,2,M,A,104,X,X,X,S,X,X,X,X,107,X,S,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,4977383.05,479701.26
+24_BS05-1,,BS05,1,676,GRH,2024,5/22/2024,1,8:24:00 AM,,54,1,,,0,,6,821,3,M,A,112,S,X,X,X,X,X,X,X,116,X,S,X,S,X,S,X,X,102,S,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,4977383.05,479701.26
+24_BS05-1,,BS05,1,676,GRH,2024,5/22/2024,1,8:24:00 AM,,54,1,,,0,,6,822,4,M,A,,X,X,X,X,X,X,X,X,115,X,X,X,C,V,X,X,V,111,X,X,X,X,V,V,V,V,97,V,V,X,,X,X,X,,4977383.05,479701.26
+24_BS05-1,,BS05,1,676,GRH,2024,5/22/2024,1,8:24:00 AM,,54,1,,,0,,6,823,5,M,A,,X,X,X,X,X,X,X,X,115,X,X,X,C,V,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,4977383.05,479701.26
+24_BS05-1,,BS05,1,676,GRH,2024,5/22/2024,1,8:24:00 AM,,54,1,,,0,,6,824,6,F,A,,X,X,X,X,X,X,X,X,46,X,X,X,X,V,V,V,V,53,V,V,V,V,V,V,V,V,84,V,V,X,93,V,V,X,,4977383.05,479701.26
+24_BS02-1,,BS02,1,677,GRH,2024,5/22/2024,1,7:39:00 AM,,54,1,,,0,Precp and high winds in playback portion,7,812,1,M,A,51,V,S,S,S,S,X,S,S,73,C,X,V,S,V,V,V,V,173,X,X,S,X,V,X,X,X,,X,X,X,151,X,S,X,,4977083.05,479701.26
+24_BS02-1,,BS02,1,677,GRH,2024,5/22/2024,1,7:39:00 AM,,54,1,,,0,Precp and high winds in playback portion,7,813,2,M,A,145,S,S,S,S,X,C,V,X,73,X,X,V,S,S,S,S,S,158,S,S,S,S,X,X,X,X,,X,X,X,61,V,S,X,,4977083.05,479701.26
+24_BS02-1,,BS02,1,677,GRH,2024,5/22/2024,1,7:39:00 AM,,54,1,,,0,Precp and high winds in playback portion,7,814,3,M,A,108,S,S,S,S,S,X,X,S,73,X,X,V,S,S,S,S,S,115,S,S,S,S,S,S,S,X,59,X,X,S,101,V,S,X,,4977083.05,479701.26
+24_BS02-1,,BS02,1,677,GRH,2024,5/22/2024,1,7:39:00 AM,,54,1,,,0,Precp and high winds in playback portion,7,815,4,M,A,93,X,X,S,V,X,C,S,X,87,S,X,X,S,S,S,S,S,95,S,S,S,S,S,X,X,X,167,S,V,X,,X,X,X,,4977083.05,479701.26
+24_BS02-1,,BS02,1,677,GRH,2024,5/22/2024,1,7:39:00 AM,,54,1,,,0,Precp and high winds in playback portion,7,816,5,M,A,189,X,X,X,X,X,X,V,X,179,X,X,X,X,S,S,S,S,180,V,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,4977083.05,479701.26
+24_BS02-1,,BS02,1,677,GRH,2024,5/22/2024,1,7:39:00 AM,,54,1,,,0,Precp and high winds in playback portion,7,817,6,U,A,,X,X,X,X,X,X,X,X,111,V,V,X,X,X,X,X,X,70,V,X,X,X,X,X,C,C,,X,X,X,,X,X,X,,4977083.05,479701.26
+24_BS02-1,,BS02,1,677,GRH,2024,5/22/2024,1,7:39:00 AM,,54,1,,,0,Precp and high winds in playback portion,7,818,7,U,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,70,V,X,X,X,X,X,C,C,,X,X,X,,X,X,X,,4977083.05,479701.26
+24_4909-2,4909,,0,678,MLG,2024,6/7/2024,2,9:15:00 AM,,66,0,,,0,OVSP seen during survey,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,499970.43,4904769
+24_CC03-1,,CC03,1,680,EJB,2024,5/22/2024,1,8:26:00 AM,,51,1,,,0,"Heard a 2nd male singing after survey was over, in N side of Coyote Prairie. Songs sound different than SPS lark populations.",2,845,1,F,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,33,C,V,X,29,X,X,C,,4876883.05,481051.26
+24_CC03-1,,CC03,1,680,EJB,2024,5/22/2024,1,8:26:00 AM,,51,1,,,0,"Heard a 2nd male singing after survey was over, in N side of Coyote Prairie. Songs sound different than SPS lark populations.",2,846,2,M,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,76,X,S,S,15,V,V,V,,4876883.05,481051.26
+24_CC01-1,,CC01,1,681,EJB,2024,5/22/2024,1,7:48:00 AM,,50,2,,,0,,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,4876733.05,480751.26
+24_5463-1,5463,,0,682,EJB,2024,5/22/2024,1,7:03:00 AM,,48,2,,,0,,1,847,1,M,A,28,S,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,480577.56,4876518
+24_2010-1,2010,,0,683,EJB,2024,5/21/2024,1,9:09:00 AM,,53,0,,,0,,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,502984.34,4913345.5
+24_5354-1,5354,,0,684,EJB,2024,5/21/2024,1,7:15:00 AM,,46,0,,,0,,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,497696.53,4905385
+24_4419-1,4419,,0,685,EJB,2024,5/21/2024,1,8:09:00 AM,,50,0,,,0,,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,498177.59,4903069
+24_960-1,960,,0,686,EJB,2024,6/7/2024,1,9:41:00 AM,,66,0,,,0,Surprised no lark detections; seemed like suitable habitat--1st year hazelnut grove with bare ground.,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,476853.34,4954326.5
+24_BS01-2,,BS01,1,687,EJB,2024,6/6/2024,2,9:42:00 AM,,64,0,,,0,Both males previously recorded at 3720?,3,848,1,M,A,128,C,C,V,V,V,V,V,V,167,V,V,V,S,S,S,S,V,77,V,V,V,V,V,S,V,V,122,S,S,V,130,V,V,V,,4976783.05,479851.26
+24_BS01-2,,BS01,1,687,EJB,2024,6/6/2024,2,9:42:00 AM,,64,0,,,0,Both males previously recorded at 3720?,3,849,2,F,A,133,X,C,V,X,X,V,V,V,156,V,V,V,V,V,V,V,V,124,X,V,V,V,V,V,V,C,117,C,X,X,130,X,X,V,,4976783.05,479851.26
+24_BS01-2,,BS01,1,687,EJB,2024,6/6/2024,2,9:42:00 AM,,64,0,,,0,Both males previously recorded at 3720?,3,850,3,M,A,,X,X,X,X,X,X,X,X,190,X,X,X,X,X,X,S,X,179,S,X,X,X,S,S,S,S,174,X,S,X,,X,X,X,,4976783.05,479851.26
+24_3720-2,3720,,0,688,EJB,2024,6/6/2024,2,9:03:00 AM,,62,0,,,0,"Male bird #4 believed to have been recorded at previous point, BS03.",4,851,1,M,A,74,S,S,V,V,V,S,X,C,85,X,X,X,X,V,V,V,V,73,V,V,V,V,V,V,S,S,105,S,V,X,105,V,V,V,,479676.78,4976838.5
+24_3720-2,3720,,0,688,EJB,2024,6/6/2024,2,9:03:00 AM,,62,0,,,0,"Male bird #4 believed to have been recorded at previous point, BS03.",4,852,2,M,A,101,S,S,S,X,X,X,X,X,,X,X,X,X,X,X,X,X,104,X,X,X,X,X,X,S,S,90,S,X,X,186,X,X,V,,479676.78,4976838.5
+24_3720-2,3720,,0,688,EJB,2024,6/6/2024,2,9:03:00 AM,,62,0,,,0,"Male bird #4 believed to have been recorded at previous point, BS03.",4,853,3,F,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,78,X,V,V,V,V,V,V,X,,X,X,X,,X,X,X,,479676.78,4976838.5
+24_3720-2,3720,,0,688,EJB,2024,6/6/2024,2,9:03:00 AM,,62,0,,,0,"Male bird #4 believed to have been recorded at previous point, BS03.",4,854,4,M,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,97,X,X,S,,479676.78,4976838.5
+24_BS03-2,,BS03,1,689,EJB,2024,6/6/2024,2,8:17:00 AM,,59,0,,,0,Bird #5 believed to have been recorded at point 3719,5,855,1,M,A,88,S,S,X,C,S,S,C,X,147,X,X,X,X,X,S,S,S,111,S,S,S,S,S,X,X,S,179,X,S,S,,X,X,X,,4977233.05,479401.26
+24_BS03-2,,BS03,1,689,EJB,2024,6/6/2024,2,8:17:00 AM,,59,0,,,0,Bird #5 believed to have been recorded at point 3719,5,856,2,M,A,126,X,S,X,X,S,X,X,X,179,C,X,X,X,S,S,S,S,,X,X,X,X,X,X,X,X,82,X,S,S,240,X,X,C,,4977233.05,479401.26
+24_BS03-2,,BS03,1,689,EJB,2024,6/6/2024,2,8:17:00 AM,,59,0,,,0,Bird #5 believed to have been recorded at point 3719,5,857,3,M,A,,X,X,X,X,X,X,X,X,240,X,X,X,X,X,S,S,X,262,X,X,X,X,X,X,S,S,229,X,S,S,242,X,X,C,,4977233.05,479401.26
+24_BS03-2,,BS03,1,689,EJB,2024,6/6/2024,2,8:17:00 AM,,59,0,,,0,Bird #5 believed to have been recorded at point 3719,5,858,4,M,A,,X,X,X,X,X,X,X,X,128,X,X,X,X,X,X,S,S,137,S,S,S,S,S,S,X,S,120,X,S,S,,X,X,X,,4977233.05,479401.26
+24_BS03-2,,BS03,1,689,EJB,2024,6/6/2024,2,8:17:00 AM,,59,0,,,0,Bird #5 believed to have been recorded at point 3719,5,859,5,M,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,227,X,X,X,S,S,S,S,X,214,X,S,S,229,X,S,X,,4977233.05,479401.26
+24_3719-2,3719,,0,690,EJB,2024,6/6/2024,2,7:28:00 AM,,56,0,,,0,Birds 1&2 singing to each other from opposite sides of the highway. Traffic noise affected detectability.,2,860,1,M,A,68,S,S,X,S,S,S,S,S,57,X,S,S,X,S,S,X,S,62,X,S,S,S,S,S,X,X,,X,X,X,,X,X,X,,479172.68,4977249
+24_3719-2,3719,,0,690,EJB,2024,6/6/2024,2,7:28:00 AM,,56,0,,,0,Birds 1&2 singing to each other from opposite sides of the highway. Traffic noise affected detectability.,2,861,2,M,A,83,X,X,S,S,S,S,S,S,70,S,S,S,S,S,S,S,S,49,S,S,S,S,S,S,S,S,55,S,S,S,,X,X,X,,479172.68,4977249
+24_BS06-1,,BS06,1,691,EJB,2024,6/6/2024,1,5:42:00 AM,,49,0,,,0,"Bird #3 first heard at base of hill I was on and could not be seen, so exact distance will be off. Responded quick to playback.",5,862,1,M,A,17,S,C,C,V,V,V,V,V,30,V,V,V,V,X,X,C,X,,X,X,X,X,X,X,X,X,,X,X,X,66,S,X,X,,4978133.05,478201.26
+24_BS06-1,,BS06,1,691,EJB,2024,6/6/2024,1,5:42:00 AM,,49,0,,,0,"Bird #3 first heard at base of hill I was on and could not be seen, so exact distance will be off. Responded quick to playback.",5,863,2,F,A,15,X,V,C,C,X,X,X,V,30,V,V,V,V,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,4978133.05,478201.26
+24_BS06-1,,BS06,1,691,EJB,2024,6/6/2024,1,5:42:00 AM,,49,0,,,0,"Bird #3 first heard at base of hill I was on and could not be seen, so exact distance will be off. Responded quick to playback.",5,864,3,M,A,,X,X,X,X,X,X,X,X,82,X,X,X,X,X,S,X,S,75,S,S,S,S,S,S,X,X,46,V,S,S,33,S,S,V,,4978133.05,478201.26
+24_BS06-1,,BS06,1,691,EJB,2024,6/6/2024,1,5:42:00 AM,,49,0,,,0,"Bird #3 first heard at base of hill I was on and could not be seen, so exact distance will be off. Responded quick to playback.",5,865,4,M,A,,X,X,X,X,X,X,X,X,27,X,X,X,X,X,X,S,S,25,S,X,X,S,S,S,X,C,,X,X,X,,X,X,X,,4978133.05,478201.26
+24_BS06-1,,BS06,1,691,EJB,2024,6/6/2024,1,5:42:00 AM,,49,0,,,0,"Bird #3 first heard at base of hill I was on and could not be seen, so exact distance will be off. Responded quick to playback.",5,866,5,F,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,46,V,X,X,,X,X,X,,4978133.05,478201.26
+24_BS04-2,,BS04,1,692,EJB,2024,6/6/2024,2,6:50:00 AM,,53,0,,,0,Bird #1 was up over hill--could not get exact distance.,3,867,1,M,A,62,S,S,S,S,S,X,X,X,90,X,X,X,X,X,X,X,S,93,S,S,S,S,X,S,X,S,200,X,S,S,100,S,X,X,,4977383.05,479101.26
+24_BS04-2,,BS04,1,692,EJB,2024,6/6/2024,2,6:50:00 AM,,53,0,,,0,Bird #1 was up over hill--could not get exact distance.,3,868,2,M,A,84,S,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,138,X,X,X,S,V,S,S,S,155,S,S,S,139,S,S,S,,4977383.05,479101.26
+24_BS04-2,,BS04,1,692,EJB,2024,6/6/2024,2,6:50:00 AM,,53,0,,,0,Bird #1 was up over hill--could not get exact distance.,3,869,3,M,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,138,X,X,X,X,V,S,S,X,,X,X,X,,X,X,X,,4977383.05,479101.26
+24_2880-1,2880,,0,693,EJB,2024,6/7/2024,1,5:41:00 AM,,52,0,,,0,,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,478293.31,4925032.5
+24_5808-1,5808,,0,694,EJB,2024,6/7/2024,1,6:45:00 AM,,56,0,,,0,,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,486647.62,4928790
+24_5383-1,5383,,0,695,EJB,2024,6/7/2024,1,7:45:00 AM,,59,0,,,0,,2,870,1,F,A,108,X,X,X,X,X,X,V,V,112,V,V,V,V,V,V,V,V,108,V,V,V,V,V,V,V,X,,X,X,X,,X,X,X,,498531.25,4930203
+24_5383-1,5383,,0,695,EJB,2024,6/7/2024,1,7:45:00 AM,,59,0,,,0,,2,871,2,M,A,110,X,X,X,X,X,X,X,V,119,V,V,V,V,V,V,V,V,129,S,S,S,V,V,V,V,V,169,V,V,V,196,V,X,X,,498531.25,4930203
+24_936-1,936,,0,696,EJB,2024,6/7/2024,1,8:23:00 AM,,61,0,,,0,,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,498527.75,4928601.5
+24_CV01-1,,CA01,1,697,RPM,2024,5/30/2024,1,7:22:00 AM,,48,0,,,0,"All detections in period 3 are guesses as to ID. Too far away for me to sex, and not in the same place as 1st detections, probably same males",3,908,1,M,A,95,C,S,C,C,V,X,C,X,,X,X,X,X,X,X,X,X,140,X,X,X,X,X,V,V,V,,X,X,X,,X,X,X,,4926383.05,476851.26
+24_CV01-1,,CA01,1,697,RPM,2024,5/30/2024,1,7:22:00 AM,,48,0,,,0,"All detections in period 3 are guesses as to ID. Too far away for me to sex, and not in the same place as 1st detections, probably same males",3,909,2,M,A,95,C,C,C,C,V,X,C,V,,X,X,X,X,X,X,X,X,,X,X,X,X,X,S,X,X,,X,X,X,,X,X,X,,4926383.05,476851.26
+24_CV01-1,,CA01,1,697,RPM,2024,5/30/2024,1,7:22:00 AM,,48,0,,,0,"All detections in period 3 are guesses as to ID. Too far away for me to sex, and not in the same place as 1st detections, probably same males",3,910,3,U,A,,X,X,X,X,X,X,X,X,339,V,V,X,X,V,X,V,V,339,X,X,X,X,X,X,V,V,,X,X,X,,X,X,X,,4926383.05,476851.26
+24_CV03-2,,CA03,1,698,RPM,2024,5/30/2024,1,7:56:00 AM,,55,1,,,0,,5,903,1,M,A,200,X,X,X,X,X,X,X,S,200,X,S,S,S,X,X,X,X,200,X,S,X,X,X,X,X,X,200,X,S,S,200,S,S,S,,4926833.05,476701.26
+24_CV03-2,,CA03,1,698,RPM,2024,5/30/2024,1,7:56:00 AM,,55,1,,,0,,5,904,2,M,A,,X,X,X,X,X,X,X,X,120,S,S,X,X,X,C,S,X,120,X,X,X,S,S,S,X,X,,X,X,X,,X,X,X,,4926833.05,476701.26
+24_CV03-2,,CA03,1,698,RPM,2024,5/30/2024,1,7:56:00 AM,,55,1,,,0,,5,905,3,M,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,110,S,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,4926833.05,476701.26
+24_CV03-2,,CA03,1,698,RPM,2024,5/30/2024,1,7:56:00 AM,,55,1,,,0,,5,906,4,M,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,85,X,X,X,X,X,X,X,S,85,V,V,V,,X,X,X,,4926833.05,476701.26
+24_CV03-2,,CA03,1,698,RPM,2024,5/30/2024,1,7:56:00 AM,,55,1,,,0,,5,907,5,M,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,80,X,S,S,80,X,S,S,,4926833.05,476701.26
+24_CV04-2,,CA04,1,699,RPM,2024,5/30/2024,1,8:33:00 AM,,62,1,,,0,,5,898,1,M,A,100,S,S,S,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,4926983.05,477601.26
+24_CV04-2,,CA04,1,699,RPM,2024,5/30/2024,1,8:33:00 AM,,62,1,,,0,,5,899,2,M,A,110,X,X,S,S,S,S,X,X,,X,X,X,X,X,X,X,X,150,X,X,X,X,S,S,S,S,110,S,X,X,110,S,X,X,,4926983.05,477601.26
+24_CV04-2,,CA04,1,699,RPM,2024,5/30/2024,1,8:33:00 AM,,62,1,,,0,,5,900,3,U,A,400,X,X,X,X,X,X,V,V,400,V,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,439,X,V,V,439,V,V,V,,4926983.05,477601.26
+24_CV04-2,,CA04,1,699,RPM,2024,5/30/2024,1,8:33:00 AM,,62,1,,,0,,5,901,4,F,A,,X,X,X,X,X,X,X,X,30,X,X,X,C,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,4926983.05,477601.26
+24_CV04-2,,CA04,1,699,RPM,2024,5/30/2024,1,8:33:00 AM,,62,1,,,0,,5,902,5,M,A,,X,X,X,X,X,X,X,X,25,X,X,X,S,S,S,X,X,173,X,X,X,V,V,V,V,V,,X,X,X,,X,X,X,,4926983.05,477601.26
+24_CV02-1,,CA02,1,700,RPM,2024,5/30/2024,1,9:12:00 AM,,60,1,,,0,,3,894,1,M,A,,X,X,X,X,X,X,X,X,80,S,V,S,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,4926683.05,477151.26
+24_CV02-1,,CA02,1,700,RPM,2024,5/30/2024,1,9:12:00 AM,,60,1,,,0,,3,895,2,U,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,190,V,X,X,X,X,X,X,X,,X,X,X,128,S,S,V,,4926683.05,477151.26
+24_CV02-1,,CA02,1,700,RPM,2024,5/30/2024,1,9:12:00 AM,,60,1,,,0,,3,896,3,U,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,V,,X,X,X,,X,X,X,No Distance ever recorded on data sheet,4926683.05,477151.26
+24_CV07-1,,CA07,1,701,RPM,2024,6/1/2024,1,5:30:00 AM,,55,1,,,0,"Lark 7 not entered, since no distance data provided. ""What a firehose of larks. Very difficult to keep track of distances with this # of birds.""",6,888,1,M,A,180,S,S,S,S,S,S,S,S,180,S,S,S,S,S,V,X,X,200,S,S,S,S,S,S,S,S,,X,X,X,200,S,S,S,,4927733.05,476701.26
+24_CV07-1,,CA07,1,701,RPM,2024,6/1/2024,1,5:30:00 AM,,55,1,,,0,"Lark 7 not entered, since no distance data provided. ""What a firehose of larks. Very difficult to keep track of distances with this # of birds.""",6,889,2,M,A,200,S,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,200,S,S,X,,X,X,X,"Not written as male, presumed male since documented singing",4927733.05,476701.26
+24_CV07-1,,CA07,1,701,RPM,2024,6/1/2024,1,5:30:00 AM,,55,1,,,0,"Lark 7 not entered, since no distance data provided. ""What a firehose of larks. Very difficult to keep track of distances with this # of birds.""",6,890,3,M,A,20,V,V,V,S,X,V,X,X,50,C,V,V,S,X,X,X,X,50,S,X,X,X,X,X,X,S,,X,X,X,,X,X,X,,4927733.05,476701.26
+24_CV07-1,,CA07,1,701,RPM,2024,6/1/2024,1,5:30:00 AM,,55,1,,,0,"Lark 7 not entered, since no distance data provided. ""What a firehose of larks. Very difficult to keep track of distances with this # of birds.""",6,891,4,M,A,115,S,S,X,X,X,S,S,S,115,X,X,X,C,S,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,4927733.05,476701.26
+24_CV07-1,,CA07,1,701,RPM,2024,6/1/2024,1,5:30:00 AM,,55,1,,,0,"Lark 7 not entered, since no distance data provided. ""What a firehose of larks. Very difficult to keep track of distances with this # of birds.""",6,892,5,M,A,,X,X,X,X,X,X,X,X,200,X,X,X,X,X,X,S,S,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,4927733.05,476701.26
+24_CV07-1,,CA07,1,701,RPM,2024,6/1/2024,1,5:30:00 AM,,55,1,,,0,"Lark 7 not entered, since no distance data provided. ""What a firehose of larks. Very difficult to keep track of distances with this # of birds.""",6,897,6,M,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,S,X,X,,X,X,X,No distance ever recorded on data sheet,4927733.05,476701.26
+24_CV06-1,,CA06,1,702,RPM,2024,6/1/2024,1,7:41:00 AM,,60,2,,,0,,4,884,1,M,A,100,X,X,X,X,X,S,X,X,145,X,S,S,S,S,S,S,S,120,X,S,S,S,S,S,S,S,63,S,S,S,,X,X,X,,4927433.05,476701.26
+24_CV06-1,,CA06,1,702,RPM,2024,6/1/2024,1,7:41:00 AM,,60,2,,,0,,4,885,2,M,A,,X,X,X,X,X,X,X,X,170,X,X,X,X,X,V,X,X,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,4927433.05,476701.26
+24_CV06-1,,CA06,1,702,RPM,2024,6/1/2024,1,7:41:00 AM,,60,2,,,0,,4,886,3,F,A,,X,X,X,X,X,X,X,X,170,X,X,X,X,X,V,X,X,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,4927433.05,476701.26
+24_CV06-1,,CA06,1,702,RPM,2024,6/1/2024,1,7:41:00 AM,,60,2,,,0,,4,887,4,M,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,178,X,X,X,X,X,X,V,V,178,V,V,V,,X,X,X,,4927433.05,476701.26
+24_CV05-1,,CA05,1,703,RPM,2024,6/1/2024,1,8:48:00 AM,,65,0,,,0,"Single male was present just before count start, then absent until second round of playback. Continued singing after count finished.",1,883,1,M,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,96,S,S,S,,4927133.05,476851.26
+24_CV05-2,,CA05,1,704,RPM,2024,6/7/2024,2,6:01:00 AM,,58,0,,,0,,6,877,1,M,A,90,X,X,X,X,S,S,S,X,12,X,X,X,X,X,C,C,C,,X,X,X,X,X,X,X,X,,X,X,X,10,V,S,S,,4927133.05,476851.26
+24_CV05-2,,CA05,1,704,RPM,2024,6/7/2024,2,6:01:00 AM,,58,0,,,0,,6,878,2,M,A,,X,X,X,X,X,X,X,X,200,X,S,S,S,S,X,X,X,200,X,S,S,X,X,X,X,X,,X,X,X,,X,X,X,,4927133.05,476851.26
+24_CV05-2,,CA05,1,704,RPM,2024,6/7/2024,2,6:01:00 AM,,58,0,,,0,,6,879,3,M,A,,X,X,X,X,X,X,X,X,12,X,X,X,X,X,C,C,C,,X,X,X,X,X,X,X,X,,X,X,X,80,X,X,S,,4927133.05,476851.26
+24_CV05-2,,CA05,1,704,RPM,2024,6/7/2024,2,6:01:00 AM,,58,0,,,0,,6,880,4,U,A,,X,X,X,X,X,X,X,X,12,X,X,X,X,X,C,C,X,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,4927133.05,476851.26
+24_CV05-2,,CA05,1,704,RPM,2024,6/7/2024,2,6:01:00 AM,,58,0,,,0,,6,881,5,U,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,180,X,X,X,X,X,V,V,V,180,V,V,V,180,X,V,V,,4927133.05,476851.26
+24_CV05-2,,CA05,1,704,RPM,2024,6/7/2024,2,6:01:00 AM,,58,0,,,0,,6,882,6,U,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,220,X,X,X,X,X,V,V,X,,X,X,X,,X,X,X,,4927133.05,476851.26
+24_CV06-2,,CA06,1,705,RPM,2024,6/7/2024,2,7:16:00 AM,,63,0,,,0,,4,873,1,U,A,400,X,X,V,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,4927433.05,476701.26
+24_CV06-2,,CA06,1,705,RPM,2024,6/7/2024,2,7:16:00 AM,,63,0,,,0,,4,874,2,U,A,400,X,X,V,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,,X,X,X,,4927433.05,476701.26
+24_CV06-2,,CA06,1,705,RPM,2024,6/7/2024,2,7:16:00 AM,,63,0,,,0,,4,875,3,M,A,,X,X,X,X,X,X,X,X,64,X,X,S,S,S,S,S,S,64,V,V,V,S,X,X,X,X,90,X,S,V,90,V,S,S,,4927433.05,476701.26
+24_CV06-2,,CA06,1,705,RPM,2024,6/7/2024,2,7:16:00 AM,,63,0,,,0,,4,876,4,U,A,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,X,X,X,X,X,,X,X,X,110,X,V,X,,4927433.05,476701.26
