@@ -6,6 +6,10 @@ library(ggpmisc)
 library(unmarked)
 library(AICcmodavg)
 library(ubms)
+library(knitr)
+library(kableExtra)
+library(ggpmisc)
+library(ubms)
 
 # Review and organize data, changing formats and variable names as needed.
 #surveyData <- read_xlsx("~/Documents/GitHub/hornedLarks/WV_SurveyOutput.xlsx")
@@ -215,7 +219,9 @@ surveyData <- surveyData[-195,] # This row causes problems because it has remova
          
 ##Write file to CSV for easier import to reporting markdown:
 write_csv(surveyData, file = "/Users/johnlloyd/Documents/GitHub/hornedLarks/surveyData2024.csv")
-
+surveyData <- read.csv(file = "/Users/johnlloyd/Documents/GitHub/hornedLarks/surveyData2024.csv",
+                       header = TRUE,
+                       sep = ",")
 # Calculate the incidence of encounters:
 surveyData %>%
   group_by(Field_ID) %>% #109 unique survey locations in 2024
@@ -250,7 +256,7 @@ panel_names <- c(
 
 # Calculate the median detection distance (first only) for use as labels in the subsequent plot.
 medians <- surveyData %>%
-  select(Distance_1, Distance_2, Distance_3, PB_Distance_4, PB_Distance_5) %>%
+  select(Distance_1, Distance_2, Distance_3, PB_Distance_4, PB_Distance_5, Lark_ID) %>%
   pivot_longer(cols = c(Distance_1, Distance_2, Distance_3, PB_Distance_4, PB_Distance_5), names_to = "interval", values_to = "distance") %>%
   group_by(Lark_ID) %>%
   drop_na() %>%
@@ -260,7 +266,7 @@ medians <- surveyData %>%
 
 # Make and label the plot.
 surveyData %>%
-  select(Distance_1, Distance_2, Distance_3, PB_Distance_4, PB_Distance_5) %>%
+  select(Distance_1, Distance_2, Distance_3, PB_Distance_4, PB_Distance_5, Lark_ID) %>%
   pivot_longer(cols = c(Distance_1, Distance_2, Distance_3, PB_Distance_4, PB_Distance_5), names_to = "interval", values_to = "distance") %>%
   group_by(Lark_ID) %>%
   drop_na() %>%
@@ -272,6 +278,58 @@ surveyData %>%
             size = 3) + 
   labs(y = "No. of new detections", x = "Distance (m)")
 ggsave("/Users/johnlloyd/Documents/GitHub/hornedLarks/medianDetDistances.png", width = 6, height = 4, units = "in")
+
+# Break out by on- and off-road
+mediansOn <- surveyData %>%
+  filter(OffRoad == 0) %>%
+  select(Distance_1, Distance_2, Distance_3, PB_Distance_4, PB_Distance_5, Lark_ID) %>%
+  pivot_longer(cols = c(Distance_1, Distance_2, Distance_3, PB_Distance_4, PB_Distance_5), names_to = "interval", values_to = "distance") %>%
+  group_by(Lark_ID) %>%
+  drop_na() %>%
+  filter(row_number()==1) %>%
+  group_by(interval) %>%
+  summarize(median = round(median(distance),0))
+
+surveyData %>%
+  filter(OffRoad == 0) %>%
+  select(Distance_1, Distance_2, Distance_3, PB_Distance_4, PB_Distance_5, Lark_ID) %>%
+  pivot_longer(cols = c(Distance_1, Distance_2, Distance_3, PB_Distance_4, PB_Distance_5), names_to = "interval", values_to = "distance") %>%
+  group_by(Lark_ID) %>%
+  drop_na() %>%
+  filter(row_number()==1) %>%
+  group_by(interval) %>%
+  ggplot(., aes(x = distance)) + geom_histogram() + facet_wrap(vars(interval), labeller = as_labeller(panel_names)) + 
+  geom_vline(data = mediansOn, aes(xintercept=median), color = "red") + 
+  geom_text(data = mediansOn, aes(x = 290, y = 10, label = paste0("Median detection\ndistance: ", median," m")),
+            size = 3) + 
+  labs(y = "No. of new detections", x = "Distance (m)")
+ggsave("/Users/johnlloyd/Documents/GitHub/hornedLarks/medianDetDistancesOnRoad.png", width = 6, height = 4, units = "in")
+
+mediansOff <- surveyData %>%
+  filter(OffRoad == 1) %>%
+  select(Distance_1, Distance_2, Distance_3, PB_Distance_4, PB_Distance_5, Lark_ID) %>%
+  pivot_longer(cols = c(Distance_1, Distance_2, Distance_3, PB_Distance_4, PB_Distance_5), names_to = "interval", values_to = "distance") %>%
+  group_by(Lark_ID) %>%
+  drop_na() %>%
+  filter(row_number()==1) %>%
+  group_by(interval) %>%
+  summarize(median = round(median(distance),0))
+
+surveyData %>%
+  filter(OffRoad == 1) %>%
+  select(Distance_1, Distance_2, Distance_3, PB_Distance_4, PB_Distance_5, Lark_ID) %>%
+  pivot_longer(cols = c(Distance_1, Distance_2, Distance_3, PB_Distance_4, PB_Distance_5), names_to = "interval", values_to = "distance") %>%
+  group_by(Lark_ID) %>%
+  drop_na() %>%
+  filter(row_number()==1) %>%
+  group_by(interval) %>%
+  ggplot(., aes(x = distance)) + geom_histogram() + facet_wrap(vars(interval), labeller = as_labeller(panel_names)) + 
+  geom_vline(data = mediansOff, aes(xintercept=median), color = "red") + 
+  geom_text(data = mediansOff, aes(x = 290, y = 10, label = paste0("Median detection\ndistance: ", median," m")),
+            size = 3) + 
+  labs(y = "No. of new detections", x = "Distance (m)")
+ggsave("/Users/johnlloyd/Documents/GitHub/hornedLarks/medianDetDistancesOffRoad.png", width = 6, height = 4, units = "in")
+
 
 surveyData %>%
   select(firstInterval) %>%
@@ -429,6 +487,7 @@ prod(z) # overall probability of NOT detecting a bird
 1-prod(z) # overall probability of detecting a bird
 sum(t$dist[1,,])*(1-prod(z)) # combined perceptibility (distance) and availability (removal), so the probability of detecting a bird within 400 m given it sings within a 30-minute period.
 
+sum(t$rem[1,1:12,])
 ## Do this again but assuming only 1 visit.
 encountersSingle <-
   surveyData %>%
@@ -509,9 +568,14 @@ yRemoval1[is.na(yRemoval1)] <- 0
 yRemoval1 <- as.matrix(yRemoval1)
 
 ## Same for distances:
-distances.8 <- surveyData %>%
+distances.1 <- surveyData %>%
   group_by(Field_ID) %>%
-  mutate(firstDistance = ifelse(!is.na(Distance_1) & firstDet == "Singing", Distance_1, NA)) %>% 
+  filter(Visit == 1) %>%
+  mutate(firstDistance = ifelse(!is.na(Distance_1) & firstDet == "Singing", Distance_1, 
+                                ifelse(is.na(Distance_1)&!is.na(Distance_2) & firstDet == "Singing", Distance_2,
+                                       ifelse(is.na(Distance_1)&is.na(Distance_2)&!is.na(Distance_3) & firstDet == "Singing", Distance_3,
+                                              ifelse(is.na(Distance_1)&is.na(Distance_2)&is.na(Distance_3)&!is.na(PB_Distance_4) & firstDet == "Singing", PB_Distance_4,
+                                                     ifelse(is.na(Distance_1)&is.na(Distance_2)&is.na(Distance_3)&is.na(PB_Distance_4)&!is.na(PB_Distance_5) & firstDet == "Singing", PB_Distance_5, NA)))))) %>% 
   select(firstDet, firstDistance) %>% 
   mutate(distanceBand = case_when(
     between(firstDistance, 0, 50) ~ 1,
@@ -525,11 +589,11 @@ distances.8 <- surveyData %>%
               names_prefix = "yDist.") %>%
   select(Field_ID,yDist.1, yDist.2, yDist.3, yDist.4)
 
-yDistances.8 <- matrix(nrow = 109, ncol = 5)
-rownames(yDistances.8) <- distances.8$Field_ID
-yDistances.8 <- cbind(distances.8[,2:5])
+yDistances.1 <- matrix(nrow = 60, ncol = 5)
+rownames(yDistances.1) <- distances.1$Field_ID
+yDistances.1 <- cbind(distances.1[,2:5])
 #yDistances[is.na(yDistances)] <- 0
-yDistances.8 <- as.matrix(yDistances.8)
+yDistances.1 <- as.matrix(yDistances.1)
 
 ## Create the site covs for the single visit analysis:
 ## Create a data frame of site-level covariates.
@@ -544,7 +608,7 @@ covs.1 <-
             mas = first(mas))
 
 ## Create the unmarked frame for single visit analysis:
-umfDR.1 <- unmarkedFrameGDR(yDistance = as.matrix(yDistances1), yRemoval = yRemoval1, numPrimary = 1,
+umfDR.1 <- unmarkedFrameGDR(yDistance = as.matrix(yDistances.1), yRemoval = yRemoval1, numPrimary = 1,
                           siteCovs = covs.1, dist.breaks = c(0,50,100,200,400), unitsIn = "m")
 summary(umfDR.1)
 
@@ -562,6 +626,35 @@ z.1<-1-t.1$rem[1,,] #probability of NOT detecting a bird during each interval
 prod(z.1) # overall probability of NOT detecting a bird
 1-prod(z.1) # overall probability of detcting a bird
 sum(t.1$dist[1,,])*(1-prod(z.1)) # combined perceptibility (distance) and availability (removal), so the probability of detecting a bird within 400 m given it sings within a 30-minute period.
+1-prod(z.1[1:2])
+
+#The interval-by-interval change in overall detectability (availability):
+dt8 <- sapply(2:30, function(n) 1-prod(z.1[1:n])) # This takes the product of the first 2 intervals, first 3, so on.
+plot(seq(2,30,1),dt8,
+     xlab = "Duration of count (minutes)",
+     ylab = "Cumulative probability of detection") #plot
+
+dt8_df <- data.frame(Detectability = round(dt8,3), Minute = seq(2,30,1))
+
+dt8_df %>%
+  ggplot(., aes(x = Minute, y = Detectability)) + geom_point() + 
+  annotate(geom = 'table', x = 30, y = 0, label = list(dt8_df)) + 
+  labs(y = "Cumulative probability of detection", x = "Minute")
+ggsave("/Users/johnlloyd/Documents/GitHub/hornedLarks/detectabilityByMinute.pdf", width = 8, height = 8, units = "in")
+
+
+increment_dt8 <- dt8 %>%
+  as_tibble() %>%
+  mutate(diff = lead(value) - value) %>%
+  slice(1:(n()-1)) %>%
+  pull(diff)
+print(increment_dt8)
+
+
+op <- par(mar = c(5,7,4,2) + 0.1)
+plot(seq(2,29,1), increment_dt8,
+     xlab = "Interval start minute",
+     ylab = "Incremental increase in overall\nprobability of detection")
 
 ## Repeat for 2, 8-minute counts:
 encounters.8 <-
@@ -656,3 +749,145 @@ ppPB <- data.frame("detect" = c(0.0422962, 0.4285741, 0.2232033,0.1088672), "min
 ggplot(ppPB, aes(x = minute, y = detect)) + geom_col() + 
   labs(y = "Detectability (availability)", x = "Interval")
 ggsave("/Users/johnlloyd/Documents/GitHub/hornedLarks/passivePlayback.png", width = 6, height = 4, units = "in")
+
+# Compare detectability at on v. off-road counts for a 12-minute count. 
+# We cannot use the distance-removal models for this analysis because the counts for the distance
+# portion of the model will not match the counts for the removal portion of the model. This is
+# because the removal data are collected at 1-minute intervals, whereas the distance data are
+# collected at 8-minute intervals. Thus, with a 12-minute interval, any detections made during
+# the intervals between minute 12 and minute 16 will have a record for distance but not a record
+# for removal.
+encounters.12 <-
+  surveyData %>%
+  group_by(Field_ID) %>%
+  mutate(interval1 = ifelse(firstInterval == 1 & Sex == "Male" & firstDet == "Singing", 1, 0),
+         interval2 = ifelse(firstInterval == 2 & Sex == "Male" & firstDet == "Singing", 1, 0),
+         interval3 = ifelse(firstInterval == 3 & Sex == "Male" & firstDet == "Singing", 1, 0),
+         interval4 = ifelse(firstInterval == 4 & Sex == "Male" & firstDet == "Singing", 1, 0),
+         interval5 = ifelse(firstInterval == 5 & Sex == "Male" & firstDet == "Singing", 1, 0),
+         interval6 = ifelse(firstInterval == 6 & Sex == "Male" & firstDet == "Singing", 1, 0),
+         interval7 = ifelse(firstInterval == 7 & Sex == "Male" & firstDet == "Singing", 1, 0),
+         interval8 = ifelse(firstInterval == 8 & Sex == "Male" & firstDet == "Singing", 1, 0),
+         interval9 = ifelse(firstInterval == 9 & Sex == "Male" & firstDet == "Singing", 1, 0),
+         interval10 = ifelse(firstInterval == 10 & Sex == "Male" & firstDet == "Singing", 1, 0),
+         interval11 = ifelse(firstInterval == 11 & Sex == "Male" & firstDet == "Singing", 1, 0),
+         interval12 = ifelse(firstInterval == 12 & Sex == "Male" & firstDet == "Singing", 1, 0)) %>%
+  select(Sex, firstDet, Field_ID, interval1, interval2, interval3, interval4,
+         interval5, interval6, interval7, interval8, interval9, interval10, interval11, interval12) %>%
+  group_by(Field_ID) %>%
+  summarise(interval1 = sum(interval1), # this model wants summed # of birds per interval
+            interval2 = sum(interval2), # and has to match the distance data
+            interval3 = sum(interval3),
+            interval4 = sum(interval4),
+            interval5 = sum(interval5),
+            interval6 = sum(interval6),
+            interval7 = sum(interval7),
+            interval8 = sum(interval8),
+            interval9 = sum(interval9),
+            interval10 = sum(interval10),
+            interval11 = sum(interval11),
+            interval12 = sum(interval12)) 
+
+yRemoval.12 <- matrix(nrow = 109, ncol = 13)
+rownames(yRemoval.12) <- encounters.12$Field_ID
+yRemoval.12 <- cbind(encounters.12[,2:13])
+yRemoval.12[is.na(yRemoval.12)] <- 0
+yRemoval.12 <- as.matrix(yRemoval.12)
+
+## Create a data frame of site-level covariates.
+covs12 <-
+  surveyData %>%
+  group_by(Field_ID) %>%
+  summarise(site = first(Field_ID),
+            observer = first(Observer),
+            temp = first(Temp),
+            dayOfYear = first (dayOfYear),
+            mas = first(mas),
+            offRoad = as.factor(first(OffRoad)))
+
+## Removal moodels to contrast on- and off-road counts
+removalFrame <- unmarkedFrameMPois(y = yRemoval.12, siteCovs = covs12, type = "removal")
+removalNull <- multinomPois(~1 ~1, data = removalFrame)
+removalRoad <- multinomPois(~offRoad ~1, data = removalFrame)
+summary(removalRoad)
+summary(removalNull)
+
+# Detection probability after 1 removal interval
+predict(removalNull, type = "det")[,1]
+
+# Detection probability if counted for 12 intervals:
+rowSums(getP(removalNull))[1]
+
+newData <- data.frame(offRoad = factor(x= c(0,1), levels = c(0,1)))
+predict(removalRoad,newdata = newData, type = "det")
+getP(removalRoad, type = "det")[1,]
+getP(removalRoad, type = "det")[58,]
+
+1-prod(1-getP(removalRoad)[1,]) #on-road 
+1-prod(1-getP(removalRoad)[58,]) #off-road
+
+# What do detection times look like for on- and off-road points?
+roadLabs <- c("On-road", "Off-road")
+names(roadLabs) <- c(0,1)
+
+surveyData %>%
+  select(firstInterval, OffRoad) %>%
+  ggplot(., aes(x = firstInterval)) + geom_histogram() +
+  facet_wrap(facets = vars(OffRoad), labeller = labeller(OffRoad = roadLabs)) + 
+  labs (y = "No. of new detections", x = "Count minute") 
+ggsave("/Users/johnlloyd/Documents/GitHub/hornedLarks/onOffRoadDetectTimes.png", width = 6, height = 4, units = "in")
+
+
+backTransform(linearComb(removalRoad['det'], c(1,1)))@estimate
+
+# STAN model of the same:
+removalNullCompSTAN <- stan_multinomPois(~1 ~1, removalFrameComp, chains=3, iter=300, cores = 3)
+head(predict(removalNullCompSTAN, submodel="det"))
+
+removalDaySTAN
+removalDaySTANframe <- plot_effects(removalDaySTAN, "det")
+
+
+removalDay <- multinomPois(~scale(dayOfYear) ~1, data = removalFrame)
+removalTemp <- multinomPois(~temp ~1, data = removalFrame)
+removalNoise <- multinomPois(~avgNoise ~1, data = removalFrame)
+removalMAS <- multinomPois (~mas ~1, data = removalFrame)
+
+fmRemovalList <- list("removalNull" = removalNull, "removalDay" = removalDay, "removalTemp" = removalTemp,
+                      "removalNoise" = removalNoise, "removalMAS" = removalMAS)
+aictab(cand.set = fmRemovalList, second.ord = T, sort = T)
+
+summary(removalNull)
+summary(removalNullComp)
+removalNull['det']
+backTransform(removalNull, type = "det")
+backTransform(removalNullComp, type = "det")
+
+backTransform(linearComb(removalDay['det'], c(1, min(covs$dayOfYear))))@estimate
+backTransform(linearComb(removalDay['det'], c(1,dayOfYear = min(covs$dayOfYear,0))))@estimate
+backTransform(removalDay, type = "state")
+
+lc <- linearComb(removalDay, c(Int = 1, dayOfYear = median(scale(covs$dayOfYear))), type = "det")
+backTransform(lc)
+
+removalPredictPdata <- data.frame(dayOfYear = seq(min(covs$dayOfYear), max(covs$dayOfYear), by = 1))
+removalPredictP <- predict(removalDay, type = "det", newdata = removalPredictPdata, appendData = TRUE) 
+ggplot(data = removalPredictP, aes(x = dayOfYear, y = Predicted)) +
+  geom_ribbon(aes(ymin = lower, ymax = upper), fill = "grey80", alpha = 0.5) + 
+  geom_line(aes(x = dayOfYear, y = Predicted), color = "black") + 
+  xlab("Day of year") + ylab ("Availability for detection") + 
+  theme_bw()
+
+# STAN model of the same:
+removalDaySTAN <- stan_multinomPois(~scale(dayOfYear) ~1, removalFrame, chains=3, iter=300, cores = 3)
+removalDaySTAN
+removalDaySTANframe <- plot_effects(removalDaySTAN, "det")
+
+ggplot(data = removalDaySTANframe$data, aes(x = covariate, y = mn)) +
+  geom_ribbon(aes(ymin = lower, ymax = upper), fill = "grey80", alpha = 0.5) + 
+  geom_line(aes(x = covariate, y = mn), color = "black") + 
+  xlab("Day of year") + ylab ("Availability for detection") + 
+  theme_bw()
+
+
+

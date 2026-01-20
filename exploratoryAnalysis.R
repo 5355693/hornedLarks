@@ -95,7 +95,8 @@ surveyData$mas <- 60*((surveyData$Start_Time@hour + surveyData$Start_Time@minute
 rm(sunriseTimes)
 
 ##Write file to CSV for easier import to reporting markdown:
-write_csv(surveyData, file = "/Users/johnlloyd/Documents/GitHub/hornedLarks/surveyData2024.csv")
+#write_csv(surveyData, file = "/Users/johnlloyd/Documents/GitHub/hornedLarks/surveyData2024.csv")
+#surveyData<- read.csv(file = "/Users/johnlloyd/Documents/GitHub/hornedLarks/surveyData2024.csv")
 
 # Read in survey location and habitat data
 habitatData <- read_csv("~/Documents/GitHub/hornedLarks/tbl_survey_locations_exported_09_26_2022_pct_suitable_2021.csv")
