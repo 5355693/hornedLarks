@@ -13,9 +13,46 @@ library(ubms)
 
 # Review and organize data, changing formats and variable names as needed.
 #surveyData <- read_xlsx("~/Documents/GitHub/hornedLarks/WV_SurveyOutput.xlsx")
-#surveyData <- read_csv("~/Documents/GitHub/hornedLarks/WV_SHLA_22_23.csv")
-#surveyData <- read_csv("~/Documents/GitHub/hornedLarks/WV_SHLA_2024_11.20.24.csv")
-surveyData <- read_csv("~/Documents/GitHub/hornedLarks/WV_SHLA_data_22_Sep_2025.csv")
+surveyData23 <- read_csv("~/Documents/GitHub/hornedLarks/WV_SHLA_22_23.csv")
+surveyData23 <-
+  surveyData23 %>%
+  select(unique_ID, Survey_Date,Survey_Time,Interval_1, Interval_2,Interval_3,Interval_4)
+
+surveyData23 <-
+  surveyData23 %>%
+  mutate(site = factor(unique_ID),
+         Min_1 = Interval_1,
+         Min_2 = Interval_2,
+         Min_3 = Interval_3,
+         Min_4 = Interval_4) %>%
+  select(-unique_ID,-Interval_1,-Interval_2,
+         -Interval_3, -Interval_4)
+
+surveyData24 <- read_csv("~/Documents/GitHub/hornedLarks/WV_SHLA_2024_11.20.24.csv")
+surveyData24 <-
+  surveyData24 %>%
+  select(unique_ID, OffRoad_ID,Survey_Date,Survey_Time,Min_1,Min_2,Min_3,Min_4,Min_5,Min_6,
+         Min_7,Min_8,Min_9,Min_10,Min_11,Min_12,Min_13,Min_14,Min_15,Min_16,Min_17,Min_18,
+         Min_19,Min_20,Min_21,Min_22,Min_23,Min_24)
+
+#Assign site identification, complicated by the use of OffRoad_ID as an equivalent of
+#unique_ID for points not on roadside
+surveyData24 <-
+  surveyData24 %>%
+  mutate(site = factor(ifelse(is.na(unique_ID),OffRoad_ID,unique_ID))) %>%
+  select(-OffRoad_ID,-unique_ID) 
+
+surveyData25 <- read_csv("~/Documents/GitHub/hornedLarks/WV_SHLA_data_22_Sep_2025.csv")
+surveyData25 <-
+  surveyData25 %>%
+  select(unique_ID,Survey_Date,Survey_Time,Min_1,Min_2,Min_3,Min_4,Min_5,Min_6,
+         Min_7,Min_8,Min_9,Min_10,Min_11,Min_12,Min_13,Min_14,Min_15,Min_16,Min_17,
+         Min_18,Min_19,Min_20,Min_21,Min_22,Min_23,Min_24) %>%
+  mutate(site = factor(unique_ID)) %>%
+  select(-unique_ID)
+
+## Might need to further manage each file before combinining so that the encounter histories come over correctly!
+surveyDataAll <- bind_rows(surveyData23,surveyData24,surveyData25)
 
 #Remove empty variables carried over in database from past survey years
 surveyData <-
