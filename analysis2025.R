@@ -13,25 +13,74 @@ library(ubms)
 
 # Review and organize data, changing formats and variable names as needed.
 #surveyData <- read_xlsx("~/Documents/GitHub/hornedLarks/WV_SurveyOutput.xlsx")
+# 2023
 surveyData23 <- read_csv("~/Documents/GitHub/hornedLarks/WV_SHLA_22_23.csv")
 surveyData23 <-
   surveyData23 %>%
-  select(unique_ID, Survey_Date,Survey_Time,Interval_1, Interval_2,Interval_3,Interval_4)
+  select(unique_ID, Survey_Date,Survey_Time,Lark_ID, Interval_1, Interval_2,Interval_3,Interval_4)
 
 surveyData23 <-
   surveyData23 %>%
   mutate(site = factor(unique_ID),
-         Min_1 = Interval_1,
-         Min_2 = Interval_2,
-         Min_3 = Interval_3,
-         Min_4 = Interval_4) %>%
-  select(-unique_ID,-Interval_1,-Interval_2,
-         -Interval_3, -Interval_4)
+         Lark_ID = factor(Lark_ID)) %>%
+  select(-unique_ID)
 
+surveyData23$Count_Date <- mdy(surveyData23$Survey_Date)
+surveyData23$Start_Time <- hms(surveyData23$Survey_Time)
+surveyData23$dayOfYear <- yday(surveyData23$Count_Date) # create a day-of-year variable for analysis
+surveyData23$surveyYear <- year(surveyData23$Count_Date)
+surveyData23 <-
+  surveyData23 %>%
+  select(-Survey_Date, -Survey_Time)
+
+surveyData23$Interval_1 <- ifelse(surveyData23$Interval_1 == "X", NA, surveyData23$Interval_1)
+surveyData23$Interval_2 <- ifelse(surveyData23$Interval_2 == "X", NA, surveyData23$Interval_2)
+surveyData23$Interval_3 <- ifelse(surveyData23$Interval_3 == "X", NA, surveyData23$Interval_3)
+surveyData23$Interval_4 <- ifelse(surveyData23$Interval_4 == "X", NA, surveyData23$Interval_4)
+surveyData23$Interval_1 <- factor(surveyData23$Interval_1, levels = c("C","S","V"), labels = 
+                                  c("Calling", "Singing", "Visual"))
+surveyData23$Interval_2 <- factor(surveyData23$Interval_2, levels = c("C","S","V"), labels = 
+                                  c("Calling", "Singing", "Visual"))
+surveyData23$Interval_3 <- factor(surveyData23$Interval_3, levels = c("C","S","V"), labels = 
+                                  c("Calling", "Singing", "Visual"))
+surveyData23$Interval_4 <- factor(surveyData23$Interval_4, levels = c("C","S","V"), labels = 
+                                  c("Calling", "Singing", "Visual"))
+
+## Add a "first detected by..." column to survey data:
+surveyData23 <-
+  surveyData23 %>%
+  pivot_longer(., cols = 5:8, names_to = "interval", values_to = "detection") %>%
+  group_by(Lark_ID) %>%
+  filter(!is.na(detection)) %>%
+  summarise(firstDet = first(detection)) %>%
+  right_join(., surveyData23, by = 'Lark_ID', keep = F)
+
+## Add a "first interval detected..." column to survey data:
+surveyData23 <-
+  surveyData23 %>%
+  pivot_longer(., cols = 6:9, names_to = "interval", values_to = "detection") %>%
+  group_by(Lark_ID) %>%
+  filter(!is.na(detection)) %>%
+  summarise(firstDet = first(interval)) %>%
+  mutate(firstInterval = ifelse(firstDet == "Interval_1",1,
+                                ifelse(firstDet == "Interval_2", 2,
+                                       ifelse(firstDet == "Interval_3", 3,
+                                              ifelse(firstDet == "Interval_4", 4, NA)))))%>%
+  right_join(., surveyData23, by = 'Lark_ID', keep = F) %>%
+  select(!(firstDet.x)) %>%
+  rename(firstDet = firstDet.y)
+
+## Order the same as in the 24 and 25 data frames:
+surveyData23 <-
+  surveyData23 %>%
+  select(Lark_ID,firstInterval,firstDet,site, Count_Date, 
+         Start_Time,dayOfYear,surveyYear,Interval_1,Interval_2, 
+         Interval_3, Interval_4)
+# 2024
 surveyData24 <- read_csv("~/Documents/GitHub/hornedLarks/WV_SHLA_2024_11.20.24.csv")
 surveyData24 <-
   surveyData24 %>%
-  select(unique_ID, OffRoad_ID,Survey_Date,Survey_Time,Min_1,Min_2,Min_3,Min_4,Min_5,Min_6,
+  select(unique_ID, OffRoad_ID, Survey_Date,Survey_Time,Lark_ID, Min_1,Min_2,Min_3,Min_4,Min_5,Min_6,
          Min_7,Min_8,Min_9,Min_10,Min_11,Min_12,Min_13,Min_14,Min_15,Min_16,Min_17,Min_18,
          Min_19,Min_20,Min_21,Min_22,Min_23,Min_24)
 
@@ -42,30 +91,237 @@ surveyData24 <-
   mutate(site = factor(ifelse(is.na(unique_ID),OffRoad_ID,unique_ID))) %>%
   select(-OffRoad_ID,-unique_ID) 
 
+surveyData24$Count_Date <- mdy(surveyData24$Survey_Date)
+surveyData24$Start_Time <- hms(surveyData24$Survey_Time)
+surveyData24$dayOfYear <- yday(surveyData24$Count_Date) # create a day-of-year variable for analysis
+surveyData24$surveyYear <- year(surveyData24$Count_Date)
+surveyData24 <-
+  surveyData24 %>%
+  select(-Survey_Date, -Survey_Time)
+
+surveyData24$Interval_1 <- ifelse(surveyData24$Min_1 == "X", NA, surveyData24$Min_1)
+surveyData24$Interval_2 <- ifelse(surveyData24$Min_2 == "X", NA, surveyData24$Min_2)
+surveyData24$Interval_3 <- ifelse(surveyData24$Min_3 == "X", NA, surveyData24$Min_3)
+surveyData24$Interval_4 <- ifelse(surveyData24$Min_4 == "X", NA, surveyData24$Min_4)
+surveyData24$Interval_5 <- ifelse(surveyData24$Min_5 == "X", NA, surveyData24$Min_5)
+surveyData24$Interval_6 <- ifelse(surveyData24$Min_6 == "X", NA, surveyData24$Min_6)
+surveyData24$Interval_7 <- ifelse(surveyData24$Min_7 == "X", NA, surveyData24$Min_7)
+surveyData24$Interval_8 <- ifelse(surveyData24$Min_8 == "X", NA, surveyData24$Min_8)
+surveyData24$Interval_9 <- ifelse(surveyData24$Min_9 == "X", NA, surveyData24$Min_9)
+surveyData24$Interval_10 <- ifelse(surveyData24$Min_10 == "X", NA, surveyData24$Min_10)
+surveyData24$Interval_11 <- ifelse(surveyData24$Min_11 == "X", NA, surveyData24$Min_11)
+surveyData24$Interval_12 <- ifelse(surveyData24$Min_12 == "X", NA, surveyData24$Min_12)
+surveyData24$Interval_13 <- ifelse(surveyData24$Min_13 == "X", NA, surveyData24$Min_13)
+surveyData24$Interval_14 <- ifelse(surveyData24$Min_14 == "X", NA, surveyData24$Min_14)
+surveyData24$Interval_15 <- ifelse(surveyData24$Min_15 == "X", NA, surveyData24$Min_15)
+surveyData24$Interval_16 <- ifelse(surveyData24$Min_16 == "X", NA, surveyData24$Min_16)
+surveyData24$Interval_17 <- ifelse(surveyData24$Min_17 == "X", NA, surveyData24$Min_17)
+surveyData24$Interval_18 <- ifelse(surveyData24$Min_18 == "X", NA, surveyData24$Min_18)
+surveyData24$Interval_19 <- ifelse(surveyData24$Min_19 == "X", NA, surveyData24$Min_19)
+surveyData24$Interval_20 <- ifelse(surveyData24$Min_20 == "X", NA, surveyData24$Min_20)
+surveyData24$Interval_21 <- ifelse(surveyData24$Min_21 == "X", NA, surveyData24$Min_21)
+surveyData24$Interval_22 <- ifelse(surveyData24$Min_22 == "X", NA, surveyData24$Min_22)
+surveyData24$Interval_23 <- ifelse(surveyData24$Min_23 == "X", NA, surveyData24$Min_23)
+surveyData24$Interval_24 <- ifelse(surveyData24$Min_24 == "X", NA, surveyData24$Min_24)
+
+surveyData24 <-
+  surveyData24 %>%
+  select(-Min_1,-Min_2,-Min_3, -Min_4,-Min_5,
+         -Min_6,-Min_7,-Min_8, -Min_9, -Min_10,
+         -Min_11, -Min_12, -Min_13, -Min_14,
+         -Min_15, -Min_16, -Min_17, -Min_18,
+         -Min_19, -Min_20, -Min_21, -Min_22,
+         -Min_23, -Min_24)
+
+surveyData24$Interval_1 <- factor(surveyData24$Interval_1, levels = c("C","S","V"), labels = 
+                                    c("Calling", "Singing", "Visual"))
+surveyData24$Interval_2 <- factor(surveyData24$Interval_2, levels = c("C","S","V"), labels = 
+                                    c("Calling", "Singing", "Visual"))
+surveyData24$Interval_3 <- factor(surveyData24$Interval_3, levels = c("C","S","V"), labels = 
+                                    c("Calling", "Singing", "Visual"))
+surveyData24$Interval_4 <- factor(surveyData24$Interval_4, levels = c("C","S","V"), labels = 
+                                    c("Calling", "Singing", "Visual"))
+surveyData24$Interval_5 <- factor(surveyData24$Interval_5, levels = c("C","S","V"), labels = 
+                                    c("Calling", "Singing", "Visual"))
+surveyData24$Interval_6 <- factor(surveyData24$Interval_6, levels = c("C","S","V"), labels = 
+                                    c("Calling", "Singing", "Visual"))
+surveyData24$Interval_7 <- factor(surveyData24$Interval_7, levels = c("C","S","V"), labels = 
+                                    c("Calling", "Singing", "Visual"))
+surveyData24$Interval_8 <- factor(surveyData24$Interval_8, levels = c("C","S","V"), labels = 
+                                    c("Calling", "Singing", "Visual"))
+surveyData24$Interval_9 <- factor(surveyData24$Interval_9, levels = c("C","S","V"), labels = 
+                                    c("Calling", "Singing", "Visual"))
+surveyData24$Interval_10 <- factor(surveyData24$Interval_10, levels = c("C","S","V"), labels = 
+                                    c("Calling", "Singing", "Visual"))
+surveyData24$Interval_11 <- factor(surveyData24$Interval_11, levels = c("C","S","V"), labels = 
+                                    c("Calling", "Singing", "Visual"))
+surveyData24$Interval_12 <- factor(surveyData24$Interval_12, levels = c("C","S","V"), labels = 
+                                    c("Calling", "Singing", "Visual"))
+surveyData24$Interval_13 <- factor(surveyData24$Interval_13, levels = c("C","S","V"), labels = 
+                                    c("Calling", "Singing", "Visual"))
+surveyData24$Interval_14 <- factor(surveyData24$Interval_14, levels = c("C","S","V"), labels = 
+                                    c("Calling", "Singing", "Visual"))
+surveyData24$Interval_15 <- factor(surveyData24$Interval_15, levels = c("C","S","V"), labels = 
+                                    c("Calling", "Singing", "Visual"))
+surveyData24$Interval_16 <- factor(surveyData24$Interval_16, levels = c("C","S","V"), labels = 
+                                    c("Calling", "Singing", "Visual"))
+surveyData24$Interval_17 <- factor(surveyData24$Interval_17, levels = c("C","S","V"), labels = 
+                                    c("Calling", "Singing", "Visual"))
+surveyData24$Interval_18 <- factor(surveyData24$Interval_18, levels = c("C","S","V"), labels = 
+                                    c("Calling", "Singing", "Visual"))
+surveyData24$Interval_19 <- factor(surveyData24$Interval_19, levels = c("C","S","V"), labels = 
+                                    c("Calling", "Singing", "Visual"))
+surveyData24$Interval_20 <- factor(surveyData24$Interval_20, levels = c("C","S","V"), labels = 
+                                    c("Calling", "Singing", "Visual"))
+surveyData24$Interval_21 <- factor(surveyData24$Interval_21, levels = c("C","S","V"), labels = 
+                                    c("Calling", "Singing", "Visual"))
+surveyData24$Interval_22 <- factor(surveyData24$Interval_22, levels = c("C","S","V"), labels = 
+                                    c("Calling", "Singing", "Visual"))
+surveyData24$Interval_23 <- factor(surveyData24$Interval_23, levels = c("C","S","V"), labels = 
+                                    c("Calling", "Singing", "Visual"))
+surveyData24$Interval_24 <- factor(surveyData24$Interval_24, levels = c("C","S","V"), labels = 
+                                    c("Calling", "Singing", "Visual"))
+
+
+## Add a "first detected by..." column to survey data:
+surveyData24 <-
+  surveyData24 %>%
+  pivot_longer(., cols = 9:32, names_to = "interval", values_to = "detection") %>%
+  group_by(Lark_ID) %>%
+  filter(!is.na(detection)) %>%
+  summarise(firstDet = first(detection)) %>%
+  right_join(., surveyData24, by = 'Lark_ID', keep = F)
+
+## Add a "first interval detected..." column to survey data:
+surveyData24 <-
+  surveyData24 %>%
+  pivot_longer(., cols = 10:33, names_to = "interval", values_to = "detection") %>%
+  group_by(Lark_ID) %>%
+  filter(!is.na(detection)) %>%
+  summarise(firstDet = first(interval)) %>%
+  mutate(firstInterval = ifelse(firstDet == "Interval_1",1,
+                                ifelse(firstDet == "Interval_2", 2,
+                                       ifelse(firstDet == "Interval_3", 3,
+                                              ifelse(firstDet == "Interval_4", 4,
+                                                     ifelse(firstDet == "Interval_5", 5,
+                                                            ifelse(firstDet == "Interval_6", 6,
+                                                                   ifelse(firstDet == "Interval_7", 7,
+                                                                          ifelse(firstDet == "Interval_8", 8,
+                                                                                 ifelse(firstDet == "Interval_9", 9,
+                                                                                        ifelse(firstDet == "Interval_10", 10,
+                                                                                               ifelse(firstDet == "Interval_11", 11,
+                                                                                                      ifelse(firstDet == "Interval_12", 12,
+                                                                                                             ifelse(firstDet == "Interval_13", 13,
+                                                                                                                    ifelse(firstDet == "Interval_14", 14,
+                                                                                                                           ifelse(firstDet == "Interval_15", 15,
+                                                                                                                                  ifelse(firstDet == "Interval_16", 16,
+                                                                                                                                         ifelse(firstDet == "Interval_17", 17,
+                                                                                                                                                ifelse(firstDet == "Interval_18", 18,
+                                                                                                                                                       ifelse(firstDet == "Interval_19", 19,
+                                                                                                                                                              ifelse(firstDet == "Interval_20", 20,
+                                                                                                                                                                     ifelse(firstDet == "Interval_21", 21,
+                                                                                                                                                                            ifelse(firstDet == "Interval_22", 22,
+                                                                                                                                                                                   ifelse(firstDet == "Interval_23", 23,
+                                                                                                                                                                                          ifelse(firstDet == "Interval_24", 24,NA)))))))))))))))))))))))))%>%
+  right_join(., surveyData24, by = 'Lark_ID', keep = F) %>%
+  select(!(firstDet.x)) %>%
+  rename(firstDet = firstDet.y)
+
+#2025
 surveyData25 <- read_csv("~/Documents/GitHub/hornedLarks/WV_SHLA_data_22_Sep_2025.csv")
 surveyData25 <-
   surveyData25 %>%
-  select(unique_ID,Survey_Date,Survey_Time,Min_1,Min_2,Min_3,Min_4,Min_5,Min_6,
-         Min_7,Min_8,Min_9,Min_10,Min_11,Min_12,Min_13,Min_14,Min_15,Min_16,Min_17,
-         Min_18,Min_19,Min_20,Min_21,Min_22,Min_23,Min_24) %>%
+  select(unique_ID, Survey_Date,Survey_Time,Lark_ID, Min_1,Min_2,Min_3,Min_4,Min_5,Min_6,
+         Min_7,Min_8,Min_9,Min_10,Min_11,Min_12) %>%
   mutate(site = factor(unique_ID)) %>%
   select(-unique_ID)
 
+surveyData25$Count_Date <- mdy(surveyData25$Survey_Date)
+surveyData25$Start_Time <- hms(surveyData25$Survey_Time)
+surveyData25$dayOfYear <- yday(surveyData25$Count_Date) # create a day-of-year variable for analysis
+surveyData25$surveyYear <- year(surveyData25$Count_Date)
+surveyData25 <-
+  surveyData25 %>%
+  select(-Survey_Date, -Survey_Time)
+
+surveyData25$Interval_1 <- ifelse(surveyData25$Min_1 == "X", NA, surveyData25$Min_1)
+surveyData25$Interval_2 <- ifelse(surveyData25$Min_2 == "X", NA, surveyData25$Min_2)
+surveyData25$Interval_3 <- ifelse(surveyData25$Min_3 == "X", NA, surveyData25$Min_3)
+surveyData25$Interval_4 <- ifelse(surveyData25$Min_4 == "X", NA, surveyData25$Min_4)
+surveyData25$Interval_5 <- ifelse(surveyData25$Min_5 == "X", NA, surveyData25$Min_5)
+surveyData25$Interval_6 <- ifelse(surveyData25$Min_6 == "X", NA, surveyData25$Min_6)
+surveyData25$Interval_7 <- ifelse(surveyData25$Min_7 == "X", NA, surveyData25$Min_7)
+surveyData25$Interval_8 <- ifelse(surveyData25$Min_8 == "X", NA, surveyData25$Min_8)
+surveyData25$Interval_9 <- ifelse(surveyData25$Min_9 == "X", NA, surveyData25$Min_9)
+surveyData25$Interval_10 <- ifelse(surveyData25$Min_10 == "X", NA, surveyData25$Min_10)
+surveyData25$Interval_11 <- ifelse(surveyData25$Min_11 == "X", NA, surveyData25$Min_11)
+surveyData25$Interval_12 <- ifelse(surveyData25$Min_12 == "X", NA, surveyData25$Min_12)
+
+surveyData25 <-
+  surveyData25 %>%
+  select(-Min_1,-Min_2,-Min_3, -Min_4,-Min_5,
+         -Min_6,-Min_7,-Min_8, -Min_9, -Min_10,
+         -Min_11, -Min_12)
+
+surveyData25$Interval_1 <- factor(surveyData25$Interval_1, levels = c("C","S","V"), labels = 
+                                    c("Calling", "Singing", "Visual"))
+surveyData25$Interval_2 <- factor(surveyData25$Interval_2, levels = c("C","S","V"), labels = 
+                                    c("Calling", "Singing", "Visual"))
+surveyData25$Interval_3 <- factor(surveyData25$Interval_3, levels = c("C","S","V"), labels = 
+                                    c("Calling", "Singing", "Visual"))
+surveyData25$Interval_4 <- factor(surveyData25$Interval_4, levels = c("C","S","V"), labels = 
+                                    c("Calling", "Singing", "Visual"))
+surveyData25$Interval_5 <- factor(surveyData25$Interval_5, levels = c("C","S","V"), labels = 
+                                    c("Calling", "Singing", "Visual"))
+surveyData25$Interval_6 <- factor(surveyData25$Interval_6, levels = c("C","S","V"), labels = 
+                                    c("Calling", "Singing", "Visual"))
+surveyData25$Interval_7 <- factor(surveyData25$Interval_7, levels = c("C","S","V"), labels = 
+                                    c("Calling", "Singing", "Visual"))
+surveyData25$Interval_8 <- factor(surveyData25$Interval_8, levels = c("C","S","V"), labels = 
+                                    c("Calling", "Singing", "Visual"))
+surveyData25$Interval_9 <- factor(surveyData25$Interval_9, levels = c("C","S","V"), labels = 
+                                    c("Calling", "Singing", "Visual"))
+surveyData25$Interval_10 <- factor(surveyData25$Interval_10, levels = c("C","S","V"), labels = 
+                                     c("Calling", "Singing", "Visual"))
+surveyData25$Interval_11 <- factor(surveyData25$Interval_11, levels = c("C","S","V"), labels = 
+                                     c("Calling", "Singing", "Visual"))
+surveyData25$Interval_12 <- factor(surveyData25$Interval_12, levels = c("C","S","V"), labels = 
+                                     c("Calling", "Singing", "Visual"))
+
+## Add a "first detected by..." column to survey data:
+surveyData25 <-
+  surveyData25 %>%
+  pivot_longer(., cols = 9:20, names_to = "interval", values_to = "detection") %>%
+  group_by(Lark_ID) %>%
+  filter(!is.na(detection)) %>%
+  summarise(firstDet = first(detection)) %>%
+  right_join(., surveyData25, by = 'Lark_ID', keep = F)
+
+## Add a "first interval detected..." column to survey data:
+surveyData25 <-
+  surveyData25 %>%
+  pivot_longer(., cols = 10:21, names_to = "interval", values_to = "detection") %>%
+  group_by(Lark_ID) %>%
+  filter(!is.na(detection)) %>%
+  summarise(firstDet = first(interval)) %>%
+  mutate(firstInterval = ifelse(firstDet == "Interval_1",1,
+                                ifelse(firstDet == "Interval_2", 2,
+                                       ifelse(firstDet == "Interval_3", 3,
+                                              ifelse(firstDet == "Interval_4", 4,
+                                                     ifelse(firstDet == "Interval_5", 5,
+                                                            ifelse(firstDet == "Interval_6", 6,
+                                                                   ifelse(firstDet == "Interval_7", 7,
+                                                                          ifelse(firstDet == "Interval_8", 8,
+                                                                                 ifelse(firstDet == "Interval_9", 9,
+                                                                                        ifelse(firstDet == "Interval_10", 10,
+                                                                                               ifelse(firstDet == "Interval_11", 11,
+                                                                                                      ifelse(firstDet == "Interval_12", 12,NA)))))))))))))%>%
+  right_join(., surveyData25, by = 'Lark_ID', keep = F) %>%
+  select(!(firstDet.x)) %>%
+  rename(firstDet = firstDet.y)
+
 ## Might need to further manage each file before combinining so that the encounter histories come over correctly!
 surveyDataAll <- bind_rows(surveyData23,surveyData24,surveyData25)
-
-#Remove empty variables carried over in database from past survey years
-surveyData <-
-  surveyData %>%
-  select(-OffRoad_ID, -OffRoad, 
-         -Distance_Band, -Wind,
-         -Avg_Noise, -Max_Noise,
-         -Interval_1,-Interval_2, -Interval_3, -Interval_4,
-         -Distance_2,-Min_13,-Min_14,-Min_15,-Min_16,
-         -Distance_3,-Min_17,-Min_18,-Min_19,-Min_20,
-         -Min_21,-Min_22,-Min_23,-Min_24,-Min_25,
-         -Min_26,-Min_27,-Min_28,-Min_29,-Min_30,-PB_Distance_4,
-         -PB_Distance_5,-`OVSP?`)
 
 names(surveyData)[5] <- 'surveyEvent'
 surveyData$surveyEvent <- factor(surveyData$surveyEvent)
