@@ -49,7 +49,7 @@ surveyData23$Interval_4 <- factor(surveyData23$Interval_4, levels = c("C","S","V
 ## Add a "first detected by..." column to survey data:
 surveyData23 <-
   surveyData23 %>%
-  pivot_longer(., cols = 5:8, names_to = "interval", values_to = "detection") %>%
+  pivot_longer(., cols = 2:5, names_to = "interval", values_to = "detection") %>%
   group_by(Lark_ID) %>%
   filter(!is.na(detection)) %>%
   summarise(firstDet = first(detection)) %>%
@@ -58,7 +58,7 @@ surveyData23 <-
 ## Add a "first interval detected..." column to survey data:
 surveyData23 <-
   surveyData23 %>%
-  pivot_longer(., cols = 6:9, names_to = "interval", values_to = "detection") %>%
+  pivot_longer(., cols = 3:6, names_to = "interval", values_to = "detection") %>%
   group_by(Lark_ID) %>%
   filter(!is.na(detection)) %>%
   summarise(firstDet = first(interval)) %>%
@@ -186,7 +186,7 @@ surveyData24$Interval_24 <- factor(surveyData24$Interval_24, levels = c("C","S",
 ## Add a "first detected by..." column to survey data:
 surveyData24 <-
   surveyData24 %>%
-  pivot_longer(., cols = 9:32, names_to = "interval", values_to = "detection") %>%
+  pivot_longer(., cols = 7:30, names_to = "interval", values_to = "detection") %>%
   group_by(Lark_ID) %>%
   filter(!is.na(detection)) %>%
   summarise(firstDet = first(detection)) %>%
@@ -195,7 +195,7 @@ surveyData24 <-
 ## Add a "first interval detected..." column to survey data:
 surveyData24 <-
   surveyData24 %>%
-  pivot_longer(., cols = 10:33, names_to = "interval", values_to = "detection") %>%
+  pivot_longer(., cols = 8:31, names_to = "interval", values_to = "detection") %>%
   group_by(Lark_ID) %>%
   filter(!is.na(detection)) %>%
   summarise(firstDet = first(interval)) %>%
@@ -228,7 +228,8 @@ surveyData24 <-
   rename(firstDet = firstDet.y)
 
 #2025
-surveyData25 <- read_csv("~/Documents/GitHub/hornedLarks/WV_SHLA_data_22_Sep_2025.csv")
+## This file reads in with ~1000 extra rows, all blank, unless n_max is specified
+surveyData25 <- read_csv("~/Documents/GitHub/hornedLarks/WV_SHLA_data_22_Sep_2025.csv",n_max = 159)
 surveyData25 <-
   surveyData25 %>%
   select(unique_ID, Survey_Date,Survey_Time,Lark_ID, Min_1,Min_2,Min_3,Min_4,Min_5,Min_6,
@@ -291,7 +292,7 @@ surveyData25$Interval_12 <- factor(surveyData25$Interval_12, levels = c("C","S",
 ## Add a "first detected by..." column to survey data:
 surveyData25 <-
   surveyData25 %>%
-  pivot_longer(., cols = 9:20, names_to = "interval", values_to = "detection") %>%
+  pivot_longer(., cols = 7:18, names_to = "interval", values_to = "detection") %>%
   group_by(Lark_ID) %>%
   filter(!is.na(detection)) %>%
   summarise(firstDet = first(detection)) %>%
@@ -300,7 +301,7 @@ surveyData25 <-
 ## Add a "first interval detected..." column to survey data:
 surveyData25 <-
   surveyData25 %>%
-  pivot_longer(., cols = 10:21, names_to = "interval", values_to = "detection") %>%
+  pivot_longer(., cols = 8:19, names_to = "interval", values_to = "detection") %>%
   group_by(Lark_ID) %>%
   filter(!is.na(detection)) %>%
   summarise(firstDet = first(interval)) %>%
@@ -320,108 +321,153 @@ surveyData25 <-
   select(!(firstDet.x)) %>%
   rename(firstDet = firstDet.y)
 
-## Might need to further manage each file before combinining so that the encounter histories come over correctly!
+#Encounter histories
+## 2023
+surveyData23 <-
+  surveyData23 %>%
+  mutate(Interval_1 = ifelse(firstInterval == 1, 1, 0),
+         Interval_2 = ifelse(firstInterval == 2, 1, 0),
+         Interval_3 = ifelse(firstInterval == 3, 1, 0),
+         Interval_4 = ifelse(firstInterval == 4, 1, 0))
+
+### Change NA to zero for counts with no detections
+#### 2023
+surveyData23 <-
+  surveyData23 %>%
+  mutate(Interval_1 = ifelse(is.na(firstInterval == TRUE), 0, Interval_1),
+         Interval_2 = ifelse(is.na(firstInterval == TRUE), 0, Interval_2),
+         Interval_3 = ifelse(is.na(firstInterval == TRUE), 0, Interval_3),
+         Interval_4 = ifelse(is.na(firstInterval == TRUE), 0, Interval_4))
+
+## 2024
+surveyData24 <-
+  surveyData24 %>%
+  mutate(Interval_1 = ifelse(firstInterval == 1, 1, 0),
+         Interval_2 = ifelse(firstInterval == 2, 1, 0),
+         Interval_3 = ifelse(firstInterval == 3, 1, 0),
+         Interval_4 = ifelse(firstInterval == 4, 1, 0),
+         Interval_5 = ifelse(firstInterval == 5, 1, 0),
+         Interval_6 = ifelse(firstInterval == 6, 1, 0),
+         Interval_7 = ifelse(firstInterval == 7, 1, 0),
+         Interval_8 = ifelse(firstInterval == 8, 1, 0),
+         Interval_9 = ifelse(firstInterval == 9, 1, 0),
+         Interval_10 = ifelse(firstInterval == 10, 1, 0),
+         Interval_11 = ifelse(firstInterval == 11, 1, 0),
+         Interval_12 = ifelse(firstInterval == 12, 1, 0),
+         Interval_13 = ifelse(firstInterval == 13, 1, 0),
+         Interval_14 = ifelse(firstInterval == 14, 1, 0),
+         Interval_15 = ifelse(firstInterval == 15, 1, 0),
+         Interval_16 = ifelse(firstInterval == 16, 1, 0),
+         Interval_17 = ifelse(firstInterval == 17, 1, 0),
+         Interval_18 = ifelse(firstInterval == 18, 1, 0),
+         Interval_19 = ifelse(firstInterval == 19, 1, 0),
+         Interval_20 = ifelse(firstInterval == 20, 1, 0),
+         Interval_21 = ifelse(firstInterval == 21, 1, 0),
+         Interval_22 = ifelse(firstInterval == 22, 1, 0),
+         Interval_23 = ifelse(firstInterval == 23, 1, 0),
+         Interval_24 = ifelse(firstInterval == 24, 1, 0))
+
+### Change NA to zero for counts without detections
+surveyData24 <-
+  surveyData24 %>%
+  mutate(Interval_1 = ifelse(is.na(firstInterval == TRUE), 0, Interval_1),
+         Interval_2 = ifelse(is.na(firstInterval == TRUE), 0, Interval_2),
+         Interval_3 = ifelse(is.na(firstInterval == TRUE), 0, Interval_3),
+         Interval_4 = ifelse(is.na(firstInterval == TRUE), 0, Interval_4),
+         Interval_5 = ifelse(is.na(firstInterval == TRUE), 0, Interval_5),
+         Interval_6 = ifelse(is.na(firstInterval == TRUE), 0, Interval_6),
+         Interval_7 = ifelse(is.na(firstInterval == TRUE), 0, Interval_7),
+         Interval_8 = ifelse(is.na(firstInterval == TRUE), 0, Interval_8),
+         Interval_9 = ifelse(is.na(firstInterval == TRUE), 0, Interval_9),
+         Interval_10 = ifelse(is.na(firstInterval == TRUE), 0, Interval_10),
+         Interval_11 = ifelse(is.na(firstInterval == TRUE), 0, Interval_11),
+         Interval_12 = ifelse(is.na(firstInterval == TRUE), 0, Interval_12),
+         Interval_13 = ifelse(is.na(firstInterval == TRUE), 0, Interval_13),
+         Interval_14 = ifelse(is.na(firstInterval == TRUE), 0, Interval_14),
+         Interval_15 = ifelse(is.na(firstInterval == TRUE), 0, Interval_15),
+         Interval_16 = ifelse(is.na(firstInterval == TRUE), 0, Interval_16),
+         Interval_17 = ifelse(is.na(firstInterval == TRUE), 0, Interval_17),
+         Interval_18 = ifelse(is.na(firstInterval == TRUE), 0, Interval_18),
+         Interval_19 = ifelse(is.na(firstInterval == TRUE), 0, Interval_19),
+         Interval_20 = ifelse(is.na(firstInterval == TRUE), 0, Interval_20),
+         Interval_21 = ifelse(is.na(firstInterval == TRUE), 0, Interval_21),
+         Interval_22 = ifelse(is.na(firstInterval == TRUE), 0, Interval_22),
+         Interval_23 = ifelse(is.na(firstInterval == TRUE), 0, Interval_23),
+         Interval_24 = ifelse(is.na(firstInterval == TRUE), 0, Interval_24))
+
+surveyData25 <-
+  surveyData25 %>%
+  mutate(Interval_1 = ifelse(firstInterval == 1, 1, 0),
+         Interval_2 = ifelse(firstInterval == 2, 1, 0),
+         Interval_3 = ifelse(firstInterval == 3, 1, 0),
+         Interval_4 = ifelse(firstInterval == 4, 1, 0),
+         Interval_5 = ifelse(firstInterval == 5, 1, 0),
+         Interval_6 = ifelse(firstInterval == 6, 1, 0),
+         Interval_7 = ifelse(firstInterval == 7, 1, 0),
+         Interval_8 = ifelse(firstInterval == 8, 1, 0),
+         Interval_9 = ifelse(firstInterval == 9, 1, 0),
+         Interval_10 = ifelse(firstInterval == 10, 1, 0),
+         Interval_11 = ifelse(firstInterval == 11, 1, 0),
+         Interval_12 = ifelse(firstInterval == 12, 1, 0))
+
+## Sum counts per interval per point
+
+surveyData23 <-
+  surveyData23 %>%
+  group_by(site,Count_Date,dayOfYear,Start_Time, surveyYear) %>%
+  summarise(Interval_1 = sum(Interval_1), # this model wants summed # of birds per Interval_
+            Interval_2 = sum(Interval_2),
+            Interval_3 = sum(Interval_3),
+            Interval_4 = sum(Interval_4))
+
+surveyData24 <-
+  surveyData24 %>%
+  group_by(site,dayOfYear,Count_Date,Start_Time, surveyYear) %>%
+  summarise(Interval_1 = sum(Interval_1), # this model wants summed # of birds per Interval_
+            Interval_2 = sum(Interval_2), # and has to match the distance data
+            Interval_3 = sum(Interval_3),
+            Interval_4 = sum(Interval_4),
+            Interval_5 = sum(Interval_5),
+            Interval_6 = sum(Interval_6),
+            Interval_7 = sum(Interval_7),
+            Interval_8 = sum(Interval_8),
+            Interval_9 = sum(Interval_9),
+            Interval_10 = sum(Interval_10),
+            Interval_11 = sum(Interval_11),
+            Interval_12 = sum(Interval_12),
+            Interval_13 = sum(Interval_13),
+            Interval_14 = sum(Interval_14),
+            Interval_15 = sum(Interval_15),
+            Interval_16 = sum(Interval_16),
+            Interval_17 = sum(Interval_17),
+            Interval_18 = sum(Interval_18),
+            Interval_19 = sum(Interval_19),
+            Interval_20 = sum(Interval_20),
+            Interval_21 = sum(Interval_21),
+            Interval_22 = sum(Interval_22),
+            Interval_23 = sum(Interval_23),
+            Interval_24 = sum(Interval_24))
+
+surveyData25 <-
+  surveyData25 %>%
+  group_by(site,Count_Date,dayOfYear,Start_Time, surveyYear) %>%
+  summarise(Interval_1 = sum(Interval_1), # this model wants summed # of birds per Interval_
+            Interval_2 = sum(Interval_2), # and has to match the distance data
+            Interval_3 = sum(Interval_3),
+            Interval_4 = sum(Interval_4),
+            Interval_5 = sum(Interval_5),
+            Interval_6 = sum(Interval_6),
+            Interval_7 = sum(Interval_7),
+            Interval_8 = sum(Interval_8),
+            Interval_9 = sum(Interval_9),
+            Interval_10 = sum(Interval_10),
+            Interval_11 = sum(Interval_11),
+            Interval_12 = sum(Interval_12))
+
+
+#Combine all years
 surveyDataAll <- bind_rows(surveyData23,surveyData24,surveyData25)
 
-names(surveyData)[5] <- 'surveyEvent'
-surveyData$surveyEvent <- factor(surveyData$surveyEvent)
-#surveyData$Count_Date <- mdy(surveyData$Count_Date)
-surveyData$Count_Date <- mdy(surveyData$Survey_Date)
-#surveyData$Start_Time <- hms(surveyData$Start_Time)
-surveyData$Start_Time <- hms(surveyData$Survey_Time)
-surveyData$Site_ID <- factor(surveyData$unique_ID)
-surveyData$Observer <- factor(surveyData$Observer)
-surveyData$Sky_Code <- factor(surveyData$Sky_Code, levels = c("0","1","2","3","4"), 
-                              labels = c("Clear","Partly cloudy","Mostly cloudy","Fog or smoke","Drizzle"))
-surveyData$Sex <- factor(surveyData$Sex, levels = c("M","F","U"), labels = c("Male","Female","Unknown"))
-surveyData$Age <- factor(surveyData$Age, levels = c("A", "J"), labels = c("Adult", "Juvenile"))
-#surveyData$`Distance Band` <- factor(surveyData$`Distance Band`)
-#names(surveyData)[20] <- 'distanceBand'
-surveyData$Interval_1 <- ifelse(surveyData$Min_1 == "X", NA, surveyData$Min_1)
-surveyData$Interval_2 <- ifelse(surveyData$Min_2 == "X", NA, surveyData$Min_2)
-surveyData$Interval_3 <- ifelse(surveyData$Min_3 == "X", NA, surveyData$Min_3)
-surveyData$Interval_4 <- ifelse(surveyData$Min_4 == "X", NA, surveyData$Min_4)
-surveyData$Interval_5 <- ifelse(surveyData$Min_5 == "X", NA, surveyData$Min_5)
-surveyData$Interval_6 <- ifelse(surveyData$Min_6 == "X", NA, surveyData$Min_6)
-surveyData$Interval_7 <- ifelse(surveyData$Min_7 == "X", NA, surveyData$Min_7)
-surveyData$Interval_8 <- ifelse(surveyData$Min_8 == "X", NA, surveyData$Min_8)
-surveyData$Interval_9 <- ifelse(surveyData$Min_9 == "X", NA, surveyData$Min_9)
-surveyData$Interval_10 <- ifelse(surveyData$Min_10 == "X", NA, surveyData$Min_10)
-surveyData$Interval_11 <- ifelse(surveyData$Min_11 == "X", NA, surveyData$Min_11)
-surveyData$Interval_12 <- ifelse(surveyData$Min_12 == "X", NA, surveyData$Min_12)
-
-surveyData$Interval_1 <- factor(surveyData$Interval_1, levels = c("C","S","V"), labels = 
-                                  c("Calling", "Singing", "Visual"))
-surveyData$Interval_2 <- factor(surveyData$Interval_2, levels = c("C","S","V"), labels = 
-                                  c("Calling", "Singing", "Visual"))
-surveyData$Interval_3 <- factor(surveyData$Interval_3, levels = c("C","S","V"), labels = 
-                                  c("Calling", "Singing", "Visual"))
-surveyData$Interval_4 <- factor(surveyData$Interval_4, levels = c("C","S","V"), labels = 
-                                  c("Calling", "Singing", "Visual"))
-surveyData$Interval_5 <- factor(surveyData$Interval_5, levels = c("C","S","V"), labels = 
-                                  c("Calling", "Singing", "Visual"))
-surveyData$Interval_6 <- factor(surveyData$Interval_6, levels = c("C","S","V"), labels = 
-                                  c("Calling", "Singing", "Visual"))
-surveyData$Interval_7 <- factor(surveyData$Interval_7, levels = c("C","S","V"), labels = 
-                                  c("Calling", "Singing", "Visual"))
-surveyData$Interval_8 <- factor(surveyData$Interval_8, levels = c("C","S","V"), labels = 
-                                  c("Calling", "Singing", "Visual"))
-surveyData$Interval_9 <- factor(surveyData$Interval_9, levels = c("C","S","V"), labels = 
-                                  c("Calling", "Singing", "Visual"))
-surveyData$Interval_10 <- factor(surveyData$Interval_10, levels = c("C","S","V"), labels = 
-                                  c("Calling", "Singing", "Visual"))
-surveyData$Interval_11 <- factor(surveyData$Interval_11, levels = c("C","S","V"), labels = 
-                                  c("Calling", "Singing", "Visual"))
-surveyData$Interval_12 <- factor(surveyData$Interval_12, levels = c("C","S","V"), labels = 
-                                  c("Calling", "Singing", "Visual"))
-
-
-
-surveyData$dayOfYear <- yday(surveyData$Count_Date) # create a day-of-year variable for analysis
-surveyData$surveyYear <- year(surveyData$Count_Date)
-
-## Add a "first detected by..." column to survey data:
-surveyData <-
-  surveyData %>%
-  filter(!is.na(Sex)) %>%
-  select(Sex, Lark_ID, Interval_1, Interval_2, Interval_3, Interval_4,
-         Interval_5, Interval_6, Interval_7, Interval_8, Interval_9, 
-         Interval_10, Interval_11, Interval_12) %>%
-  pivot_longer(., cols = 3:14, names_to = "interval", values_to = "detection") %>%
-  group_by(Lark_ID, Sex) %>%
-  filter(!is.na(detection)) %>%
-  summarise(firstDet = first(detection)) %>%
-  right_join(., surveyData, by = 'Lark_ID', keep = F) %>%
-  select(!(Sex.x)) %>%
-  rename(Sex = Sex.y)
-
-## Add a "first detected interval" column
-surveyData <-
-  surveyData %>%
-  filter(!is.na(Sex)) %>%
-  select(Sex, Lark_ID, Interval_1, Interval_2, Interval_3, Interval_4,
-         Interval_5, Interval_6, Interval_7, Interval_8, Interval_9, 
-         Interval_10, Interval_11, Interval_12) %>%
-  pivot_longer(., cols = 3:14, names_to = "interval", values_to = "detection") %>%
-  group_by(Lark_ID, Sex) %>%
-  filter(!is.na(detection)) %>%
-  summarise(firstDet = first(interval)) %>%
-  mutate(firstInterval = ifelse(firstDet == "Interval_1",1,
-                                ifelse(firstDet == "Interval_2", 2,
-                                       ifelse(firstDet == "Interval_3", 3,
-                                              ifelse(firstDet == "Interval_4", 4,
-                                                     ifelse(firstDet == "Interval_5", 5,
-                                                            ifelse(firstDet == "Interval_6", 6,
-                                                                   ifelse(firstDet == "Interval_7", 7,
-                                                                          ifelse(firstDet == "Interval_8", 8,
-                                                                                 ifelse(firstDet == "Interval_9", 9,
-                                                                                        ifelse(firstDet == "Interval_10", 10,
-                                                                                               ifelse(firstDet == "Interval_11", 11,
-                                                                                                      ifelse(firstDet == "Interval_12", 12,NA)))))))))))))%>%
-  right_join(., surveyData, by = 'Lark_ID', keep = F) %>%
-  select(!(Sex.x)) %>%
-  select(!firstDet.x) %>%
-  rename(firstDet = firstDet.y, Sex = Sex.y)
 
 # Get sunrise times to look at effect of survey timing in detections,
 # here using the Corvallis airport as the location. We could calculate
@@ -430,268 +476,52 @@ surveyData <-
 # sunrise at a single, central location.
 
 # calculate sunrise times at Corvallis Airport on each survey date.
-sunriseTimes <- getSunlightTimes(date = surveyData$Count_Date, lat = 44.50, lon = -123.28,
+sunriseTimes <- getSunlightTimes(date = surveyDataAll$Count_Date, lat = 44.50, lon = -123.28,
                                  keep = c("sunrise"), tz="America/Los_Angeles")
 
 #create a new variable in surveyData that has sunrise matched to the survey point.
 #careful, here, because there is no matching function (i.e., this only works if the
 #two data frames are sorted in the same order. This should be the case unless you
 #sort one after calling this function).
-surveyData$sunrise <- sunriseTimes$sunrise
+surveyDataAll$sunrise <- sunriseTimes$sunrise
 #subtract the two times to get decimal hours after sunrise.
-surveyData$mas <- 60*((surveyData$Start_Time@hour + surveyData$Start_Time@minute/60) -
-                        (hour(surveyData$sunrise) + minute(surveyData$sunrise)/60))
+surveyDataAll$mas <- 60*((surveyDataAll$Start_Time@hour + surveyDataAll$Start_Time@minute/60) -
+                        (hour(surveyDataAll$sunrise) + minute(surveyDataAll$sunrise)/60))
 #clean up
 rm(sunriseTimes)
 
 ##Write file to CSV for easier import to reporting markdown:
-write_csv(surveyData, file = "/Users/johnlloyd/Documents/GitHub/hornedLarks/surveyData2025.csv")
-surveyData <- read.csv(file = "/Users/johnlloyd/Documents/GitHub/hornedLarks/surveyData2025.csv",
+write_csv(surveyDataAll, file = "/Users/johnlloyd/Documents/GitHub/hornedLarks/surveyDataAll.csv")
+surveyData <- read.csv(file = "/Users/johnlloyd/Documents/GitHub/hornedLarks/surveyDataAll.csv",
                        header = TRUE,
                        sep = ",")
-# Calculate the incidence of encounters:
-surveyData %>%
-  group_by(Field_ID) %>% #109 unique survey locations in 2024
-  summarise(larksDetected = first(Number_Detected)) %>%
-  group_by(larksDetected) %>%
-  summarise(count = n()) %>%
-  mutate(freq = count/sum(count)) %>%
-  ggplot(., aes(x = as.factor(larksDetected), y = freq)) + 
-  geom_col() + labs(x = "No. of larks detected", y = "Proportion of survey points")
-
-# Singing males only:
-surveyData %>%
-  mutate(singMale = ifelse(firstDet == "Singing", 1, 0)) %>%
-  mutate(singMale = ifelse(is.na(singMale), 0, singMale)) %>%
-  group_by(surveyYear, Site_ID) %>%
-  summarise(larksDetected = first(Number_Detected)) %>%
-  group_by(surveyYear,larksDetected) %>%
-  summarise(count = n()) %>%
-  mutate(freq = count/sum(count)) %>%
-  ggplot(., aes(x = as.factor(larksDetected), y = freq)) + 
-  geom_col() + labs(x = "No. of singing larks detected", y = "Proportion of survey points")
-
-# Summarize and visualize distance of detections
-# These values will be used to label the panels in the subsequent plot.
-panel_names <- c(
-  `Distance_1` = "First interval",
-  `Distance_2` = "Second interval",
-  `Distance_3` = "Third interval",
-  `PB_Distance_4` = "Fourth interval\n(first playback)",
-  `PB_Distance_5` = "Fifth interval\n(second playback)"
-)
-
-# Calculate the median detection distance (first only) for use as labels in the subsequent plot.
-medians <- surveyData %>%
-  select(Distance_1, Distance_2, Distance_3, PB_Distance_4, PB_Distance_5, Lark_ID) %>%
-  pivot_longer(cols = c(Distance_1, Distance_2, Distance_3, PB_Distance_4, PB_Distance_5), names_to = "interval", values_to = "distance") %>%
-  group_by(Lark_ID) %>%
-  drop_na() %>%
-  filter(row_number()==1) %>%
-  group_by(interval) %>%
-  summarize(median = round(median(distance),0))
-
-# Make and label the plot.
-surveyData %>%
-  select(Distance_1, Distance_2, Distance_3, PB_Distance_4, PB_Distance_5, Lark_ID) %>%
-  pivot_longer(cols = c(Distance_1, Distance_2, Distance_3, PB_Distance_4, PB_Distance_5), names_to = "interval", values_to = "distance") %>%
-  group_by(Lark_ID) %>%
-  drop_na() %>%
-  filter(row_number()==1) %>%
-  group_by(interval) %>%
-  ggplot(., aes(x = distance)) + geom_histogram() + facet_wrap(vars(interval), labeller = as_labeller(panel_names)) + 
-  geom_vline(data = medians, aes(xintercept=median), color = "red") + 
-  geom_text(data = medians, aes(x = 290, y = 10, label = paste0("Median detection\ndistance: ", median," m")),
-            size = 3) + 
-  labs(y = "No. of new detections", x = "Distance (m)")
-ggsave("/Users/johnlloyd/Documents/GitHub/hornedLarks/medianDetDistances.png", width = 6, height = 4, units = "in")
-
-# Break out by on- and off-road
-mediansOn <- surveyData %>%
-  filter(OffRoad == 0) %>%
-  select(Distance_1, Distance_2, Distance_3, PB_Distance_4, PB_Distance_5, Lark_ID) %>%
-  pivot_longer(cols = c(Distance_1, Distance_2, Distance_3, PB_Distance_4, PB_Distance_5), names_to = "interval", values_to = "distance") %>%
-  group_by(Lark_ID) %>%
-  drop_na() %>%
-  filter(row_number()==1) %>%
-  group_by(interval) %>%
-  summarize(median = round(median(distance),0))
-
-surveyData %>%
-  filter(OffRoad == 0) %>%
-  select(Distance_1, Distance_2, Distance_3, PB_Distance_4, PB_Distance_5, Lark_ID) %>%
-  pivot_longer(cols = c(Distance_1, Distance_2, Distance_3, PB_Distance_4, PB_Distance_5), names_to = "interval", values_to = "distance") %>%
-  group_by(Lark_ID) %>%
-  drop_na() %>%
-  filter(row_number()==1) %>%
-  group_by(interval) %>%
-  ggplot(., aes(x = distance)) + geom_histogram() + facet_wrap(vars(interval), labeller = as_labeller(panel_names)) + 
-  geom_vline(data = mediansOn, aes(xintercept=median), color = "red") + 
-  geom_text(data = mediansOn, aes(x = 290, y = 10, label = paste0("Median detection\ndistance: ", median," m")),
-            size = 3) + 
-  labs(y = "No. of new detections", x = "Distance (m)")
-ggsave("/Users/johnlloyd/Documents/GitHub/hornedLarks/medianDetDistancesOnRoad.png", width = 6, height = 4, units = "in")
-
-mediansOff <- surveyData %>%
-  filter(OffRoad == 1) %>%
-  select(Distance_1, Distance_2, Distance_3, PB_Distance_4, PB_Distance_5, Lark_ID) %>%
-  pivot_longer(cols = c(Distance_1, Distance_2, Distance_3, PB_Distance_4, PB_Distance_5), names_to = "interval", values_to = "distance") %>%
-  group_by(Lark_ID) %>%
-  drop_na() %>%
-  filter(row_number()==1) %>%
-  group_by(interval) %>%
-  summarize(median = round(median(distance),0))
-
-surveyData %>%
-  filter(OffRoad == 1) %>%
-  select(Distance_1, Distance_2, Distance_3, PB_Distance_4, PB_Distance_5, Lark_ID) %>%
-  pivot_longer(cols = c(Distance_1, Distance_2, Distance_3, PB_Distance_4, PB_Distance_5), names_to = "interval", values_to = "distance") %>%
-  group_by(Lark_ID) %>%
-  drop_na() %>%
-  filter(row_number()==1) %>%
-  group_by(interval) %>%
-  ggplot(., aes(x = distance)) + geom_histogram() + facet_wrap(vars(interval), labeller = as_labeller(panel_names)) + 
-  geom_vline(data = mediansOff, aes(xintercept=median), color = "red") + 
-  geom_text(data = mediansOff, aes(x = 290, y = 10, label = paste0("Median detection\ndistance: ", median," m")),
-            size = 3) + 
-  labs(y = "No. of new detections", x = "Distance (m)")
-ggsave("/Users/johnlloyd/Documents/GitHub/hornedLarks/medianDetDistancesOffRoad.png", width = 6, height = 4, units = "in")
-
-
-surveyData %>%
-  select(firstInterval) %>%
-  ggplot(., aes(x = firstInterval)) + geom_histogram() + 
-  labs (y = "No. of new detections", x = "Count minute")
-ggsave("/Users/johnlloyd/Documents/GitHub/hornedLarks/medianDetTime.png", width = 6, height = 4, units = "in")
-
-## Incorporating removal models
-encounters <-
-  surveyData %>%
-  group_by(Field_ID) %>%
-  mutate(interval1 = ifelse(firstInterval == 1 & Sex == "Male" & firstDet == "Singing", 1, 0),
-         interval2 = ifelse(firstInterval == 2 & Sex == "Male" & firstDet == "Singing", 1, 0),
-         interval3 = ifelse(firstInterval == 3 & Sex == "Male" & firstDet == "Singing", 1, 0),
-         interval4 = ifelse(firstInterval == 4 & Sex == "Male" & firstDet == "Singing", 1, 0),
-         interval5 = ifelse(firstInterval == 5 & Sex == "Male" & firstDet == "Singing", 1, 0),
-         interval6 = ifelse(firstInterval == 6 & Sex == "Male" & firstDet == "Singing", 1, 0),
-         interval7 = ifelse(firstInterval == 7 & Sex == "Male" & firstDet == "Singing", 1, 0),
-         interval8 = ifelse(firstInterval == 8 & Sex == "Male" & firstDet == "Singing", 1, 0),
-         interval9 = ifelse(firstInterval == 9 & Sex == "Male" & firstDet == "Singing", 1, 0),
-         interval10 = ifelse(firstInterval == 10 & Sex == "Male" & firstDet == "Singing", 1, 0),
-         interval11 = ifelse(firstInterval == 11 & Sex == "Male" & firstDet == "Singing", 1, 0),
-         interval12 = ifelse(firstInterval == 12 & Sex == "Male" & firstDet == "Singing", 1, 0),
-         interval13 = ifelse(firstInterval == 13 & Sex == "Male" & firstDet == "Singing", 1, 0),
-         interval14 = ifelse(firstInterval == 14 & Sex == "Male" & firstDet == "Singing", 1, 0),
-         interval15 = ifelse(firstInterval == 15 & Sex == "Male" & firstDet == "Singing", 1, 0),
-         interval16 = ifelse(firstInterval == 16 & Sex == "Male" & firstDet == "Singing", 1, 0),
-         interval17 = ifelse(firstInterval == 17 & Sex == "Male" & firstDet == "Singing", 1, 0),
-         interval18 = ifelse(firstInterval == 18 & Sex == "Male" & firstDet == "Singing", 1, 0),
-         interval19 = ifelse(firstInterval == 19 & Sex == "Male" & firstDet == "Singing", 1, 0),
-         interval20 = ifelse(firstInterval == 20 & Sex == "Male" & firstDet == "Singing", 1, 0),
-         interval21 = ifelse(firstInterval == 21 & Sex == "Male" & firstDet == "Singing", 1, 0),
-         interval22 = ifelse(firstInterval == 22 & Sex == "Male" & firstDet == "Singing", 1, 0),
-         interval23 = ifelse(firstInterval == 23 & Sex == "Male" & firstDet == "Singing", 1, 0),
-         interval24 = ifelse(firstInterval == 24 & Sex == "Male" & firstDet == "Singing", 1, 0),
-         interval25 = ifelse(firstInterval == 25 & Sex == "Male" & firstDet == "Singing", 1, 0),
-         interval26 = ifelse(firstInterval == 26 & Sex == "Male" & firstDet == "Singing", 1, 0),
-         interval27 = ifelse(firstInterval == 27 & Sex == "Male" & firstDet == "Singing", 1, 0),
-         interval28 = ifelse(firstInterval == 28 & Sex == "Male" & firstDet == "Singing", 1, 0),
-         interval29 = ifelse(firstInterval == 29 & Sex == "Male" & firstDet == "Singing", 1, 0),
-         interval30 = ifelse(firstInterval == 30 & Sex == "Male" & firstDet == "Singing", 1, 0)) %>%
-  select(Sex, firstDet, Field_ID, interval1, interval2, interval3, interval4,
-         interval5, interval6, interval7, interval8, interval9, interval10,
-         interval11, interval12, interval13, interval14, interval15, interval16, 
-         interval17, interval18, interval19, interval20, interval21, interval22, 
-         interval23, interval24, interval25, interval26, interval27, interval28,
-         interval29, interval30) %>%
-  group_by(Field_ID) %>%
-  summarise(interval1 = sum(interval1), # this model wants summed # of birds per interval
-            interval2 = sum(interval2), # and has to match the distance data
-            interval3 = sum(interval3),
-            interval4 = sum(interval4),
-            interval5 = sum(interval5),
-            interval6 = sum(interval6),
-            interval7 = sum(interval7),
-            interval8 = sum(interval8),
-            interval9 = sum(interval9),
-            interval10 = sum(interval10),
-            interval11 = sum(interval11),
-            interval12 = sum(interval12),
-            interval13 = sum(interval13),
-            interval14 = sum(interval14),
-            interval15 = sum(interval15),
-            interval16 = sum(interval16),
-            interval17 = sum(interval17),
-            interval18 = sum(interval18),
-            interval19 = sum(interval19),
-            interval20 = sum(interval20),
-            interval21 = sum(interval21),
-            interval22 = sum(interval22),
-            interval23 = sum(interval23),
-            interval24 = sum(interval24),
-            interval25 = sum(interval25),
-            interval26 = sum(interval26),
-            interval27 = sum(interval27),
-            interval28 = sum(interval28),
-            interval29 = sum(interval29),
-            interval30 = sum(interval30)) 
 
 yRemoval <- matrix(nrow = 109, ncol = 31)
 rownames(yRemoval) <- encounters$Field_ID
 yRemoval <- cbind(encounters[,2:31])
 yRemoval[is.na(yRemoval)] <- 0
 yRemoval <- as.matrix(yRemoval)
-## Create a new variable called 'distance', which sums the number of birds by distance class at each point.
-## Then remove all other variables.
-## THIS INCLUDES ONLY SINGING MALES ##
-distances <- surveyData %>%
-  group_by(Field_ID) %>%
-  mutate(firstDistance = ifelse(!is.na(Distance_1) & firstDet == "Singing", Distance_1, 
-                                ifelse(is.na(Distance_1)&!is.na(Distance_2) & firstDet == "Singing", Distance_2,
-                                       ifelse(is.na(Distance_1)&is.na(Distance_2)&!is.na(Distance_3) & firstDet == "Singing", Distance_3,
-                                              ifelse(is.na(Distance_1)&is.na(Distance_2)&is.na(Distance_3)&!is.na(PB_Distance_4) & firstDet == "Singing", PB_Distance_4,
-                                                     ifelse(is.na(Distance_1)&is.na(Distance_2)&is.na(Distance_3)&is.na(PB_Distance_4)&!is.na(PB_Distance_5) & firstDet == "Singing", PB_Distance_5, NA)))))) %>% 
-  select(firstDet, firstDistance) %>% 
-  mutate(distanceBand = case_when(
-    between(firstDistance, 0, 50) ~ 1,
-    between(firstDistance, 51,100) ~2,
-    between(firstDistance, 101, 200) ~3,
-    between(firstDistance, 201, 400) ~4)) %>%
-  group_by(Field_ID, distanceBand) %>%
-  summarize(count = n()) %>%
-  select(distanceBand, count) %>%
-  pivot_wider(id_cols = Field_ID, names_from = distanceBand, values_from = count, names_sort = TRUE, values_fill = 0,
-              names_prefix = "yDist.") %>%
-  select(Field_ID,yDist.1, yDist.2, yDist.3, yDist.4)
-
-yDistances <- matrix(nrow = 109, ncol = 4)
-rownames(yDistances) <- distances$Field_ID
-yDistances <- cbind(distances[,2:5])
-#yDistances[is.na(yDistances)] <- 0
-yDistances <- as.matrix(yDistances)
-## This can also be accomplished by:
-unfDistData <- surveyData %>%
-  group_by(Field_ID) %>%
-  mutate(firstDistance = ifelse(!is.na(Distance_1) & firstDet == "Singing", Distance_1, 
-                                ifelse(is.na(Distance_1)&!is.na(Distance_2) & firstDet == "Singing", Distance_2,
-                                       ifelse(is.na(Distance_1)&is.na(Distance_2)&!is.na(Distance_3) & firstDet == "Singing", Distance_3,
-                                              ifelse(is.na(Distance_1)&is.na(Distance_2)&is.na(Distance_3)&!is.na(PB_Distance_4) & firstDet == "Singing", PB_Distance_4,
-                                                     ifelse(is.na(Distance_1)&is.na(Distance_2)&is.na(Distance_3)&is.na(PB_Distance_4)&!is.na(PB_Distance_5) & firstDet == "Singing", PB_Distance_5, NA)))))) %>%
-  select(firstDistance,Field_ID)
-
-fDistData <- formatDistData(distData = as.data.frame(unfDistData), distCol = "firstDistance", transectNameCol = "Field_ID",
-                            dist.breaks = c(0,50,100,200,400))
-
 
 ## Create a data frame of site-level covariates.
 covs <-
-  surveyData %>%
-  group_by(Field_ID) %>%
-  summarise(site = first(Field_ID),
-            observer = first(Observer),
-            temp = first(Temp),
+  surveyDataAll %>%
+  group_by(site, surveyYear, dayOfYear) %>%
+  summarise(site = first(site),
             dayOfYear = first (dayOfYear),
             mas = first(mas))
+
+## piFun to handle variable interval lengths.
+## in 2022, 2023: Interval 1, 2, 3, and 4 = 2 minutes each.
+## in all other years, intevals = 1 minute.
+
+# matrix of interval lengths:
+
+times_mat <- matrix(NA,822,24)
+times_mat[1:573,1:4] <- 2
+times_mat[1:573,5:24] <- 0
+times_mat[574:682,1:24] <- 1
+times_mat[683:822,1:12] <- 1
+times_mat[683:822,13:24] <- 0
 
 ## Create the unmarked frame
 umfDR <- unmarkedFrameGDR(yDistance = as.matrix(fDistData), yRemoval = yRemoval, numPrimary = 1,
