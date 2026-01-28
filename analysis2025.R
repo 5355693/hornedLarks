@@ -410,6 +410,22 @@ surveyData25 <-
          Interval_11 = ifelse(firstInterval == 11, 1, 0),
          Interval_12 = ifelse(firstInterval == 12, 1, 0))
 
+surveyData25 <-
+  surveyData25 %>%
+  mutate(Interval_1 = ifelse(is.na(firstInterval == TRUE), 0, Interval_1),
+         Interval_2 = ifelse(is.na(firstInterval == TRUE), 0, Interval_2),
+         Interval_3 = ifelse(is.na(firstInterval == TRUE), 0, Interval_3),
+         Interval_4 = ifelse(is.na(firstInterval == TRUE), 0, Interval_4),
+         Interval_5 = ifelse(is.na(firstInterval == TRUE), 0, Interval_5),
+         Interval_6 = ifelse(is.na(firstInterval == TRUE), 0, Interval_6),
+         Interval_7 = ifelse(is.na(firstInterval == TRUE), 0, Interval_7),
+         Interval_8 = ifelse(is.na(firstInterval == TRUE), 0, Interval_8),
+         Interval_9 = ifelse(is.na(firstInterval == TRUE), 0, Interval_9),
+         Interval_10 = ifelse(is.na(firstInterval == TRUE), 0, Interval_10),
+         Interval_11 = ifelse(is.na(firstInterval == TRUE), 0, Interval_11),
+         Interval_12 = ifelse(is.na(firstInterval == TRUE), 0, Interval_12))
+
+
 ## Sum counts per interval per point
 
 surveyData23 <-
@@ -496,20 +512,6 @@ surveyData <- read.csv(file = "/Users/johnlloyd/Documents/GitHub/hornedLarks/sur
                        header = TRUE,
                        sep = ",")
 
-yRemoval <- matrix(nrow = 109, ncol = 31)
-rownames(yRemoval) <- encounters$Field_ID
-yRemoval <- cbind(encounters[,2:31])
-yRemoval[is.na(yRemoval)] <- 0
-yRemoval <- as.matrix(yRemoval)
-
-## Create a data frame of site-level covariates.
-covs <-
-  surveyDataAll %>%
-  group_by(site, surveyYear, dayOfYear) %>%
-  summarise(site = first(site),
-            dayOfYear = first (dayOfYear),
-            mas = first(mas))
-
 ## piFun to handle variable interval lengths.
 ## in 2022, 2023: Interval 1, 2, 3, and 4 = 2 minutes each.
 ## in all other years, intevals = 1 minute.
@@ -523,15 +525,108 @@ times_mat[574:682,1:24] <- 1
 times_mat[683:822,1:12] <- 1
 times_mat[683:822,13:24] <- 0
 
-## Create the unmarked frame
-umfDR <- unmarkedFrameGDR(yDistance = as.matrix(fDistData), yRemoval = yRemoval, numPrimary = 1,
-                          siteCovs = covs, dist.breaks = c(0,50,100,200,400), unitsIn = "m")
-summary(umfDR)
+## Factory that returns a piFun using a SITE-BY-INTERVAL times matrix
+makeRemPiFun_bySite <- function(times_mat) {
+  stopifnot(is.matrix(times_mat))
+  function(p) {
+    # p is an M x J matrix of per-unit-time detection probabilities (0..1)
+    M <- nrow(p); J <- ncol(p)
+    if (!all(dim(times_mat) == c(M, J)))
+      stop("times_mat must have the same dimensions as p (sites x intervals).")
 
-## initial distance-removal (DR) models.
-drNull <- gdistremoval(lambdaformula = ~1, phiformula = ~1, removalformula = ~1,
-                       distanceformula = ~1, data = umfDR, keyfun = "halfnorm",
-                       output = "density", unitsOut = "kmsq", mixture = "ZIP")
+    # Convert per-unit p to per-interval detection prob q = 1 - (1 - p)^t
+    q <- 1 - (1 - p)^times_mat
+    
+    # No time => no chance to detect in that interval
+    q[is.na(times_mat) | times_mat <= 0] <- 0
+    
+    # Survival (not yet detected) up to the start of interval j
+    surv <- matrix(1, M, J)
+    if (J > 1) for (j in 2:J) surv[, j] <- surv[, j - 1] * (1 - q[, j - 1])
+ 
+    # Multinomial cell probabilities: first detected in interval j
+    pi <- surv * q
+    
+    # Return M x J matrix
+    pi
+  }
+}
+
+remPi <- makeRemPiFun_bySite(times_mat)
+
+## need obsToY in this case because we can't use the default removal model features due to unequal intervals
+make_obsToY_removal <- function(J) {
+  stopifnot(J >= 1L)
+  o2y <- diag(J)
+  o2y[upper.tri(o2y)] <- 1L
+  o2y
+}
+
+J <- 24
+ o2y <- make_obsToY_removal(J)
+ dim(o2y)
+ 
+yRemoval <- matrix(nrow = 822, ncol = 24)
+rownames(yRemoval) <- surveyDataAll$site
+yRemoval <- cbind(surveyDataAll[,6:29])
+yRemoval <- as.matrix(yRemoval)
+
+## Create a data frame of site-level covariates.
+covs <-
+  surveyDataAll %>%
+  group_by(site, surveyYear, dayOfYear) %>%
+  summarise(site = first(site),
+            dayOfYear = first (dayOfYear),
+            mas = first(mas))
+
+## Create the unmarked frame
+umfR <- unmarkedFrameMPois(y = yRemoval, siteCovs = covs, obsToY = o2y, piFun = "remPi")
+summary(umfR)
+
+## initial removal models.
+### Detectability
+dNull <- multinomPois(~1 ~1, data = umfR)
+dYear <- multinomPois(~surveyYear ~1, data = umfR)
+dDay <- multinomPois(~dayOfYear ~1, data = umfR)
+dTime <- multinomPois(~mas ~1, data = umfR)
+
+Model_List_Detect <- fitList(Null = dNull, Year = dYear, Day = dDay, Time = dTime)
+Model_Selection_Detect <- modSel(Model_List_Detect, nullmod = "Null")
+Model_Selection_Detect #The null is only 1.49 AIC above best model (Time), so prefer null.
+
+### Abundance
+aNull <- multinomPois(~1 ~1, data = umfR)
+aYear <- multinomPois(~1 ~surveyYear, data = umfR)
+Model_List_Abund <- fitList(Null = aNull, Year = aYear)
+Model_Selection_Abund <-modSel(Model_List_Abund, nullmod = "Null")
+Model_Selection_Abund #Null preferred
+
+summary(Null)
+#re <- ranef(Null) # ranef doesn't work in this case because of the NA for unsampled intervals in 2022, 2023, and 2025.
+Nmix.gof.test(Null, nsim = 1000)
+
+# Total detection probability for 2022/23 [1], 24[574], and 25[822]
+P <- getP(Null)
+print(rowSums(P[c(1,574,822),]))
+
+# Abundance
+predict(Null, type = "state")
+
+sum(fitted(Null)[1,])
+
+# Detection probability if counted for 24 intervals:
+rowSums(getP(Null))[1,1:4]
+
+newData <- data.frame(offRoad = factor(x= c(0,1), levels = c(0,1)))
+predict(removalRoad,newdata = newData, type = "det")
+getP(removalRoad, type = "det")[1,]
+getP(removalRoad, type = "det")[58,]
+
+1-prod(1-getP(removalRoad)[1,]) #on-road 
+1-prod(1-getP(removalRoad)[58,]) #off-road
+
+
+
 summary(drNull)
 backTransform(drNull)
 getP(drNull) #interval- and distance-specific estimates of P
