@@ -10,6 +10,7 @@ library(knitr)
 library(kableExtra)
 library(ggpmisc)
 library(ubms)
+library(gt)
 
 # Review and organize data, changing formats and variable names as needed.
 #surveyData <- read_xlsx("~/Documents/GitHub/hornedLarks/WV_SurveyOutput.xlsx")
@@ -84,11 +85,13 @@ surveyData24 <-
          Min_7,Min_8,Min_9,Min_10,Min_11,Min_12,Min_13,Min_14,Min_15,Min_16,Min_17,Min_18,
          Min_19,Min_20,Min_21,Min_22,Min_23,Min_24)
 
+
 #Assign site identification, complicated by the use of OffRoad_ID as an equivalent of
 #unique_ID for points not on roadside
 surveyData24 <-
   surveyData24 %>%
-  mutate(site = factor(ifelse(is.na(unique_ID),OffRoad_ID,unique_ID))) %>%
+  mutate(site = factor(ifelse(is.na(unique_ID),OffRoad_ID,unique_ID)),
+         Lark_ID = factor(Lark_ID)) %>%
   select(-OffRoad_ID,-unique_ID) 
 
 surveyData24$Count_Date <- mdy(surveyData24$Survey_Date)
@@ -234,7 +237,8 @@ surveyData25 <-
   surveyData25 %>%
   select(unique_ID, Survey_Date,Survey_Time,Lark_ID, Min_1,Min_2,Min_3,Min_4,Min_5,Min_6,
          Min_7,Min_8,Min_9,Min_10,Min_11,Min_12) %>%
-  mutate(site = factor(unique_ID)) %>%
+  mutate(site = factor(unique_ID),
+         Lark_ID = factor(Lark_ID)) %>%
   select(-unique_ID)
 
 surveyData25$Count_Date <- mdy(surveyData25$Survey_Date)
@@ -483,7 +487,7 @@ surveyData25 <-
 
 #Combine all years
 surveyDataAll <- bind_rows(surveyData23,surveyData24,surveyData25)
-
+write.csv(surveyDataAll, file = "surveyData23_26.csv")
 
 # Get sunrise times to look at effect of survey timing in detections,
 # here using the Corvallis airport as the location. We could calculate
