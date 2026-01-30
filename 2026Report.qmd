@@ -27,15 +27,56 @@ larkData <- read.csv(file = "/Users/johnlloyd/Documents/GitHub/hornedLarks/surve
 larkData$surveyYear <- factor(larkData$surveyYear)
 ```
 
-## Quarto
+## Background and data summary
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+Ecostudies Institute has conducted breeding-season surveys for Streaked Horned Larks (*Eremophila alpestris strigata*) in the Willamette Valley of Oregon since 2022. Survey methods and effort have varied considerably among years. In 2022 and 2023, observers conducted 8-minute counts at randomly selected points along roads in the study area, with observers recording each detection into one of 4, 2-minute intervals. In 2024, observers conducted 30-minute counts at randomly selected points along roads and systematically selected points off roads within the study area. Observers recorded detections into 30, 1-minute intervals. After the 24th minute of passive observation, observers conducted 6 more minutes of observation alternating with two periods in which recorded vocalizations of larks were broadcast. Finally, in 2025, observers conducted 12-minute counts at randomly selected points along roads in the study area, placing each detection into one of 12, 1-minute intervals. In all years, observers also recorded the distance to each bird that was detected. Observers estimated exact distances to larks in 2024 and 2025, but binned observations into 4 distance intervals (0-25 m, 26-100 m, 101-200 m, and \>200 m).
 
 ```{r}
-#| label: Summary statistics
+#| label: Survey effort.
 #| echo: false
 #| message: false
 #| warning: false
+
+effort_summary_table1 <- 
+  larkData %>%
+  group_by(surveyYear) %>%
+  summarize(count = n_distinct(site))
+            
+effort_summary_table2 <-
+  larkData %>%
+  mutate(siteDay = paste(site,"_",dayOfYear)) %>%
+  group_by(surveyYear) %>%
+  summarize(count = n_distinct(siteDay))
+ 
+effort_summary_table <- merge(effort_summary_table1, effort_summary_table2, by = "surveyYear")
+effort_summary_table$Survey_Minutes <- c(214*8,359*8,109*24,140*12)
+
+colnames(effort_summary_table)[1] <- "Year"
+colnames(effort_summary_table)[2] <- "No. sites"
+colnames(effort_summary_table)[3] <- "No. surveys"
+colnames(effort_summary_table)[4] <- "Survey minutes"
+effort_summary_table %>%
+  gt() %>%
+  tab_header(
+    title = "Survey effort per year"
+  ) %>%
+  tab_footnote(
+    footnote = "Not including an additional 6-minute playback period at the end of each survey, data from which were not used in this analysis.",
+    locations = cells_body(columns = `Survey minutes`, rows = 3),
+    placement = "right"
+  )
+
+```
+
+The largest number of larks detected was 2024; observers recorded fewer larks in 2022, 2023, and 2025.
+
+```{r}
+#| label: Summary statistics and table.
+#| echo: false
+#| message: false
+#| warning: false
+#| column: margin
+
 summary_table <- 
   larkData %>%
   group_by(surveyYear) %>%
@@ -46,6 +87,7 @@ summary_table <-
                       Interval_24, na.rm = TRUE))
 colnames(summary_table)[1] <- "Year"
 colnames(summary_table)[2] <- "Count"
+
 summary_table %>%
   gt() %>%
   tab_header(
@@ -55,6 +97,16 @@ summary_table %>%
     columns = Count,
     decimals = 0
   )
+
+```
+
+```{r}
+#| label: Annual detections of larks.
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-cap: "Numbers of Streaked Horned Larks detected during surveys in Oregon's Willamette Valley."
+#| fig-align: center
 
 larkData %>%
   group_by(surveyYear) %>%
@@ -67,6 +119,103 @@ larkData %>%
   ylab("Total no. larks detected") + xlab("Year") +
   theme(axis.title = element_text(size = 18),
         axis.text = element_text(size = 14))
+```
 
+The much greater number of larks detected in 2024 was a result both of fewer surveys that yielded no detections and more surveys that yielded multiple larks. Increased encounter rates and increased numbers of larks during a survey may have been a result of the inclusion of off-road survey locations in 2024. Off-road survey points tended to yield many more detections than on-road points: 11 of the 13 surveys at which observers detected \>4 larks were off-road points. Naive detection rates ranged from a low of 8.6% (2023) to a high of 55% (2024); detection rates in 2022 and 2025 were intermediate (13.1% and 20.7%, respectively).
+
+```{r}
+#| label: Distribution of lark detections.
+#| echo: false
+#| message: false
+#| warning: false
+count_summary_table <-
+larkData %>%
+  mutate(siteDay = paste(site,"_",dayOfYear)) %>%
+  group_by(surveyYear,siteDay) %>%
+  summarize(sum = sum(Interval_1, Interval_2, Interval_3, Interval_4, Interval_5,
+                      Interval_6,Interval_7,Interval_8,Interval_9,Interval_10,Interval_11,
+                      Interval_12,Interval_13,Interval_14,Interval_15,Interval_16,Interval_17,
+                      Interval_18,Interval_19,Interval_20,Interval_21,Interval_22,Interval_23,
+                      Interval_24, na.rm = TRUE)) %>%
+  group_by(surveyYear) %>%
+  count(sum, name = "Freq") %>%
+  arrange(desc(surveyYear),sum)
+
+colnames(count_summary_table)[1] <- "Year"
+colnames(count_summary_table)[2] <- "No. of larks"
+colnames(count_summary_table)[3] <- "No. surveys"
+count_summary_table %>%
+  gt() %>%
+  tab_header(
+    title = "Lark encounters per year"
+  ) 
+```
+
+## Estimating abundance and detectability
+
+Data collection was designed to allow flexibility in the analysis of detectability and abundance by collecting supplemental information useful for distance sampling and removal models. However, as previous reports have discussed, distance sampling proved ineffective in correcting estimates of lark abundance for detectability. Very few detections (3.7%; 12/322) occurred within 25 m of the observer; the median distance across years when exact distances were recorded was 110 m (red dotted line). The 95th percentile of detection distances was 304 m, in keeping with earlier assumptions about the approximate area surveyed during counts.
+
+The frequency of detections greater than 100 m from the observer suggests that larks may have either moved away from the observer or remained hidden, and thus unavailable for detection, when an observer was nearby. Distance sampling assumes no movement in response to the observer and that detection of individuals at zero distance (i.e., at the survey point) is perfect. In past years, detectability estimates derived from distance sampling have been very low, resulting in improbably inflated abundance estimates.
+
+```{r}
+#| label: Detection distances.
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-cap: "Frequency of lark detections by distance to the observer. The dotted red line is the median distance at which a lark was detected (110 m)."
+#| fig-align: center
+
+surveyData24 <- read_csv("~/Documents/GitHub/hornedLarks/WV_SHLA_2024_11.20.24.csv")
+surveyData25 <- read_csv("~/Documents/GitHub/hornedLarks/WV_SHLA_data_22_Sep_2025.csv",n_max = 159)
+
+distance_table_2024 <-
+surveyData24 %>%
+  select(Distance_1, Distance_2, Distance_3) %>%
+  pivot_longer(., 1:3, names_to = "Distance", values_to = "Meters") %>%
+  filter(!is.na(Meters))
+
+distance_table_2024 <- distance_table_2024[-1]
+
+distance_table_2025 <-
+surveyData25 %>%
+  select(Distance_1) %>%
+  filter(!is.na(Distance_1)) %>%
+  rename(Meters = Distance_1)
+
+distance_table_all <- rbind(distance_table_2024, distance_table_2025)
+
+distance_table_all %>%
+  ggplot(., aes(x = Meters)) + geom_histogram() + 
+  geom_vline(aes(xintercept = 110), color = "red", linetype = "dashed", size = 1) + 
+  ylab("No. of detections") + xlab("Distance to observer (m)") + 
+  theme(axis.title = element_text(size = 18),
+        axis.text = element_text(size = 14))
+
+```
+
+Removal models provide an alternative approach for estimating abundance when detection is imperfect. Removal models estimate availability for detection, whereas distance sampling estimates the change in perceptibility of an individual target as a function of the distance to the observer. Both availability and perceptibility are components of an overall detection process and are ideally both included in corrected estimates of abundance. For this analysis, however, removal models are used alone due to the unsuitability of distance sampling in this case.
+
+In general, the temporal pattern of encounters suggests intermediate levels of availability for detection, with most birds first detected early in the count but with new individuals added throughout the count. With a long count period, as in 2024, some of the individuals not detected until late in the survey may have moved into the count area during the survey, a violation of the closure assumption (i.e., the population of birds available to be counted is assumed to remain constant over the course of the survey, with no movement in or out of the survey area). Movement in and out of the count area during a survey can result in double-counting and overestimation of abundance.
+
+```{r}
+#| label: Detection intervals.
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-cap: "Frequency of lark detections by time interval during a survey."
+#| fig-width: 6
+#| fig-height: 4
+
+all_data_23 <- read.csv("~/Documents/GitHub/hornedLarks/all_data_2023.csv")
+all_data_24 <- read.csv("~/Documents/GitHub/hornedLarks/all_data_2024.csv")
+all_data_25 <- read.csv("~/Documents/GitHub/hornedLarks/all_data_2025.csv")
+
+intervals <- data.frame(c(all_data_23$firstInterval, all_data_24$firstInterval, all_data_25$firstInterval))
+colnames(intervals) <- "Interval"
+
+ggplot(intervals, aes(x = Interval)) + geom_histogram(binwidth=1) +
+  ylab("No. of detections") + xlab("Interval") + 
+  theme(axis.title = element_text(size = 18),
+        axis.text = element_text(size = 14))
 
 ```

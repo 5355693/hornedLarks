@@ -77,6 +77,8 @@ surveyData23 <-
   select(Lark_ID,firstInterval,firstDet,site, Count_Date, 
          Start_Time,dayOfYear,surveyYear,Interval_1,Interval_2, 
          Interval_3, Interval_4)
+write.csv(surveyData23, file = "~/Documents/GitHub/hornedLarks/all_data_2023.csv")
+
 # 2024
 surveyData24 <- read_csv("~/Documents/GitHub/hornedLarks/WV_SHLA_2024_11.20.24.csv")
 surveyData24 <-
@@ -230,6 +232,7 @@ surveyData24 <-
   select(!(firstDet.x)) %>%
   rename(firstDet = firstDet.y)
 
+write.csv(surveyData24, file = "~/Documents/GitHub/hornedLarks/all_data_2024.csv")
 #2025
 ## This file reads in with ~1000 extra rows, all blank, unless n_max is specified
 surveyData25 <- read_csv("~/Documents/GitHub/hornedLarks/WV_SHLA_data_22_Sep_2025.csv",n_max = 159)
@@ -325,6 +328,7 @@ surveyData25 <-
   select(!(firstDet.x)) %>%
   rename(firstDet = firstDet.y)
 
+write.csv(surveyData25, file = "~/Documents/GitHub/hornedLarks/all_data_2025.csv")
 #Encounter histories
 ## 2023
 surveyData23 <-
