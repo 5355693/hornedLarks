@@ -609,12 +609,12 @@ Model_List_Abund <- fitList(Null = aNull, Year = aYear)
 Model_Selection_Abund <-modSel(Model_List_Abund, nullmod = "Null")
 Model_Selection_Abund #Null preferred
 
-summary(Null)
+summary(aNull)
 #re <- ranef(Null) # ranef doesn't work in this case because of the NA for unsampled intervals in 2022, 2023, and 2025.
-Nmix.gof.test(Null, nsim = 1000)
+Nmix.gof.test(aNull, nsim = 1000)
 
 # Total detection probability for 2022/23 [1], 24[574], and 25[822]
-P <- getP(Null)
+P <- getP(dNull)[574,]
 print(rowSums(P[c(1,574,822),]))
 
 # Abundance

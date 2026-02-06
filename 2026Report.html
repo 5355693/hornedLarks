@@ -36,6 +36,35 @@ ul.task-list li input[type="checkbox"] {
 <link href="2026Report_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="2026Report_files/libs/bootstrap/bootstrap-81267100e462c21b3d6c0d5bf76a3417.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -71,28 +100,31 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="background-and-data-summary" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="background-and-data-summary">Background and data summary</h2>
-<p>Ecostudies Institute has conducted breeding-season surveys for Streaked Horned Larks (<em>Eremophila alpestris strigata</em>) in the Willamette Valley of Oregon since 2022. Survey methods and effort have varied considerably among years. In 2022 and 2023, observers conducted 8-minute counts at randomly selected points along roads in the study area, with observers recording each detection into one of 4, 2-minute intervals. In 2024, observers conducted 30-minute counts at randomly selected points along roads and systematically selected points off roads within the study area. Observers recorded detections into 30, 1-minute intervals. After the 24th minute of passive observation, observers conducted 6 more minutes of observation alternating with two periods in which recorded vocalizations of larks were broadcast. Finally, in 2025, observers conducted 12-minute counts at randomly selected points along roads in the study area, placing each detection into one of 12, 1-minute intervals. In all years, observers also recorded the distance to each bird that was detected. Observers estimated exact distances to larks in 2024 and 2025, but binned observations into 4 distance intervals (0-25 m, 26-100 m, 101-200 m, and &gt;200 m).</p>
+<section id="background-and-data-summary" class="level1 page-columns page-full">
+<h1>Background and data summary</h1>
+<p>Ecostudies Institute has conducted breeding-season surveys for Streaked Horned Larks (<em>Eremophila alpestris strigata</em>) in the Willamette Valley of Oregon since 2022. Survey methods and effort have varied among years.</p>
+<p>In 2022 and 2023, observers conducted 8-minute counts at randomly selected points along roads in the study area, with observers recording each detection into one of 4, 2-minute intervals.</p>
+<p>In 2024, observers conducted 30-minute counts at randomly selected points along roads and systematically selected off-road points within the study area. Observers recorded detections into 30, 1-minute intervals. After the 24th minute of passive observation, observers conducted 6 more minutes of observation alternating with two periods in which recorded vocalizations of larks were broadcast (because surveys during a playback period are not directly comparable with passive surveys, none of the analyses in this report include the final 6 minutes of playback-assisted observations used during 2024 surveys).</p>
+<p>Finally, in 2025, observers conducted 12-minute counts at randomly selected points along roads in the study area, placing each detection into one of 12, 1-minute intervals. In all years, observers also recorded the distance to each bird that was detected. Observers estimated exact distances to larks in 2024 and 2025, but binned observations into 4 distance intervals in 2022 and 2023 (0-25 m, 26-100 m, 101-200 m, and &gt;200 m).</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="vhcqydtoyw" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#vhcqydtoyw table {
+<div id="pckiarbxht" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#pckiarbxht table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#vhcqydtoyw thead, #vhcqydtoyw tbody, #vhcqydtoyw tfoot, #vhcqydtoyw tr, #vhcqydtoyw td, #vhcqydtoyw th {
+#pckiarbxht thead, #pckiarbxht tbody, #pckiarbxht tfoot, #pckiarbxht tr, #pckiarbxht td, #pckiarbxht th {
   border-style: none;
 }
 
-#vhcqydtoyw p {
+#pckiarbxht p {
   margin: 0;
   padding: 0;
 }
 
-#vhcqydtoyw .gt_table {
+#pckiarbxht .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -118,12 +150,12 @@ ul.task-list li input[type="checkbox"] {
   border-left-color: #D3D3D3;
 }
 
-#vhcqydtoyw .gt_caption {
+#pckiarbxht .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#vhcqydtoyw .gt_title {
+#pckiarbxht .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -135,7 +167,7 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-width: 0;
 }
 
-#vhcqydtoyw .gt_subtitle {
+#pckiarbxht .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -147,7 +179,7 @@ ul.task-list li input[type="checkbox"] {
   border-top-width: 0;
 }
 
-#vhcqydtoyw .gt_heading {
+#pckiarbxht .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -159,13 +191,13 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#vhcqydtoyw .gt_bottom_border {
+#pckiarbxht .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#vhcqydtoyw .gt_col_headings {
+#pckiarbxht .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -180,7 +212,7 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#vhcqydtoyw .gt_col_heading {
+#pckiarbxht .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -200,7 +232,7 @@ ul.task-list li input[type="checkbox"] {
   overflow-x: hidden;
 }
 
-#vhcqydtoyw .gt_column_spanner_outer {
+#pckiarbxht .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -212,15 +244,15 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 4px;
 }
 
-#vhcqydtoyw .gt_column_spanner_outer:first-child {
+#pckiarbxht .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#vhcqydtoyw .gt_column_spanner_outer:last-child {
+#pckiarbxht .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#vhcqydtoyw .gt_column_spanner {
+#pckiarbxht .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -232,11 +264,11 @@ ul.task-list li input[type="checkbox"] {
   width: 100%;
 }
 
-#vhcqydtoyw .gt_spanner_row {
+#pckiarbxht .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#vhcqydtoyw .gt_group_heading {
+#pckiarbxht .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -262,7 +294,7 @@ ul.task-list li input[type="checkbox"] {
   text-align: left;
 }
 
-#vhcqydtoyw .gt_empty_group_heading {
+#pckiarbxht .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -277,15 +309,15 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 
-#vhcqydtoyw .gt_from_md > :first-child {
+#pckiarbxht .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#vhcqydtoyw .gt_from_md > :last-child {
+#pckiarbxht .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#vhcqydtoyw .gt_row {
+#pckiarbxht .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -304,7 +336,7 @@ ul.task-list li input[type="checkbox"] {
   overflow-x: hidden;
 }
 
-#vhcqydtoyw .gt_stub {
+#pckiarbxht .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -317,7 +349,7 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#vhcqydtoyw .gt_stub_row_group {
+#pckiarbxht .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -331,15 +363,15 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: top;
 }
 
-#vhcqydtoyw .gt_row_group_first td {
+#pckiarbxht .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#vhcqydtoyw .gt_row_group_first th {
+#pckiarbxht .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#vhcqydtoyw .gt_summary_row {
+#pckiarbxht .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -349,16 +381,16 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#vhcqydtoyw .gt_first_summary_row {
+#pckiarbxht .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#vhcqydtoyw .gt_first_summary_row.thick {
+#pckiarbxht .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#vhcqydtoyw .gt_last_summary_row {
+#pckiarbxht .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -368,7 +400,7 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-color: #D3D3D3;
 }
 
-#vhcqydtoyw .gt_grand_summary_row {
+#pckiarbxht .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -378,7 +410,7 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#vhcqydtoyw .gt_first_grand_summary_row {
+#pckiarbxht .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -388,7 +420,7 @@ ul.task-list li input[type="checkbox"] {
   border-top-color: #D3D3D3;
 }
 
-#vhcqydtoyw .gt_last_grand_summary_row_top {
+#pckiarbxht .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -398,11 +430,11 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-color: #D3D3D3;
 }
 
-#vhcqydtoyw .gt_striped {
+#pckiarbxht .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#vhcqydtoyw .gt_table_body {
+#pckiarbxht .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -411,7 +443,7 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-color: #D3D3D3;
 }
 
-#vhcqydtoyw .gt_footnotes {
+#pckiarbxht .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -425,7 +457,7 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#vhcqydtoyw .gt_footnote {
+#pckiarbxht .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -434,7 +466,7 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#vhcqydtoyw .gt_sourcenotes {
+#pckiarbxht .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -448,7 +480,7 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#vhcqydtoyw .gt_sourcenote {
+#pckiarbxht .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -456,72 +488,72 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#vhcqydtoyw .gt_left {
+#pckiarbxht .gt_left {
   text-align: left;
 }
 
-#vhcqydtoyw .gt_center {
+#pckiarbxht .gt_center {
   text-align: center;
 }
 
-#vhcqydtoyw .gt_right {
+#pckiarbxht .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#vhcqydtoyw .gt_font_normal {
+#pckiarbxht .gt_font_normal {
   font-weight: normal;
 }
 
-#vhcqydtoyw .gt_font_bold {
+#pckiarbxht .gt_font_bold {
   font-weight: bold;
 }
 
-#vhcqydtoyw .gt_font_italic {
+#pckiarbxht .gt_font_italic {
   font-style: italic;
 }
 
-#vhcqydtoyw .gt_super {
+#pckiarbxht .gt_super {
   font-size: 65%;
 }
 
-#vhcqydtoyw .gt_footnote_marks {
+#pckiarbxht .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#vhcqydtoyw .gt_asterisk {
+#pckiarbxht .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#vhcqydtoyw .gt_indent_1 {
+#pckiarbxht .gt_indent_1 {
   text-indent: 5px;
 }
 
-#vhcqydtoyw .gt_indent_2 {
+#pckiarbxht .gt_indent_2 {
   text-indent: 10px;
 }
 
-#vhcqydtoyw .gt_indent_3 {
+#pckiarbxht .gt_indent_3 {
   text-indent: 15px;
 }
 
-#vhcqydtoyw .gt_indent_4 {
+#pckiarbxht .gt_indent_4 {
   text-indent: 20px;
 }
 
-#vhcqydtoyw .gt_indent_5 {
+#pckiarbxht .gt_indent_5 {
   text-indent: 25px;
 }
 
-#vhcqydtoyw .katex-display {
+#pckiarbxht .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#vhcqydtoyw div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#pckiarbxht div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -578,23 +610,23 @@ ul.task-list li input[type="checkbox"] {
 <div class="cell page-columns page-full">
 
 <div class="no-row-height column-margin column-container"><div class="cell-output-display">
-<div id="yqbstcrirx" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#yqbstcrirx table {
+<div id="akeofsivgx" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#akeofsivgx table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#yqbstcrirx thead, #yqbstcrirx tbody, #yqbstcrirx tfoot, #yqbstcrirx tr, #yqbstcrirx td, #yqbstcrirx th {
+#akeofsivgx thead, #akeofsivgx tbody, #akeofsivgx tfoot, #akeofsivgx tr, #akeofsivgx td, #akeofsivgx th {
   border-style: none;
 }
 
-#yqbstcrirx p {
+#akeofsivgx p {
   margin: 0;
   padding: 0;
 }
 
-#yqbstcrirx .gt_table {
+#akeofsivgx .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -620,12 +652,12 @@ ul.task-list li input[type="checkbox"] {
   border-left-color: #D3D3D3;
 }
 
-#yqbstcrirx .gt_caption {
+#akeofsivgx .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#yqbstcrirx .gt_title {
+#akeofsivgx .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -637,7 +669,7 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-width: 0;
 }
 
-#yqbstcrirx .gt_subtitle {
+#akeofsivgx .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -649,7 +681,7 @@ ul.task-list li input[type="checkbox"] {
   border-top-width: 0;
 }
 
-#yqbstcrirx .gt_heading {
+#akeofsivgx .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -661,13 +693,13 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#yqbstcrirx .gt_bottom_border {
+#akeofsivgx .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#yqbstcrirx .gt_col_headings {
+#akeofsivgx .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -682,7 +714,7 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#yqbstcrirx .gt_col_heading {
+#akeofsivgx .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -702,7 +734,7 @@ ul.task-list li input[type="checkbox"] {
   overflow-x: hidden;
 }
 
-#yqbstcrirx .gt_column_spanner_outer {
+#akeofsivgx .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -714,15 +746,15 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 4px;
 }
 
-#yqbstcrirx .gt_column_spanner_outer:first-child {
+#akeofsivgx .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#yqbstcrirx .gt_column_spanner_outer:last-child {
+#akeofsivgx .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#yqbstcrirx .gt_column_spanner {
+#akeofsivgx .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -734,11 +766,11 @@ ul.task-list li input[type="checkbox"] {
   width: 100%;
 }
 
-#yqbstcrirx .gt_spanner_row {
+#akeofsivgx .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#yqbstcrirx .gt_group_heading {
+#akeofsivgx .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -764,7 +796,7 @@ ul.task-list li input[type="checkbox"] {
   text-align: left;
 }
 
-#yqbstcrirx .gt_empty_group_heading {
+#akeofsivgx .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -779,15 +811,15 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 
-#yqbstcrirx .gt_from_md > :first-child {
+#akeofsivgx .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#yqbstcrirx .gt_from_md > :last-child {
+#akeofsivgx .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#yqbstcrirx .gt_row {
+#akeofsivgx .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -806,7 +838,7 @@ ul.task-list li input[type="checkbox"] {
   overflow-x: hidden;
 }
 
-#yqbstcrirx .gt_stub {
+#akeofsivgx .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -819,7 +851,7 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#yqbstcrirx .gt_stub_row_group {
+#akeofsivgx .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -833,15 +865,15 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: top;
 }
 
-#yqbstcrirx .gt_row_group_first td {
+#akeofsivgx .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#yqbstcrirx .gt_row_group_first th {
+#akeofsivgx .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#yqbstcrirx .gt_summary_row {
+#akeofsivgx .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -851,16 +883,16 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#yqbstcrirx .gt_first_summary_row {
+#akeofsivgx .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#yqbstcrirx .gt_first_summary_row.thick {
+#akeofsivgx .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#yqbstcrirx .gt_last_summary_row {
+#akeofsivgx .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -870,7 +902,7 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-color: #D3D3D3;
 }
 
-#yqbstcrirx .gt_grand_summary_row {
+#akeofsivgx .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -880,7 +912,7 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#yqbstcrirx .gt_first_grand_summary_row {
+#akeofsivgx .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -890,7 +922,7 @@ ul.task-list li input[type="checkbox"] {
   border-top-color: #D3D3D3;
 }
 
-#yqbstcrirx .gt_last_grand_summary_row_top {
+#akeofsivgx .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -900,11 +932,11 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-color: #D3D3D3;
 }
 
-#yqbstcrirx .gt_striped {
+#akeofsivgx .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#yqbstcrirx .gt_table_body {
+#akeofsivgx .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -913,7 +945,7 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-color: #D3D3D3;
 }
 
-#yqbstcrirx .gt_footnotes {
+#akeofsivgx .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -927,7 +959,7 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#yqbstcrirx .gt_footnote {
+#akeofsivgx .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -936,7 +968,7 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#yqbstcrirx .gt_sourcenotes {
+#akeofsivgx .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -950,7 +982,7 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#yqbstcrirx .gt_sourcenote {
+#akeofsivgx .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -958,72 +990,72 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#yqbstcrirx .gt_left {
+#akeofsivgx .gt_left {
   text-align: left;
 }
 
-#yqbstcrirx .gt_center {
+#akeofsivgx .gt_center {
   text-align: center;
 }
 
-#yqbstcrirx .gt_right {
+#akeofsivgx .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#yqbstcrirx .gt_font_normal {
+#akeofsivgx .gt_font_normal {
   font-weight: normal;
 }
 
-#yqbstcrirx .gt_font_bold {
+#akeofsivgx .gt_font_bold {
   font-weight: bold;
 }
 
-#yqbstcrirx .gt_font_italic {
+#akeofsivgx .gt_font_italic {
   font-style: italic;
 }
 
-#yqbstcrirx .gt_super {
+#akeofsivgx .gt_super {
   font-size: 65%;
 }
 
-#yqbstcrirx .gt_footnote_marks {
+#akeofsivgx .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#yqbstcrirx .gt_asterisk {
+#akeofsivgx .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#yqbstcrirx .gt_indent_1 {
+#akeofsivgx .gt_indent_1 {
   text-indent: 5px;
 }
 
-#yqbstcrirx .gt_indent_2 {
+#akeofsivgx .gt_indent_2 {
   text-indent: 10px;
 }
 
-#yqbstcrirx .gt_indent_3 {
+#akeofsivgx .gt_indent_3 {
   text-indent: 15px;
 }
 
-#yqbstcrirx .gt_indent_4 {
+#akeofsivgx .gt_indent_4 {
   text-indent: 20px;
 }
 
-#yqbstcrirx .gt_indent_5 {
+#akeofsivgx .gt_indent_5 {
   text-indent: 25px;
 }
 
-#yqbstcrirx .katex-display {
+#akeofsivgx .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#yqbstcrirx div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#akeofsivgx div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1070,26 +1102,26 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </div>
-<p>The much greater number of larks detected in 2024 was a result both of fewer surveys that yielded no detections and more surveys that yielded multiple larks. Increased encounter rates and increased numbers of larks during a survey may have been a result of the inclusion of off-road survey locations in 2024. Off-road survey points tended to yield many more detections than on-road points: 11 of the 13 surveys at which observers detected &gt;4 larks were off-road points. Naive detection rates ranged from a low of 8.6% (2023) to a high of 55% (2024); detection rates in 2022 and 2025 were intermediate (13.1% and 20.7%, respectively).</p>
+<p>The much greater number of larks detected in 2024 was a result both of fewer surveys that yielded no detections and more surveys that yielded &gt; 2 larks. Increased encounter rates of larks and increased numbers of larks during a survey may have been a result of the inclusion of off-road survey locations in 2024. Off-road survey points tended to yield many more detections than on-road points: 11 of the 13 surveys at which observers detected &gt;4 larks were off-road points. Naive detection rates (i.e., percentage of survey points at which a lark was detected) ranged from a low of 8.6% (2023) to a high of 55% (2024); detection rates in 2022 and 2025 were intermediate (13.1% and 20.7%, respectively).</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fzzbahffui" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#fzzbahffui table {
+<div id="idsaducxod" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#idsaducxod table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#fzzbahffui thead, #fzzbahffui tbody, #fzzbahffui tfoot, #fzzbahffui tr, #fzzbahffui td, #fzzbahffui th {
+#idsaducxod thead, #idsaducxod tbody, #idsaducxod tfoot, #idsaducxod tr, #idsaducxod td, #idsaducxod th {
   border-style: none;
 }
 
-#fzzbahffui p {
+#idsaducxod p {
   margin: 0;
   padding: 0;
 }
 
-#fzzbahffui .gt_table {
+#idsaducxod .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1115,12 +1147,12 @@ ul.task-list li input[type="checkbox"] {
   border-left-color: #D3D3D3;
 }
 
-#fzzbahffui .gt_caption {
+#idsaducxod .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#fzzbahffui .gt_title {
+#idsaducxod .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1132,7 +1164,7 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-width: 0;
 }
 
-#fzzbahffui .gt_subtitle {
+#idsaducxod .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1144,7 +1176,7 @@ ul.task-list li input[type="checkbox"] {
   border-top-width: 0;
 }
 
-#fzzbahffui .gt_heading {
+#idsaducxod .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1156,13 +1188,13 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#fzzbahffui .gt_bottom_border {
+#idsaducxod .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#fzzbahffui .gt_col_headings {
+#idsaducxod .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1177,7 +1209,7 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#fzzbahffui .gt_col_heading {
+#idsaducxod .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1197,7 +1229,7 @@ ul.task-list li input[type="checkbox"] {
   overflow-x: hidden;
 }
 
-#fzzbahffui .gt_column_spanner_outer {
+#idsaducxod .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1209,15 +1241,15 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 4px;
 }
 
-#fzzbahffui .gt_column_spanner_outer:first-child {
+#idsaducxod .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#fzzbahffui .gt_column_spanner_outer:last-child {
+#idsaducxod .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#fzzbahffui .gt_column_spanner {
+#idsaducxod .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1229,11 +1261,11 @@ ul.task-list li input[type="checkbox"] {
   width: 100%;
 }
 
-#fzzbahffui .gt_spanner_row {
+#idsaducxod .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#fzzbahffui .gt_group_heading {
+#idsaducxod .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1259,7 +1291,7 @@ ul.task-list li input[type="checkbox"] {
   text-align: left;
 }
 
-#fzzbahffui .gt_empty_group_heading {
+#idsaducxod .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1274,15 +1306,15 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 
-#fzzbahffui .gt_from_md > :first-child {
+#idsaducxod .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#fzzbahffui .gt_from_md > :last-child {
+#idsaducxod .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#fzzbahffui .gt_row {
+#idsaducxod .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1301,7 +1333,7 @@ ul.task-list li input[type="checkbox"] {
   overflow-x: hidden;
 }
 
-#fzzbahffui .gt_stub {
+#idsaducxod .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1314,7 +1346,7 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#fzzbahffui .gt_stub_row_group {
+#idsaducxod .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1328,15 +1360,15 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: top;
 }
 
-#fzzbahffui .gt_row_group_first td {
+#idsaducxod .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#fzzbahffui .gt_row_group_first th {
+#idsaducxod .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#fzzbahffui .gt_summary_row {
+#idsaducxod .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1346,16 +1378,16 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#fzzbahffui .gt_first_summary_row {
+#idsaducxod .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#fzzbahffui .gt_first_summary_row.thick {
+#idsaducxod .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#fzzbahffui .gt_last_summary_row {
+#idsaducxod .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1365,7 +1397,7 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-color: #D3D3D3;
 }
 
-#fzzbahffui .gt_grand_summary_row {
+#idsaducxod .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1375,7 +1407,7 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#fzzbahffui .gt_first_grand_summary_row {
+#idsaducxod .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1385,7 +1417,7 @@ ul.task-list li input[type="checkbox"] {
   border-top-color: #D3D3D3;
 }
 
-#fzzbahffui .gt_last_grand_summary_row_top {
+#idsaducxod .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1395,11 +1427,11 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-color: #D3D3D3;
 }
 
-#fzzbahffui .gt_striped {
+#idsaducxod .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#fzzbahffui .gt_table_body {
+#idsaducxod .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1408,7 +1440,7 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-color: #D3D3D3;
 }
 
-#fzzbahffui .gt_footnotes {
+#idsaducxod .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1422,7 +1454,7 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#fzzbahffui .gt_footnote {
+#idsaducxod .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1431,7 +1463,7 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#fzzbahffui .gt_sourcenotes {
+#idsaducxod .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1445,7 +1477,7 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#fzzbahffui .gt_sourcenote {
+#idsaducxod .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1453,72 +1485,72 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#fzzbahffui .gt_left {
+#idsaducxod .gt_left {
   text-align: left;
 }
 
-#fzzbahffui .gt_center {
+#idsaducxod .gt_center {
   text-align: center;
 }
 
-#fzzbahffui .gt_right {
+#idsaducxod .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#fzzbahffui .gt_font_normal {
+#idsaducxod .gt_font_normal {
   font-weight: normal;
 }
 
-#fzzbahffui .gt_font_bold {
+#idsaducxod .gt_font_bold {
   font-weight: bold;
 }
 
-#fzzbahffui .gt_font_italic {
+#idsaducxod .gt_font_italic {
   font-style: italic;
 }
 
-#fzzbahffui .gt_super {
+#idsaducxod .gt_super {
   font-size: 65%;
 }
 
-#fzzbahffui .gt_footnote_marks {
+#idsaducxod .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#fzzbahffui .gt_asterisk {
+#idsaducxod .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#fzzbahffui .gt_indent_1 {
+#idsaducxod .gt_indent_1 {
   text-indent: 5px;
 }
 
-#fzzbahffui .gt_indent_2 {
+#idsaducxod .gt_indent_2 {
   text-indent: 10px;
 }
 
-#fzzbahffui .gt_indent_3 {
+#idsaducxod .gt_indent_3 {
   text-indent: 15px;
 }
 
-#fzzbahffui .gt_indent_4 {
+#idsaducxod .gt_indent_4 {
   text-indent: 20px;
 }
 
-#fzzbahffui .gt_indent_5 {
+#idsaducxod .gt_indent_5 {
   text-indent: 25px;
 }
 
-#fzzbahffui .katex-display {
+#idsaducxod .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#fzzbahffui div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#idsaducxod div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1529,7 +1561,7 @@ ul.task-list li input[type="checkbox"] {
 <th colspan="2" class="gt_heading gt_title gt_font_normal gt_bottom_border">Lark encounters per year</th>
 </tr>
 <tr class="gt_col_headings even">
-<th id="No.-of-larks" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">No. of larks</th>
+<th id="No.-of-larks-detected-on-a-survey" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">No. of larks detected on a survey</th>
 <th id="No.-surveys" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">No. surveys</th>
 </tr>
 </thead>
@@ -1538,96 +1570,96 @@ ul.task-list li input[type="checkbox"] {
 <td colspan="2" id="2025" class="gt_group_heading" data-quarto-table-cell-role="th" scope="colgroup">2025</td>
 </tr>
 <tr class="gt_row_group_first even">
-<td class="gt_row gt_right" headers="2025  No. of larks">0</td>
+<td class="gt_row gt_right" headers="2025  No. of larks detected on a survey">0</td>
 <td class="gt_row gt_right" headers="2025  No. surveys">111</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="2025  No. of larks">1</td>
+<td class="gt_row gt_right" headers="2025  No. of larks detected on a survey">1</td>
 <td class="gt_row gt_right" headers="2025  No. surveys">16</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="2025  No. of larks">2</td>
+<td class="gt_row gt_right" headers="2025  No. of larks detected on a survey">2</td>
 <td class="gt_row gt_right" headers="2025  No. surveys">8</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="2025  No. of larks">3</td>
+<td class="gt_row gt_right" headers="2025  No. of larks detected on a survey">3</td>
 <td class="gt_row gt_right" headers="2025  No. surveys">4</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="2025  No. of larks">4</td>
+<td class="gt_row gt_right" headers="2025  No. of larks detected on a survey">4</td>
 <td class="gt_row gt_right" headers="2025  No. surveys">1</td>
 </tr>
 <tr class="gt_group_heading_row odd">
 <td colspan="2" id="2024" class="gt_group_heading" data-quarto-table-cell-role="th" scope="colgroup">2024</td>
 </tr>
 <tr class="gt_row_group_first even">
-<td class="gt_row gt_right" headers="2024  No. of larks">0</td>
+<td class="gt_row gt_right" headers="2024  No. of larks detected on a survey">0</td>
 <td class="gt_row gt_right" headers="2024  No. surveys">49</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="2024  No. of larks">1</td>
+<td class="gt_row gt_right" headers="2024  No. of larks detected on a survey">1</td>
 <td class="gt_row gt_right" headers="2024  No. surveys">16</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="2024  No. of larks">2</td>
+<td class="gt_row gt_right" headers="2024  No. of larks detected on a survey">2</td>
 <td class="gt_row gt_right" headers="2024  No. surveys">9</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="2024  No. of larks">3</td>
+<td class="gt_row gt_right" headers="2024  No. of larks detected on a survey">3</td>
 <td class="gt_row gt_right" headers="2024  No. surveys">9</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="2024  No. of larks">4</td>
+<td class="gt_row gt_right" headers="2024  No. of larks detected on a survey">4</td>
 <td class="gt_row gt_right" headers="2024  No. surveys">13</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="2024  No. of larks">5</td>
+<td class="gt_row gt_right" headers="2024  No. of larks detected on a survey">5</td>
 <td class="gt_row gt_right" headers="2024  No. surveys">8</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="2024  No. of larks">6</td>
+<td class="gt_row gt_right" headers="2024  No. of larks detected on a survey">6</td>
 <td class="gt_row gt_right" headers="2024  No. surveys">4</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="2024  No. of larks">7</td>
+<td class="gt_row gt_right" headers="2024  No. of larks detected on a survey">7</td>
 <td class="gt_row gt_right" headers="2024  No. surveys">1</td>
 </tr>
 <tr class="gt_group_heading_row even">
 <td colspan="2" id="2023" class="gt_group_heading" data-quarto-table-cell-role="th" scope="colgroup">2023</td>
 </tr>
 <tr class="gt_row_group_first odd">
-<td class="gt_row gt_right" headers="2023  No. of larks">0</td>
+<td class="gt_row gt_right" headers="2023  No. of larks detected on a survey">0</td>
 <td class="gt_row gt_right" headers="2023  No. surveys">328</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="2023  No. of larks">1</td>
+<td class="gt_row gt_right" headers="2023  No. of larks detected on a survey">1</td>
 <td class="gt_row gt_right" headers="2023  No. surveys">21</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="2023  No. of larks">2</td>
+<td class="gt_row gt_right" headers="2023  No. of larks detected on a survey">2</td>
 <td class="gt_row gt_right" headers="2023  No. surveys">10</td>
 </tr>
 <tr class="gt_group_heading_row even">
 <td colspan="2" id="2022" class="gt_group_heading" data-quarto-table-cell-role="th" scope="colgroup">2022</td>
 </tr>
 <tr class="gt_row_group_first odd">
-<td class="gt_row gt_right" headers="2022  No. of larks">0</td>
+<td class="gt_row gt_right" headers="2022  No. of larks detected on a survey">0</td>
 <td class="gt_row gt_right" headers="2022  No. surveys">186</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="2022  No. of larks">1</td>
+<td class="gt_row gt_right" headers="2022  No. of larks detected on a survey">1</td>
 <td class="gt_row gt_right" headers="2022  No. surveys">13</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="2022  No. of larks">2</td>
+<td class="gt_row gt_right" headers="2022  No. of larks detected on a survey">2</td>
 <td class="gt_row gt_right" headers="2022  No. surveys">7</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="2022  No. of larks">3</td>
+<td class="gt_row gt_right" headers="2022  No. of larks detected on a survey">3</td>
 <td class="gt_row gt_right" headers="2022  No. surveys">5</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="2022  No. of larks">4</td>
+<td class="gt_row gt_right" headers="2022  No. of larks detected on a survey">4</td>
 <td class="gt_row gt_right" headers="2022  No. surveys">3</td>
 </tr>
 </tbody>
@@ -1637,10 +1669,12 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </section>
-<section id="estimating-abundance-and-detectability" class="level2">
-<h2 class="anchored" data-anchor-id="estimating-abundance-and-detectability">Estimating abundance and detectability</h2>
-<p>Data collection was designed to allow flexibility in the analysis of detectability and abundance by collecting supplemental information useful for distance sampling and removal models. However, as previous reports have discussed, distance sampling proved ineffective in correcting estimates of lark abundance for detectability. Very few detections (3.7%; 12/322) occurred within 25 m of the observer; the median distance across years when exact distances were recorded was 110 m (red dotted line). The 95th percentile of detection distances was 304 m, in keeping with earlier assumptions about the approximate area surveyed during counts.</p>
-<p>The frequency of detections greater than 100 m from the observer suggests that larks may have either moved away from the observer or remained hidden, and thus unavailable for detection, when an observer was nearby. Distance sampling assumes no movement in response to the observer and that detection of individuals at zero distance (i.e., at the survey point) is perfect. In past years, detectability estimates derived from distance sampling have been very low, resulting in improbably inflated abundance estimates.</p>
+<section id="estimating-abundance-and-detectability" class="level1">
+<h1>Estimating abundance and detectability</h1>
+<section id="summary-statistics" class="level2">
+<h2 class="anchored" data-anchor-id="summary-statistics">Summary statistics</h2>
+<p>Data collection was designed to allow flexibility in the analysis of detectability and abundance by collecting supplemental information useful for distance sampling and removal models. However, as previous reports have discussed, distance sampling has proven ineffective in correcting estimates of lark abundance for detectability. Very few detections (3.7%; 12/322) occurred within 25 m of the observer; the median distance between observer and lark in years when exact distances were recorded was 110 m (red dotted line) (similar results were found in 2022 and 2023, when most detections were placed into the second [26-100 m] or third [101-200 m] distance intervals). In 2024 and 2025, the 95th percentile of detection distances was 304 m, in keeping with earlier assumptions about the approximate area surveyed during counts (in reports from earlier years, I assumed an effective survey radius of 300 m).</p>
+<p>The frequency of detections greater than 100 m from the observer suggests that larks may have either moved away from the observer or remained hidden when an observer was nearby. In either case, these larks became unavailable for detection and resulted in violations of model assumptions. Distance sampling assumes that detection of individuals at zero distance (i.e., at the survey point) was perfect and that larks did not move in response to the observer. In past years, detectability estimates derived from distance sampling have been very low, resulting in improbably inflated abundance estimates. Given poor results from previous efforts to estimate abundance with distance sampling, I did not use it to analyze data for this report.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -1651,8 +1685,9 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </div>
-<p>Removal models provide an alternative approach for estimating abundance when detection is imperfect. Removal models estimate availability for detection, whereas distance sampling estimates the change in perceptibility of an individual target as a function of the distance to the observer. Both availability and perceptibility are components of an overall detection process and are ideally both included in corrected estimates of abundance. For this analysis, however, removal models are used alone due to the unsuitability of distance sampling in this case.</p>
-<p>In general, the temporal pattern of encounters suggests intermediate levels of availability for detection, with most birds first detected early in the count but with new individuals added throughout the count. With a long count period, as in 2024, some of the individuals not detected until late in the survey may have moved into the count area during the survey, a violation of the closure assumption (i.e., the population of birds available to be counted is assumed to remain constant over the course of the survey, with no movement in or out of the survey area). Movement in and out of the count area during a survey can result in double-counting and overestimation of abundance.</p>
+<p>Removal models provide an alternative approach for estimating abundance when detection is imperfect. Removal models estimate availability for detection, whereas distance sampling estimates the change in perceptibility of an individual target as a function of the distance to the observer. Both availability and perceptibility are components of an overall detection process and are ideally both included in corrected estimates of abundance.</p>
+<p>For this analysis, however, removal models are used alone due to the unsuitability of distance sampling in this case and because removal models can be applied to every year of surveys. Although the surveys differed in interval length and number of intervals, the basic format of repeated counts at a point is consistent; removal models can accomodate the variation in length and number of intervals.</p>
+<p>In general, the temporal pattern of encounters suggests intermediate levels of availability for detection, with most birds first detected early in the count but with new individuals added throughout the count. With a long count period, as in 2024, some of the individuals not detected until late in the survey may have moved into the count area during the survey, a violation of the closure assumption (i.e., the population of birds available to be counted is assumed to remain constant over the course of the survey, with no movement in or out of the survey area). Movement in and out of the count area during a long survey can also result in double-counting and overestimation of abundance.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -1663,6 +1698,1018 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </div>
+</section>
+<section id="removal-models" class="level2">
+<h2 class="anchored" data-anchor-id="removal-models">Removal models</h2>
+<section id="detectability" class="level3">
+<h3 class="anchored" data-anchor-id="detectability">Detectability</h3>
+<p>None of the covariate models of detectability outperformed the null model.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="kclemicrye" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#kclemicrye table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#kclemicrye thead, #kclemicrye tbody, #kclemicrye tfoot, #kclemicrye tr, #kclemicrye td, #kclemicrye th {
+  border-style: none;
+}
+
+#kclemicrye p {
+  margin: 0;
+  padding: 0;
+}
+
+#kclemicrye .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#kclemicrye .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#kclemicrye .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#kclemicrye .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#kclemicrye .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#kclemicrye .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kclemicrye .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#kclemicrye .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#kclemicrye .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#kclemicrye .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#kclemicrye .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#kclemicrye .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#kclemicrye .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#kclemicrye .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#kclemicrye .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#kclemicrye .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#kclemicrye .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#kclemicrye .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#kclemicrye .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kclemicrye .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#kclemicrye .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#kclemicrye .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#kclemicrye .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kclemicrye .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#kclemicrye .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#kclemicrye .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kclemicrye .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kclemicrye .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#kclemicrye .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kclemicrye .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#kclemicrye .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kclemicrye .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#kclemicrye .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kclemicrye .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#kclemicrye .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kclemicrye .gt_left {
+  text-align: left;
+}
+
+#kclemicrye .gt_center {
+  text-align: center;
+}
+
+#kclemicrye .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#kclemicrye .gt_font_normal {
+  font-weight: normal;
+}
+
+#kclemicrye .gt_font_bold {
+  font-weight: bold;
+}
+
+#kclemicrye .gt_font_italic {
+  font-style: italic;
+}
+
+#kclemicrye .gt_super {
+  font-size: 65%;
+}
+
+#kclemicrye .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#kclemicrye .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#kclemicrye .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#kclemicrye .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#kclemicrye .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#kclemicrye .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#kclemicrye .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#kclemicrye .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#kclemicrye div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_heading header">
+<th colspan="3" class="gt_heading gt_title gt_font_normal gt_bottom_border">Detectability models ranked.</th>
+</tr>
+<tr class="gt_col_headings even">
+<th id="Model" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Model</th>
+<th id="AIC" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">AIC</th>
+<th id="Model-weight" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Model weight</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="Model">Day</td>
+<td class="gt_row gt_right" headers="AIC">2,781</td>
+<td class="gt_row gt_right" headers="Model weight">0.33</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Model">Time</td>
+<td class="gt_row gt_right" headers="AIC">2,781</td>
+<td class="gt_row gt_right" headers="Model weight">0.33</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Model">Null</td>
+<td class="gt_row gt_right" headers="AIC">2,782</td>
+<td class="gt_row gt_right" headers="Model weight">0.29</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Model">Year</td>
+<td class="gt_row gt_right" headers="AIC">2,785</td>
+<td class="gt_row gt_right" headers="Model weight">0.05</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Estimated per-minute detection probability from the null model was 0.026 with a 95% confidence interval of 0.012 — 0.058. Over the maximum number of intervals (24) considered in this analysis, the total probability of detecting a lark, assuming it was present, was 0.471.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2026Report_files/figure-html/Cumulative%20detectability.-1.png" class="img-fluid figure-img" width="576"></p>
+<figcaption>Cumulative probability of detecting a lark by time interval during a survey.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="abundance" class="level3">
+<h3 class="anchored" data-anchor-id="abundance">Abundance</h3>
+<p>The null model of abundance was preferred to a model in which abundance varied by year.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="jlvypvylzg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#jlvypvylzg table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#jlvypvylzg thead, #jlvypvylzg tbody, #jlvypvylzg tfoot, #jlvypvylzg tr, #jlvypvylzg td, #jlvypvylzg th {
+  border-style: none;
+}
+
+#jlvypvylzg p {
+  margin: 0;
+  padding: 0;
+}
+
+#jlvypvylzg .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#jlvypvylzg .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#jlvypvylzg .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#jlvypvylzg .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#jlvypvylzg .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#jlvypvylzg .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#jlvypvylzg .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#jlvypvylzg .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#jlvypvylzg .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#jlvypvylzg .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#jlvypvylzg .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#jlvypvylzg .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#jlvypvylzg .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#jlvypvylzg .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#jlvypvylzg .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#jlvypvylzg .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#jlvypvylzg .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#jlvypvylzg .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#jlvypvylzg .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#jlvypvylzg .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#jlvypvylzg .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#jlvypvylzg .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#jlvypvylzg .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#jlvypvylzg .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#jlvypvylzg .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#jlvypvylzg .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#jlvypvylzg .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#jlvypvylzg .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#jlvypvylzg .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#jlvypvylzg .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#jlvypvylzg .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#jlvypvylzg .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#jlvypvylzg .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#jlvypvylzg .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#jlvypvylzg .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#jlvypvylzg .gt_left {
+  text-align: left;
+}
+
+#jlvypvylzg .gt_center {
+  text-align: center;
+}
+
+#jlvypvylzg .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#jlvypvylzg .gt_font_normal {
+  font-weight: normal;
+}
+
+#jlvypvylzg .gt_font_bold {
+  font-weight: bold;
+}
+
+#jlvypvylzg .gt_font_italic {
+  font-style: italic;
+}
+
+#jlvypvylzg .gt_super {
+  font-size: 65%;
+}
+
+#jlvypvylzg .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#jlvypvylzg .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#jlvypvylzg .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#jlvypvylzg .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#jlvypvylzg .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#jlvypvylzg .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#jlvypvylzg .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#jlvypvylzg .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#jlvypvylzg div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_heading header">
+<th colspan="3" class="gt_heading gt_title gt_font_normal gt_bottom_border">Abundance models ranked.</th>
+</tr>
+<tr class="gt_col_headings even">
+<th id="Model" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Model</th>
+<th id="AIC" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">AIC</th>
+<th id="Model-weight" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Model weight</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="Model">Null</td>
+<td class="gt_row gt_right" headers="AIC">2,782</td>
+<td class="gt_row gt_right" headers="Model weight">0.96</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Model">Year</td>
+<td class="gt_row gt_right" headers="AIC">2,788</td>
+<td class="gt_row gt_right" headers="Model weight">0.04</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Estimated abundance from the null model was 1.64 larks per point, with a 95% confidence interval of 0.82 — 3.26. Abundance is not readily converted into a density without distance sampling, which has proven ineffective for the analysis of lark surveys, or the use of fixed-radius survey plots, which require censoring already-sparse data.</p>
+<p>However, based on the distribution of observed distances to larks detected during surveys, ca. 95% of all detections occur within ca. 300 m of a survey point, suggesting that the area sampled is typically ca. 29 ha (0.29 km<sup>2</sup>). Assuming each point consisted of a 300-m-radius survey, average density of larks across all years of the study was ca. 0.06 individuals per ha or 5.7 individuals per km<sup>2</sup>.</p>
+</section>
+</section>
+</section>
+<section id="summary-and-future-considerations" class="level1">
+<h1>Summary and Future Considerations</h1>
+<section id="detectability-of-streaked-horned-larks-is-low." class="level3">
+<h3 class="anchored" data-anchor-id="detectability-of-streaked-horned-larks-is-low.">Detectability of streaked horned larks is low.</h3>
+<p>Detectability, and more specifically the availability component of detectability, was less than 50% even for a 24-minute count. Extending the duration of counts may increase the proportion of individuals present that are detected during a survey, but longer counts come with an increased likelihood of double-counting individuals or violating the closure assumptions of the removal model, both of which will lead to overestimation bias. Despite the potential problems of relying on removal models, they seemed to perform better (i.e., yielded estimates that seemed plausible) than distance sampling; previous analyses have highlighted the shortcomings of distance sampling for estimating abundance and detectability of Streaked Horned Larks in the Willamette Valley of Oregon. Streaked Horned Larks in the Willamette Valley appear to have high perceptibility (i.e., they can be detected from long distances) given the distribution of recorded distances between observers and individual larks but also seem to show strong behavioral responses to observers (e.g., secretive movement away from observers or silent hiding) that reduces their availability for detection.</p>
+</section>
+<section id="models-relying-on-downward-biased-estimates-of-detectability-will-overestimate-abundance." class="level3">
+<h3 class="anchored" data-anchor-id="models-relying-on-downward-biased-estimates-of-detectability-will-overestimate-abundance.">Models relying on downward-biased estimates of detectability will overestimate abundance.</h3>
+<p>The apparently low availability of Streaked Horned Larks for detection results in relatively imprecise estimates of abundance that may be greatly overestimated due to the low probability of detection. When using Horvitz-Thompson estimators to estimate abundance (i.e., <span class="math inline">\(\hat{N} = C/\hat{p}\)</span>, where C is a count and <span class="math inline">\(\hat{p}\)</span> a probability of detection), low detection probabilities lead to substantial upward adjustments of the observed count. If low detection probabilities are induced by violations of the assumptions of the modeling approach, as may be the case here with movement and behavioral changes in response to the observer, then the estimate of abundance will be biased upwards, perhaps significantly so.</p>
+</section>
+<section id="potential-solutions-to-the-challenges-of-monitoring-larks-include-using-occupancy-models-and-passive-acoustic-recorders.-double-sampling-may-be-an-option-too." class="level3">
+<h3 class="anchored" data-anchor-id="potential-solutions-to-the-challenges-of-monitoring-larks-include-using-occupancy-models-and-passive-acoustic-recorders.-double-sampling-may-be-an-option-too.">Potential solutions to the challenges of monitoring larks include using occupancy models and passive acoustic recorders. Double sampling may be an option, too.</h3>
+<p>Occupancy models would avoid some of the problems experienced in fitting distance-sampling and removal models, at the cost of losing information about abundance or population size. The loss of information would be more significant if future surveys incorporate off-road areas with high-quality habitat, which in 2024 tended to support much higher densities of larks (e.g., detecting up to 7 individuals at a single point). In contrast, roadside surveys at which larks were present tended to yield counts of only 1 or 2 individuals, such that occupancy models would provide inference similar to that derived from detectability-corrected abundance estimates. Occupancy models can be useful for trend estimation, with the caveat that they may be a lagging indicator of changes in population size.</p>
+<p>Focusing on occupancy, rather than abundance, would also allow for use of passive acoustic recorders to complete surveys, which might increase the number of points that could be surveyed in a day or a season. Soundscape recordings, however, are not amenable for use in estimating abundance because of the difficulty of determining how many individuals are vocalizing in the recording. Passive acoustic recorders are vulnerable to theft and vandalism, too, which may be a significant concern for use on roadsides or other areas with frequent human use.</p>
+<p>Double-sampling methods, in which precise estimates of density are derived from a small number of intensively studied plots and used to calibrate otherwise uncorrected point counts, may also offer an alternative approach for efficient long-term monitoring of Streaked Horned Larks.</p>
+</section>
 </section>
 
 </main>

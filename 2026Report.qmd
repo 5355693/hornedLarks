@@ -1,7 +1,11 @@
 ---
 title: "Streaked Horned Lark detectability and abundance report: 2026"
 author: "John D. Lloyd"
-format: html
+format:
+  pdf:
+    toc: true
+    number-sections: true
+    colorlinks: true
 editor: visual
 ---
 
@@ -27,9 +31,15 @@ larkData <- read.csv(file = "/Users/johnlloyd/Documents/GitHub/hornedLarks/surve
 larkData$surveyYear <- factor(larkData$surveyYear)
 ```
 
-## Background and data summary
+# Background and data summary
 
-Ecostudies Institute has conducted breeding-season surveys for Streaked Horned Larks (*Eremophila alpestris strigata*) in the Willamette Valley of Oregon since 2022. Survey methods and effort have varied considerably among years. In 2022 and 2023, observers conducted 8-minute counts at randomly selected points along roads in the study area, with observers recording each detection into one of 4, 2-minute intervals. In 2024, observers conducted 30-minute counts at randomly selected points along roads and systematically selected points off roads within the study area. Observers recorded detections into 30, 1-minute intervals. After the 24th minute of passive observation, observers conducted 6 more minutes of observation alternating with two periods in which recorded vocalizations of larks were broadcast. Finally, in 2025, observers conducted 12-minute counts at randomly selected points along roads in the study area, placing each detection into one of 12, 1-minute intervals. In all years, observers also recorded the distance to each bird that was detected. Observers estimated exact distances to larks in 2024 and 2025, but binned observations into 4 distance intervals (0-25 m, 26-100 m, 101-200 m, and \>200 m).
+Ecostudies Institute has conducted breeding-season surveys for Streaked Horned Larks (*Eremophila alpestris strigata*) in the Willamette Valley of Oregon since 2022. Survey methods and effort have varied among years.
+
+In 2022 and 2023, observers conducted 8-minute counts at randomly selected points along roads in the study area, with observers recording each detection into one of 4, 2-minute intervals.
+
+In 2024, observers conducted 30-minute counts at randomly selected points along roads and systematically selected off-road points within the study area. Observers recorded detections into 30, 1-minute intervals. After the 24th minute of passive observation, observers conducted 6 more minutes of observation alternating with two periods in which recorded vocalizations of larks were broadcast (because surveys during a playback period are not directly comparable with passive surveys, none of the analyses in this report include the final 6 minutes of playback-assisted observations used during 2024 surveys).
+
+Finally, in 2025, observers conducted 12-minute counts at randomly selected points along roads in the study area, placing each detection into one of 12, 1-minute intervals. In all years, observers also recorded the distance to each bird that was detected. Observers estimated exact distances to larks in 2024 and 2025, but binned observations into 4 distance intervals in 2022 and 2023 (0-25 m, 26-100 m, 101-200 m, and \>200 m).
 
 ```{r}
 #| label: Survey effort.
@@ -75,7 +85,7 @@ The largest number of larks detected was 2024; observers recorded fewer larks in
 #| echo: false
 #| message: false
 #| warning: false
-#| column: margin
+
 
 summary_table <- 
   larkData %>%
@@ -105,6 +115,8 @@ summary_table %>%
 #| echo: false
 #| message: false
 #| warning: false
+#| fig-width: 6
+#| fig-height: 4
 #| fig-cap: "Numbers of Streaked Horned Larks detected during surveys in Oregon's Willamette Valley."
 #| fig-align: center
 
@@ -121,7 +133,7 @@ larkData %>%
         axis.text = element_text(size = 14))
 ```
 
-The much greater number of larks detected in 2024 was a result both of fewer surveys that yielded no detections and more surveys that yielded multiple larks. Increased encounter rates and increased numbers of larks during a survey may have been a result of the inclusion of off-road survey locations in 2024. Off-road survey points tended to yield many more detections than on-road points: 11 of the 13 surveys at which observers detected \>4 larks were off-road points. Naive detection rates ranged from a low of 8.6% (2023) to a high of 55% (2024); detection rates in 2022 and 2025 were intermediate (13.1% and 20.7%, respectively).
+The much greater number of larks detected in 2024 was a result both of fewer surveys that yielded no detections and more surveys that yielded \> 2 larks. Increased encounter rates of larks and increased numbers of larks during a survey may have been a result of the inclusion of off-road survey locations in 2024. Off-road survey points tended to yield many more detections than on-road points: 11 of the 13 surveys at which observers detected \>4 larks were off-road points. Naive detection rates (i.e., percentage of survey points at which a lark was detected) ranged from a low of 8.6% (2023) to a high of 55% (2024); detection rates in 2022 and 2025 were intermediate (13.1% and 20.7%, respectively).
 
 ```{r}
 #| label: Distribution of lark detections.
@@ -142,7 +154,7 @@ larkData %>%
   arrange(desc(surveyYear),sum)
 
 colnames(count_summary_table)[1] <- "Year"
-colnames(count_summary_table)[2] <- "No. of larks"
+colnames(count_summary_table)[2] <- "No. of larks detected on a survey"
 colnames(count_summary_table)[3] <- "No. surveys"
 count_summary_table %>%
   gt() %>%
@@ -151,17 +163,21 @@ count_summary_table %>%
   ) 
 ```
 
-## Estimating abundance and detectability
+# Estimating abundance and detectability
 
-Data collection was designed to allow flexibility in the analysis of detectability and abundance by collecting supplemental information useful for distance sampling and removal models. However, as previous reports have discussed, distance sampling proved ineffective in correcting estimates of lark abundance for detectability. Very few detections (3.7%; 12/322) occurred within 25 m of the observer; the median distance across years when exact distances were recorded was 110 m (red dotted line). The 95th percentile of detection distances was 304 m, in keeping with earlier assumptions about the approximate area surveyed during counts.
+## Summary statistics
 
-The frequency of detections greater than 100 m from the observer suggests that larks may have either moved away from the observer or remained hidden, and thus unavailable for detection, when an observer was nearby. Distance sampling assumes no movement in response to the observer and that detection of individuals at zero distance (i.e., at the survey point) is perfect. In past years, detectability estimates derived from distance sampling have been very low, resulting in improbably inflated abundance estimates.
+Data collection was designed to allow flexibility in the analysis of detectability and abundance by collecting supplemental information useful for distance sampling and removal models. However, as previous reports have discussed, distance sampling has proven ineffective in correcting estimates of lark abundance for detectability. Very few detections (3.7%; 12/322) occurred within 25 m of the observer; the median distance between observer and lark in years when exact distances were recorded was 110 m (red dotted line) (similar results were found in 2022 and 2023, when most detections were placed into the second \[26-100 m\] or third \[101-200 m\] distance intervals). In 2024 and 2025, the 95th percentile of detection distances was 304 m, in keeping with earlier assumptions about the approximate area surveyed during counts (in reports from earlier years, I assumed an effective survey radius of 300 m).
+
+The frequency of detections greater than 100 m from the observer suggests that larks may have either moved away from the observer or remained hidden when an observer was nearby. In either case, these larks became unavailable for detection and resulted in violations of model assumptions. Distance sampling assumes that detection of individuals at zero distance (i.e., at the survey point) was perfect and that larks did not move in response to the observer. In past years, detectability estimates derived from distance sampling have been very low, resulting in improbably inflated abundance estimates. Given poor results from previous efforts to estimate abundance with distance sampling, I did not use it to analyze data for this report.
 
 ```{r}
 #| label: Detection distances.
 #| echo: false
 #| message: false
 #| warning: false
+#| fig-width: 6
+#| fig-height: 4
 #| fig-cap: "Frequency of lark detections by distance to the observer. The dotted red line is the median distance at which a lark was detected (110 m)."
 #| fig-align: center
 
@@ -193,9 +209,11 @@ distance_table_all %>%
 
 ```
 
-Removal models provide an alternative approach for estimating abundance when detection is imperfect. Removal models estimate availability for detection, whereas distance sampling estimates the change in perceptibility of an individual target as a function of the distance to the observer. Both availability and perceptibility are components of an overall detection process and are ideally both included in corrected estimates of abundance. For this analysis, however, removal models are used alone due to the unsuitability of distance sampling in this case.
+Removal models provide an alternative approach for estimating abundance when detection is imperfect. Removal models estimate availability for detection, whereas distance sampling estimates the change in perceptibility of an individual target as a function of the distance to the observer. Both availability and perceptibility are components of an overall detection process and are ideally both included in corrected estimates of abundance.
 
-In general, the temporal pattern of encounters suggests intermediate levels of availability for detection, with most birds first detected early in the count but with new individuals added throughout the count. With a long count period, as in 2024, some of the individuals not detected until late in the survey may have moved into the count area during the survey, a violation of the closure assumption (i.e., the population of birds available to be counted is assumed to remain constant over the course of the survey, with no movement in or out of the survey area). Movement in and out of the count area during a survey can result in double-counting and overestimation of abundance.
+For this analysis, however, removal models are used alone due to the unsuitability of distance sampling in this case and because removal models can be applied to every year of surveys. Although the surveys differed in interval length and number of intervals, the basic format of repeated counts at a point is consistent; removal models can accomodate the variation in length and number of intervals.
+
+In general, the temporal pattern of encounters suggests intermediate levels of availability for detection, with most birds first detected early in the count but with new individuals added throughout the count. With a long count period, as in 2024, some of the individuals not detected until late in the survey may have moved into the count area during the survey, a violation of the closure assumption (i.e., the population of birds available to be counted is assumed to remain constant over the course of the survey, with no movement in or out of the survey area). Movement in and out of the count area during a long survey can also result in double-counting and overestimation of abundance.
 
 ```{r}
 #| label: Detection intervals.
@@ -219,3 +237,213 @@ ggplot(intervals, aes(x = Interval)) + geom_histogram(binwidth=1) +
         axis.text = element_text(size = 14))
 
 ```
+
+## Removal models
+
+### Detectability
+
+```{r}
+#| label: UMF Construction.
+#| echo: false
+#| message: false
+#| warning: false
+#| include: false
+surveyData <- read.csv(file = "/Users/johnlloyd/Documents/GitHub/hornedLarks/surveyDataAll.csv",
+                       header = TRUE,
+                       sep = ",")
+
+## piFun to handle variable interval lengths.
+## in 2022, 2023: Interval 1, 2, 3, and 4 = 2 minutes each.
+## in all other years, intevals = 1 minute.
+
+# matrix of interval lengths:
+
+times_mat <- matrix(NA,822,24)
+times_mat[1:573,1:4] <- 2
+times_mat[1:573,5:24] <- 0
+times_mat[574:682,1:24] <- 1
+times_mat[683:822,1:12] <- 1
+times_mat[683:822,13:24] <- 0
+
+## Factory that returns a piFun using a SITE-BY-INTERVAL times matrix
+makeRemPiFun_bySite <- function(times_mat) {
+  stopifnot(is.matrix(times_mat))
+  function(p) {
+    # p is an M x J matrix of per-unit-time detection probabilities (0..1)
+    M <- nrow(p); J <- ncol(p)
+    if (!all(dim(times_mat) == c(M, J)))
+      stop("times_mat must have the same dimensions as p (sites x intervals).")
+    
+    # Convert per-unit p to per-interval detection prob q = 1 - (1 - p)^t
+    q <- 1 - (1 - p)^times_mat
+    
+    # No time => no chance to detect in that interval
+    q[is.na(times_mat) | times_mat <= 0] <- 0
+    
+    # Survival (not yet detected) up to the start of interval j
+    surv <- matrix(1, M, J)
+    if (J > 1) for (j in 2:J) surv[, j] <- surv[, j - 1] * (1 - q[, j - 1])
+    
+    # Multinomial cell probabilities: first detected in interval j
+    pi <- surv * q
+    
+    # Return M x J matrix
+    pi
+  }
+}
+
+remPi <- makeRemPiFun_bySite(times_mat)
+
+## need obsToY in this case because we can't use the default removal model features due to unequal intervals
+make_obsToY_removal <- function(J) {
+  stopifnot(J >= 1L)
+  o2y <- diag(J)
+  o2y[upper.tri(o2y)] <- 1L
+  o2y
+}
+
+J <- 24
+o2y <- make_obsToY_removal(J)
+dim(o2y)
+
+yRemoval <- matrix(nrow = 822, ncol = 24)
+rownames(yRemoval) <- surveyData$site
+yRemoval <- cbind(surveyData[,6:29])
+yRemoval <- as.matrix(yRemoval)
+
+## Create a data frame of site-level covariates.
+covs <-
+  surveyData %>%
+  group_by(site, surveyYear, dayOfYear) %>%
+  summarise(site = first(site),
+            dayOfYear = first (dayOfYear),
+            mas = first(mas))
+
+## Create the unmarked frame
+umfR <- unmarkedFrameMPois(y = yRemoval, siteCovs = covs, obsToY = o2y, piFun = "remPi")
+```
+
+None of the covariate models of detectability outperformed the null model.
+
+```{r}
+#| label: Detection model comparison.
+#| echo: false
+#| message: false
+#| warning: false
+dNull <- multinomPois(~1 ~1, data = umfR)
+dYear <- multinomPois(~surveyYear ~1, data = umfR)
+dDay <- multinomPois(~dayOfYear ~1, data = umfR)
+dTime <- multinomPois(~mas ~1, data = umfR)
+
+Model_List_Detect <- fitList(Null = dNull, Year = dYear, Day = dDay, Time = dTime)
+Model_Selection_Detect <- modSel(Model_List_Detect, nullmod = "Null")
+
+Model_Selection_Detect.df <- as.data.frame(Model_Selection_Detect@Full$model)
+Model_Selection_Detect.df$AIC <- Model_Selection_Detect@Full$AIC
+Model_Selection_Detect.df$Weight <- Model_Selection_Detect@Full$AICwt
+
+colnames(Model_Selection_Detect.df)[1] <- "Model"
+colnames(Model_Selection_Detect.df)[2] <- "AIC"
+colnames(Model_Selection_Detect.df)[3] <- "Model weight"
+
+Model_Selection_Detect.df %>%
+  gt() %>%
+  tab_header(
+    title = "Detectability models ranked."
+  ) %>%
+  fmt_number(
+    columns = `Model weight`,
+    decimals = 2
+  ) %>%
+  fmt_number(
+    columns = AIC,
+    decimals = 0
+  )
+```
+
+Estimated per-minute detection probability from the null model was `{r} round(predict(dNull, type = "det")[1,1],3)` with a 95% confidence interval of `{r} round(predict(dNull, type = "det")[1,3],3)` — `{r} round(predict(dNull, type = "det")[1,4],3)`. Over the maximum number of intervals (24) considered in this analysis, the total probability of detecting a lark, assuming it was present, was 0.471.
+
+```{r}
+#| label: Cumulative detectability.
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-cap: "Cumulative probability of detecting a lark by time interval during a survey."
+#| fig-width: 6
+#| fig-height: 4
+
+ps <- data.frame(getP(dNull)[574,])
+colnames(ps) <- "P"
+
+ps <-
+  ps %>%
+  mutate(detection_rate = cumsum(P))
+
+ps$Interval <- seq(1,24,1)
+
+ps %>%
+  ggplot(., aes(x = Interval, y = detection_rate)) + geom_line() + 
+  labs(x = "Interval (minute)", y = "Cumulative probability\nof detection") + 
+  theme(axis.title = element_text(size = 18),
+        axis.text = element_text(size = 14))
+```
+
+### Abundance
+
+The null model of abundance was preferred to a model in which abundance varied by year.
+
+```{r}
+#| label: Abundance model comparison.
+#| echo: false
+#| message: false
+#| warning: false
+
+aNull <- multinomPois(~1 ~1, data = umfR)
+aYear <- multinomPois(~1 ~surveyYear, data = umfR)
+Model_List_Abund <- fitList(Null = aNull, Year = aYear)
+Model_Selection_Abund <-modSel(Model_List_Abund, nullmod = "Null")
+
+Model_Selection_Abund.df <- as.data.frame(Model_Selection_Abund@Full$model)
+Model_Selection_Abund.df$AIC <- Model_Selection_Abund@Full$AIC
+Model_Selection_Abund.df$Weight <- Model_Selection_Abund@Full$AICwt
+
+colnames(Model_Selection_Abund.df)[1] <- "Model"
+colnames(Model_Selection_Abund.df)[2] <- "AIC"
+colnames(Model_Selection_Abund.df)[3] <- "Model weight"
+
+Model_Selection_Abund.df %>%
+  gt() %>%
+  tab_header(
+    title = "Abundance models ranked."
+  ) %>%
+  fmt_number(
+    columns = `Model weight`,
+    decimals = 2
+  ) %>%
+  fmt_number(
+    columns = AIC,
+    decimals = 0
+  )
+```
+
+Estimated abundance from the null model was `{r} round(predict(aNull, type = "state")[1,1],2)` larks per point, with a 95% confidence interval of `{r} round(predict(aNull, type = "state")[1,3],2)` — `{r} round(predict(aNull, type = "state")[1,4],2)`. Abundance is not readily converted into a density without distance sampling, which has proven ineffective for the analysis of lark surveys, or the use of fixed-radius survey plots, which require censoring already-sparse data.
+
+However, based on the distribution of observed distances to larks detected during surveys, ca. 95% of all detections occur within ca. 300 m of a survey point, suggesting that the area sampled is typically ca. 29 ha (0.29 km^2^). Assuming each point consisted of a 300-m-radius survey, average density of larks across all years of the study was ca. 0.06 individuals per ha or 5.7 individuals per km^2^.
+
+# Summary and Future Considerations
+
+### Detectability of streaked horned larks is low. 
+
+Detectability, and more specifically the availability component of detectability, was less than 50% even for a 24-minute count. Extending the duration of counts may increase the proportion of individuals present that are detected during a survey, but longer counts come with an increased likelihood of double-counting individuals or violating the closure assumptions of the removal model, both of which will lead to overestimation bias. Despite the potential problems of relying on removal models, they seemed to perform better (i.e., yielded estimates that seemed plausible) than distance sampling; previous analyses have highlighted the shortcomings of distance sampling for estimating abundance and detectability of Streaked Horned Larks in the Willamette Valley of Oregon. Streaked Horned Larks in the Willamette Valley appear to have high perceptibility (i.e., they can be detected from long distances) given the distribution of recorded distances between observers and individual larks but also seem to show strong behavioral responses to observers (e.g., secretive movement away from observers or silent hiding) that reduces their availability for detection.
+
+### Models relying on downward-biased estimates of detectability will overestimate abundance.
+
+The apparently low availability of Streaked Horned Larks for detection results in relatively imprecise estimates of abundance that may be greatly overestimated due to the low probability of detection. When using Horvitz-Thompson estimators to estimate abundance (i.e., $\hat{N} = C/\hat{p}$, where C is a count and $\hat{p}$ a probability of detection), low detection probabilities lead to substantial upward adjustments of the observed count. If low detection probabilities are induced by violations of the assumptions of the modeling approach, as may be the case here with movement and behavioral changes in response to the observer, then the estimate of abundance will be biased upwards, perhaps significantly so.
+
+### Potential solutions to the challenges of monitoring larks include using occupancy models and passive acoustic recorders. Double sampling may be an option, too. 
+
+Occupancy models would avoid some of the problems experienced in fitting distance-sampling and removal models, at the cost of losing information about abundance or population size. The loss of information would be more significant if future surveys incorporate off-road areas with high-quality habitat, which in 2024 tended to support much higher densities of larks (e.g., detecting up to 7 individuals at a single point). In contrast, roadside surveys at which larks were present tended to yield counts of only 1 or 2 individuals, such that occupancy models would provide inference similar to that derived from detectability-corrected abundance estimates. Occupancy models can be useful for trend estimation, with the caveat that they may be a lagging indicator of changes in population size.
+
+Focusing on occupancy, rather than abundance, would also allow for use of passive acoustic recorders to complete surveys, which might increase the number of points that could be surveyed in a day or a season. Soundscape recordings, however, are not amenable for use in estimating abundance because of the difficulty of determining how many individuals are vocalizing in the recording. Passive acoustic recorders are vulnerable to theft and vandalism, too, which may be a significant concern for use on roadsides or other areas with frequent human use.
+
+Double-sampling methods, in which precise estimates of density are derived from a small number of intensively studied plots and used to calibrate otherwise uncorrected point counts, may also offer an alternative approach for efficient long-term monitoring of Streaked Horned Larks.

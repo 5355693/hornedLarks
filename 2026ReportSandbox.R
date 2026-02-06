@@ -11,6 +11,7 @@ library(kableExtra)
 library(ggpmisc)
 library(ubms)
 library(gt)
+library(msm)
 
 larkData <- read.csv(file = "/Users/johnlloyd/Documents/GitHub/hornedLarks/surveyData23_26.csv",header = TRUE,sep = ",")
 larkData$surveyYear <- factor(larkData$surveyYear)
@@ -153,4 +154,141 @@ colnames(intervals) <- "Interval"
 ggplot(intervals, aes(x = Interval)) + geom_histogram(binwidth = 1) +
   ylab("No. of detections") + xlab("Interval") + 
   theme(axis.title = element_text(size = 18),
+        axis.text = element_text(size = 14))\
+
+## Detection and abundance.
+surveyData <- read.csv(file = "/Users/johnlloyd/Documents/GitHub/hornedLarks/surveyDataAll.csv",
+                       header = TRUE,
+                       sep = ",")
+
+## piFun to handle variable interval lengths.
+## in 2022, 2023: Interval 1, 2, 3, and 4 = 2 minutes each.
+## in all other years, intevals = 1 minute.
+
+# matrix of interval lengths:
+
+times_mat <- matrix(NA,822,24)
+times_mat[1:573,1:4] <- 2
+times_mat[1:573,5:24] <- 0
+times_mat[574:682,1:24] <- 1
+times_mat[683:822,1:12] <- 1
+times_mat[683:822,13:24] <- 0
+
+## Factory that returns a piFun using a SITE-BY-INTERVAL times matrix
+makeRemPiFun_bySite <- function(times_mat) {
+  stopifnot(is.matrix(times_mat))
+  function(p) {
+    # p is an M x J matrix of per-unit-time detection probabilities (0..1)
+    M <- nrow(p); J <- ncol(p)
+    if (!all(dim(times_mat) == c(M, J)))
+      stop("times_mat must have the same dimensions as p (sites x intervals).")
+    
+    # Convert per-unit p to per-interval detection prob q = 1 - (1 - p)^t
+    q <- 1 - (1 - p)^times_mat
+    
+    # No time => no chance to detect in that interval
+    q[is.na(times_mat) | times_mat <= 0] <- 0
+    
+    # Survival (not yet detected) up to the start of interval j
+    surv <- matrix(1, M, J)
+    if (J > 1) for (j in 2:J) surv[, j] <- surv[, j - 1] * (1 - q[, j - 1])
+    
+    # Multinomial cell probabilities: first detected in interval j
+    pi <- surv * q
+    
+    # Return M x J matrix
+    pi
+  }
+}
+
+remPi <- makeRemPiFun_bySite(times_mat)
+
+## need obsToY in this case because we can't use the default removal model features due to unequal intervals
+make_obsToY_removal <- function(J) {
+  stopifnot(J >= 1L)
+  o2y <- diag(J)
+  o2y[upper.tri(o2y)] <- 1L
+  o2y
+}
+
+J <- 24
+o2y <- make_obsToY_removal(J)
+dim(o2y)
+
+yRemoval <- matrix(nrow = 822, ncol = 24)
+rownames(yRemoval) <- surveyData$site
+yRemoval <- cbind(surveyData[,6:29])
+yRemoval <- as.matrix(yRemoval)
+
+## Create a data frame of site-level covariates.
+covs <-
+  surveyData %>%
+  group_by(site, surveyYear, dayOfYear) %>%
+  summarise(site = first(site),
+            dayOfYear = first (dayOfYear),
+            mas = first(mas))
+
+## Create the unmarked frame
+umfR <- unmarkedFrameMPois(y = yRemoval, siteCovs = covs, obsToY = o2y, piFun = "remPi")
+summary(umfR)
+
+## initial removal models.
+### Detectability
+dNull <- multinomPois(~1 ~1, data = umfR)
+dYear <- multinomPois(~surveyYear ~1, data = umfR)
+dDay <- multinomPois(~dayOfYear ~1, data = umfR)
+dTime <- multinomPois(~mas ~1, data = umfR)
+
+Model_List_Detect <- fitList(Null = dNull, Year = dYear, Day = dDay, Time = dTime)
+Model_Selection_Detect <- modSel(Model_List_Detect, nullmod = "Null")
+Model_Selection_Detect #The null is only 1.49 AIC above best model (Time), so prefer null.
+Model_Selection_Detect.df <- as.data.frame(Model_Selection_Detect@Full$model)
+Model_Selection_Detect.df$AIC <- Model_Selection_Detect@Full$AIC
+Model_Selection_Detect.df$Weight <- Model_Selection_Detect@Full$AICwt
+
+colnames(Model_Selection_Detect.df)[1] <- "Model"
+colnames(Model_Selection_Detect.df)[2] <- "AIC"
+colnames(Model_Selection_Detect.df)[3] <- "Model weight"
+
+Model_Selection_Detect.df %>%
+  gt() %>%
+  tab_header(
+    title = "Detectability models ranked."
+  ) %>%
+  fmt_number(
+    columns = `Model weight`,
+    decimals = 2
+  ) %>%
+  fmt_number(
+    columns = AIC,
+    decimals = 0
+  )
+
+ps <- data.frame(getP(dNull)[574,])
+colnames(ps) <- "P"
+
+ps <-
+  ps %>%
+  mutate(detection_rate = cumsum(P))
+
+ps$Interval <- seq(1,24,1)
+
+ps %>%
+  ggplot(., aes(x = Interval, y = detection_rate)) + geom_line() + 
+  labs(x = "Interval (minute)", y = "Cumulative probability\nof detection") + 
+  theme(axis.title = element_text(size = 18),
         axis.text = element_text(size = 14))
+  
+
+predict(dNull, type = "det")[1,]
+
+
+
+### Abundance
+aNull <- multinomPois(~1 ~1, data = umfR)
+aYear <- multinomPois(~1 ~surveyYear, data = umfR)
+Model_List_Abund <- fitList(Null = aNull, Year = aYear)
+Model_Selection_Abund <-modSel(Model_List_Abund, nullmod = "Null")
+Model_Selection_Abund #Null preferred
+
+predict(aNull, type = "state")
