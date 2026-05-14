@@ -1,0 +1,42 @@
+---
+title: "Dynamics of Streaked Horned Lark habitat in the Willamette Valley"
+author: "John Lloyd"
+format: pdf
+editor: visual
+---
+
+# Introduction
+
+This report describes patterns of change in habitat suitability for Streaked Horned Larks (hereafter, larks) in the Willamette Valley of Oregon and provides a preliminary assessment of the relationship between detections of larks during surveys and estimated habitat quality.
+
+# Results
+
+## Temporal dynamics of estimated habitat suitability
+
+Habitat suitability for larks in the Willamette Valley of Oregon was estimated via remote sensing on four dates in 2025. The first date on which satellite imagery was evaluated for lark habitat suitability, April 30, occurred before point-count surveys for larks were conducted; the remaining 3 dates - May 24, June 08, and June 15 - occurred contemporaneously with point-count surveys.
+
+Estimated habitat suitability tended to decline, sometimes sharply, between April 30 and all of the other dates on which suitability was estimated (Figs. 1-4).
+
+![Estimated change in habitat suitability, April 30 to May 24. Points with decreasing values colored red and points with increasing values colored black.](Figure1.png)
+
+![Estimated change in habitat suitability, April 30 to June 08. Points with decreasing values colored red and points with increasing values colored black.](Figure2.png)
+
+![Estimated change in habitat suitability, April 30 to June 15. Points with decreasing values colored red and points with increasing values colored black.](Figure3.png)
+
+![Boxplots of change in estimated proportion of suitable habitat from 30 April to May 24, June 08, and June 15.](Figure5.png)
+
+Although estimated habitat suitability tended to decline from April to June, individual points showed substantial variation from one sampling period to the next. Many points alternated between relatively high and relatively low suitability over the 4 sampling periods (Fig. 5).
+
+![Dynamics of habitat quality for each sample point at four different dates in 2025. Segments are colored according to whether the estimated proportion of suitable habitat increased (black) or decreased (red). Segments connect individual survey points across the four dates. In other words, connected segments reveal intra-point changes in estimated habitat suitability over the course of the season.](Figure4.png)
+
+## Associations between estimated habitat suitability and detection of larks
+
+No association was evident between the number of larks detected at a point and the estimated proportion of suitable habitat at a point (Figs. 6-9).
+
+![Number of larks detected at a survey point was not associated with the estimated proportion of suitable habitat at that point on April 30. Blue line is the predicted relationship (from a GLM with a Poisson distribution) between lark detections and the proportion of suitable habitat. The shaded area around the regression line is the 95% confidence interval.](Figure6.png)
+
+![Number of larks detected at a survey point was not associated with the estimated proportion of suitable habitat at that point on May 24. Blue line is the predicted relationship (from a GLM with a Poisson distribution) between lark detections and the proportion of suitable habitat. The shaded area around the regression line is the 95% confidence interval.](Figure7.png)
+
+![Number of larks detected at a survey point was not associated with the estimated proportion of suitable habitat at that point on June 08. Blue line is the predicted relationship (from a GLM with a Poisson distribution) between lark detections and the proportion of suitable habitat. The shaded area around the regression line is the 95% confidence interval.](Figure8.png)
+
+![Number of larks detected at a survey point was not associated with the estimated proportion of suitable habitat at that point on June 15. Blue line is the predicted relationship (from a GLM with a Poisson distribution) between lark detections and the proportion of suitable habitat. The shaded area around the regression line is the 95% confidence interval.](Figure9.png)

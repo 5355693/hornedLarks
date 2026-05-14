@@ -432,7 +432,7 @@ However, based on the distribution of observed distances to larks detected durin
 
 # Summary and Future Considerations
 
-### Detectability of streaked horned larks is low. 
+### Detectability of streaked horned larks is low.
 
 Detectability, and more specifically the availability component of detectability, was less than 50% even for a 24-minute count. Extending the duration of counts may increase the proportion of individuals present that are detected during a survey, but longer counts come with an increased likelihood of double-counting individuals or violating the closure assumptions of the removal model, both of which will lead to overestimation bias. Despite the potential problems of relying on removal models, they seemed to perform better (i.e., yielded estimates that seemed plausible) than distance sampling; previous analyses have highlighted the shortcomings of distance sampling for estimating abundance and detectability of Streaked Horned Larks in the Willamette Valley of Oregon. Streaked Horned Larks in the Willamette Valley appear to have high perceptibility (i.e., they can be detected from long distances) given the distribution of recorded distances between observers and individual larks but also seem to show strong behavioral responses to observers (e.g., secretive movement away from observers or silent hiding) that reduces their availability for detection.
 
@@ -440,7 +440,7 @@ Detectability, and more specifically the availability component of detectability
 
 The apparently low availability of Streaked Horned Larks for detection results in relatively imprecise estimates of abundance that may be greatly overestimated due to the low probability of detection. When using Horvitz-Thompson estimators to estimate abundance (i.e., $\hat{N} = C/\hat{p}$, where C is a count and $\hat{p}$ a probability of detection), low detection probabilities lead to substantial upward adjustments of the observed count. If low detection probabilities are induced by violations of the assumptions of the modeling approach, as may be the case here with movement and behavioral changes in response to the observer, then the estimate of abundance will be biased upwards, perhaps significantly so.
 
-### Potential solutions to the challenges of monitoring larks include using occupancy models and passive acoustic recorders. Double sampling may be an option, too. 
+### Potential solutions to the challenges of monitoring larks include using occupancy models and passive acoustic recorders. Double sampling may be an option, too.
 
 Occupancy models would avoid some of the problems experienced in fitting distance-sampling and removal models, at the cost of losing information about abundance or population size. The loss of information would be more significant if future surveys incorporate off-road areas with high-quality habitat, which in 2024 tended to support much higher densities of larks (e.g., detecting up to 7 individuals at a single point). In contrast, roadside surveys at which larks were present tended to yield counts of only 1 or 2 individuals, such that occupancy models would provide inference similar to that derived from detectability-corrected abundance estimates. Occupancy models can be useful for trend estimation, with the caveat that they may be a lagging indicator of changes in population size.
 
