@@ -1,6 +1,8 @@
 ---
 title: "Dynamics of Streaked Horned Lark habitat in the Willamette Valley"
 author: "John Lloyd"
+date: last-modified
+toc: true
 format: pdf
 editor: visual
 ---
@@ -40,3 +42,9 @@ No association was evident between the number of larks detected at a point and t
 ![Number of larks detected at a survey point was not associated with the estimated proportion of suitable habitat at that point on June 08. Blue line is the predicted relationship (from a GLM with a Poisson distribution) between lark detections and the proportion of suitable habitat. The shaded area around the regression line is the 95% confidence interval.](Figure8.png)
 
 ![Number of larks detected at a survey point was not associated with the estimated proportion of suitable habitat at that point on June 15. Blue line is the predicted relationship (from a GLM with a Poisson distribution) between lark detections and the proportion of suitable habitat. The shaded area around the regression line is the 95% confidence interval.](Figure9.png)
+
+# Conclusions
+
+The estimated area of suitable habitat at a survey point was unstable over very short time spans. For example, notice the group of points predicted to contain about 50% suitable habitat on 24 May, about 0% suitable habitat on 08 June, and then again about 50% suitable habitat on 15 June (Fig. 5). Larks in the Willamette Valley occupy a dynamic landscape, in which rapid changes in habitat suitability can occur (e.g., due to agricultural practices), but the nature of the changes in the estimated extent of suitable habitat suggest that much of the observed variation does not reflect ecological variation but is instead an artifact of the estimation process or the satellite imagery used to predict suitable habitat. It is unlikely that, for example, a survey point would be uninhabitable one week, replete with suitable habitat two weeks later, and then once again uninhabitable a week later.
+
+The instability of the predictions of habitat extent suggests that the underlying model fails to yield biological relevant results in the Willamette Valley. It is not surprising then that the number of lark detections was uncorrelated with the estimated extent of suitable habitat; if the predicted extent of suitable habitat is an essentially random variable, then we should not expect it to show any consistent relationship with the distribution or abundance of larks. Based on this preliminary analysis, the existing habitat model has little value in predicting occurrence, distribution, or extent of habitat in the Willamette Valley, and as such has no utility for estimating total population size of larks in the Willamette Valley. In addition to the difficulties experienced in generating precise estimates of lark density, as discussed in previous reports, the lack of a reliable measure of the extent of lark habitat in the Willamette Valley precludes extrapolating density estimates from this study to predict total population size.
